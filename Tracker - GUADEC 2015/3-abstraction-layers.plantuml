@@ -1,0 +1,61 @@
+@startuml
+
+title Three points of abstraction
+
+component "Local files" as Filesystem
+interface filesystem
+
+component "Media server" as MediaServer
+interface DLNA as dlna
+
+cloud Internet {
+  component Facebook
+  component Flickr
+  component "last.fm-albumart" as lastfm_albumart
+  component Youtube
+}
+
+interface "HTTP" as http_gom
+interface "HTTP" as http_grilo
+
+Filesystem -- filesystem
+MediaServer -- dlna
+
+Facebook -- http_gom
+Flickr -- http_gom
+Flickr -- http_grilo
+lastfm_albumart -- http_grilo
+Youtube -- http_grilo
+
+component "<b>Grilo</b>" as Grilo #LightGreen
+
+dlna -- Grilo
+http_grilo -- Grilo
+filesystem -- Grilo
+
+component "<b>gnome-online-miners</b>" as gnome_online_miners #LightGreen
+
+http_gom -- gnome_online_miners
+dlna -- gnome_online_miners
+
+interface "<b>tracker-enumerator</b>" as tracker_enumerator #LightGreen
+filesystem -- tracker_enumerator
+
+component "tracker-miner-fs" as tracker_miner_fs
+tracker_enumerator -- tracker_miner_fs
+
+component "tracker-store" as TrackerStore
+interface "SPARQL update" as tracker_sparql_update
+interface "SPARQL query" as tracker_sparql_query
+
+gnome_online_miners -- tracker_sparql_update
+tracker_miner_fs -- tracker_sparql_update
+tracker_sparql_update -- TrackerStore
+
+TrackerStore -- tracker_sparql_query
+tracker_sparql_query -- Grilo
+
+component libtrackersparql as LibTrackerSparql
+tracker_sparql_query -- LibTrackerSparql
+
+@enduml

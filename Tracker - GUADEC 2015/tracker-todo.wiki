@@ -1,0 +1,347 @@
+## page was renamed from Tracker/Roadmap
+= A Tracker List =
+
+This is list not exhaustive. Feel free to add tasks that you think are important.
+Be sure to check the Tracker product on Bugzilla for general bugs and
+enhancement requests, too.
+
+ * Solve the problems with using inotify on Linux to provide recursive directory
+   monitoring. While it is currently the best available interface, it's not how
+   inotify was intended to be used and is likely to cause performance problems
+   when large numbers of files are being monitored.
+ * More complete and reliable functional testing (`tests/functional-tests` in tracker.git
+   should all pass, and should cover all important parts of the Tracker code.)
+ * Support InstalledTests, so that the Tracker tests run as part of GnomeContinuous
+ * Split out tracker-store from the desktop integration parts of Tracker, into a separate
+   Git repo. Make sure it can be used as a standalone RDF store. Test using
+   Tracker desktop integration components (everything remaining in tracker.git)
+   with other triple stores (e.g. 4store) to see if there are any benefits in
+   memory usage, performance, etc. compared to tracker-store.
+ * Create 'live updating view' widgets, that applications built on top of
+   Tracker can easily make use of. It may be possible to do this within Grilo.
+ * Implement opt-in scanning of removable devices
+
+= Tracker 0.x Roadmap =
+
+This roadmap is now quite old and some of the tasks might not relevant
+any more. They also lack quite a lot of context.
+
+== Open issues (research, prototype, long term) ==
+ * Quad store: Add more information per triplet like timestamp, user... could help for synchronization or security
+ * Synchronization between tracker instances in different devices
+ * Post processing, e.g. calculating album length by visiting each file in an album. [[https://developer.gnome.org/libtracker-miner/stable/TrackerDecorator.html|TrackerDecorator]] provides a framework for doing this since Tracker 0.18.
+ * Integrity checking (reference counting or garbage collection): Implicitly created data being linked for resources which are removed. For example, artists are created when an MP3 is indexed, but not deleted if the MP3 is removed.
+  * Use of isDeleted is possible for this.
+  * More complex scenarios with intertwined applications, proper reference counting needed?
+ * Containers in ontology, e.g. ordered lists (playlists), conceptual ideas needed. [[http://smiy.sourceforge.net/olo/spec/orderedlistontology.html|Ordered List Ontology]] is one (slightly heavyweight) option. req:Seq is another.
+ * Always dreamed live queries (explore the idea of "VIEWS")
+ * Efficient integration with relevance calculation (e.g. Zeitgeist)
+ * Ontology versions/dependencies (how to package/distribute the ontologies, mark dependencies on it)
+ * Signal property deletions when a resource is deleted ([[https://projects.maemo.org/bugzilla/show_bug.cgi?id=211816|NB#211816]])
+ * Installation by 3rd party of functions in SparQL (similar to 'tracker:coalesce'...)
+
+== Plans ==
+ * Improve documentation for newbies: All API are fairly well documented but the step to start with tracker is too high
+ * More complete and reliable functional testing (`tests/functional-tests` in tracker.git)
+ * Support for ontology-free triplets (with no performance warranties though)
+
+== Concrete code issues ==
+ * Move tracker_albumart_*() API from tracker-extract to libtracker-extract (branched by martyn)
+ * Proper libstreamanalyzer integration
+ * Add support for xsd:date
+ * Refactor writeback to a more consistent/no racy design
+ * Journaling:
+  * Do not journal fulltext properties that only increase journal size
+  * We need to purge the journal (export DB to journal? replay + export = clean journal)
+ * Simplify ontology: Too complex for application developers
+  * Icons from items: unified thumbnail/icon mechanism for any item (related with a libgthumbnailer + tumbler integration)
+  * Remove glue/internal classes
+  * Remove deprecated classes
+  * Take a decision NCAL/SCAL
+
+=== Miner FS ===
+ * Refactor libtracker-miner, splitting tracker-miner-fs.c into different submodules and files, as done with the processing pool.
+ * Try to document the execution flow of the miner-fs.
+ * Manage the list of ignored files/directories/patterns directly at tracker-monitor level in libtracker-miner:
+   * Events can properly be merged (e.g. a rename of a non-ignored filename to an ignored filename should be notified to upper layers as a DELETE and not as a MOVE).
+   * Improves management of actual GFileMonitors (e.g. a rename of a non-ignored directory name to an ignored directory name should trigger removal of the GFileMonitor in the directory; currently this is not done at TrackerMonitor level as it doesn't know about ignored directories).
+ * Review IgnoreNextUpdate behavior:
+   * Support ignoring several consecutive updates in a given period, instead of just the next one (Note: this is actually being done right now more or less, as N events can be merged into a single one, and thus when ignoring we ignore all N merged events).
+   * Review the situation where 2 external apps modify the same file, and one of them does it sending an IgnoreNextUpdate event. How does miner-fs know which update to ignore? What if both update events from the 2 external apps get merged?
+   * Review the situation where external applications insert resources of existing files, conflicting with miner-fs. Can IgnoreNextUpdate or something similar be used?
+   * Review the synchronization with tracker-writeback (an external application inserts a new resource of a (new) file, sets a property value, tracker-store launches tracker-writeback, tracker-writeback triggers IgnoreNextUpdate, tracker-writeback updates the file, tracker-miner-fs indexes the (new) file...)
+ * FANotify (minimize the crawling/initial work)
+
+=== Full text search ===
+ * Refactor and redesign the searching/libtracker-fts tables:
+  * Feature requests:
+   * Name stemming (enter 'Mike' find 'Mikael')
+   * Better maching (prefix, suffix, strstr, etc)
+   * Spell checking
+   * Synonyms
+   * Hierarchy crawling (enter 'Mike' for nfo:Audio, finds it in a derivative object for the nmm:performer for example with n deep searching)
+   * Relevance calculation and always updating based on user actions
+  * Performance:
+   * 100ms target generally
+  * Importantly:
+   * Gather searching/fts requirements for apps
+   * How do we do relevance calculation? (by apps, by file metadata, by both using a separate daemon?)
+ * Remove libstemmer? Currently stemming is disabled by default, and when enabled it always defaults to English stemming. Ideally the proper solution would be to detect the language of the word and then apply the specific language's stemming to that string. Practically, this is almost impossible.
+
+= Tracker 0.12 Roadmap =
+ * Upgrade from FTS-3 to FTS-4:
+  * We will look into the work involved here, potentially this could be a large speed increase during indexing at times.
+ * Journal fixes:
+  * We want to improve this so we don't delete the DB when journalling is disabled and an ontology change is not supported.
+ * '''[LATER]''' Ontology-agnostic triplets:
+  * '''[LATER]''' The idea here is to allow 3rd party applications the ability to play with their own ontologies more easily.
+  * '''[LATER]''' We realise we don't have time for this.
+ * '''[DONE]''' ThunderBird support (>= v5):
+  * '''[DONE]''' The work for this is currently in the branch: thunderbird
+ * '''[DONE]''' FireFox support:
+  * '''[DONE]''' Both Mozilla works are courtesy of Adrien Bustany and I have tested them recently and work quite well. The should just need adding to the source tree.
+ * Needle tag searching/adding/removing:
+  * There is already a branch that does the searching here, the adding and removing just needs implementing and should be fairly quick to do.
+  * The current branch doing this is: tracker-needle-improved-tagging
+ * '''[DONE]''' Writeback improvements:
+  * '''[DONE]''' https://projects.maemo.org/bugzilla/show_bug.cgi?id=270735
+  * '''[DONE]''' This involves moving some code into tracker-miner-fs and avoiding and deprecating the IgnoreNextUpdate signal. This is mostly done and ready to merge to master any day now.
+  * '''[DONE]''' The current branch doing this is: writeback-refactor-rebase
+ * Add RDF type information to GraphUpdated signal:
+  * https://projects.maemo.org/bugzilla/show_bug.cgi?id=211816.
+  * This will be investigated.
+ * Deleting orphaned resources?
+  * This is not straight forward to do and we decided though we want to do it, we just don't have time. This is useful in cases where (for example, you have artists in the database for music that no longer
+  exists. What's hard about this is knowing what can be cleaned up).
+ * Add Telepathy Logger miner to source tree.
+  * https://bugs.freedesktop.org/show_bug.cgi?id=39448
+  * This will report events about contacts and messages to Tracker.
+ * UPnP mediaserver miner:
+  * http://mail.gnome.org/archives/tracker-list/2011-March/msg00025.html
+  * Final review and addition of this to the source tree is needed.
+ * '''[DONE]''' GUPnP DLNA as default generic media extractor:
+  * '''[DONE]''' This means we will extract dlna profiles about files too. This is really just the current GStreamer extractor + some more SPARQL properties.
+  * '''[DONE]''' The current branch doing this is: gstreamer-with-dlna
+  * NB#272616 - [TASK] GStreamer Discovery API using Tagreadbi
+ * '''[DONE]''' Drop Helix media extractor:
+  * '''[DONE]''' This is no longer used as far as we can tell. If anyone feels differently, please let us know.
+ * '''[DONE]''' GB#654824 - tracker 0.10.20 and 0.11.0 does not build with evolution 3.1.3
+   * (support for GNOME 3.2, libcammel API has changed again)
+ * '''[DONE]''' NB#270774 - single transactions for batch updates and only drop back to current solution on error
+ * '''[DONE]''' NB#266579 - error-handling branch
+ * '''[DONE]''' NB#246131 - custom-dlna branch (should be ported to 0.10)
+ * '''[DONE]''' NB#259780 - wip/miner-priority-queues
+ * '''[DONE]''' NB#270977 - A method to delete during an insert or update
+ * NB#271745 - SPARQL 1.1 updates where appropriate:
+  * SPARQL 1.1 Query
+    * Switch to (expression AS ?var) syntax for select expressions
+    * '''[DONE]''' Add support for HAVING
+    * '''[DONE]''' Add support for COALESCE
+  * SPARQL 1.1 Update
+    * Require semicolons to separate multiple operations in a single update request
+    * Drop support for INSERT INTO and DELETE FROM (replaced by WITH)
+    * Add support for USING NAMED <uri> WHERE {...}
+    * Support combined DELETE/INSERT with shared WHERE
+    * Support short form DELETE WHERE {...}
+ * '''[DONE]''' NB#271747 - Support for xsd:date
+ * '''[DONE]''' NB#271764 - threaded-extractor branch
+ * NB#271754 - Manage the list of ignored files/directories/patterns directly at tracker-monitor level in libtracker-miner
+ * '''[DONE]''' NB#269931 - Ignore keywords containing invalid UTF-8
+ * '''[DONE]''' Extraction-improvements branch (threading model improvements) 
+ * '''[DONE]''' Everything GObject-introspection friendly (I want to write miners and use libtracker-sparql from python!)
+ * '''[DONE]''' Fix tracker-extract's extractor mime type in code problem (avoid recompiling a module to add a mimetype!)
+ * '''[DONE]''' Move to GSettings API in GLib 2.25+
+ * '''[DONE]''' Move to GDBus API in GLib 2.25+
+ * '''[DONE]''' Limit maximum number of requests sent to the store. Not being done with the refactored processing pool.
+
+= Tracker 0.10 Roadmap =
+ * '''[DONE]''' Fix fn:starts-with to work properly with libunistring/glib unicode support libraries [[https://bugzilla.gnome.org/show_bug.cgi?id=636074|GB#636074]]
+ * '''[DONE]''' Signal property changes (nie?) - under debate
+ * '''[DONE]''' Fix volume handling (Aleksander)
+  * '''[DONE]''' Bug 172818 - Tracker is not indexing new content on EMMC --> https://projects.maemo.org/bugzilla/show_bug.cgi?id=172818
+  * '''[DONE]''' Bug 621001 - tracker-miner-fs fails to initialize active mount points if CD name has whitespaces --> https://bugzilla.gnome.org/show_bug.cgi?id=621001
+  * '''[DONE]''' Bug 621112 - Resources not deleted from store when files removed from removable media --> https://bugzilla.gnome.org/show_bug.cgi?id=621112
+  * '''[DONE]''' See branch http://git.gnome.org/browse/tracker/log/?h=mounts-without-volumes - fixes NB#172818, GB#621001
+ * '''[DONE]''' Embedded set properties vs user set properties are problematic without this.
+ * '''[DONE]''' Collation is needed - perhaps using the SQLite ICU module?
+ * '''[DONE]''' Use GThreadPool to allow parallel read-only queries using shared cache mode in SQLite, also to avoid timeouts and abusive queries
+  * '''[DONE]''' Initial Implementation (Jürg, Carlos)
+  * '''[DONE]''' Bug fixes
+  * '''[DONE]''' Performance fixes
+ * '''[DONE]''' Direct access library, see https://bugzilla.gnome.org/show_bug.cgi?id=613255
+  * '''[DONE]''' Test miner-fs reindex mime types (Martyn)
+  * '''[DONE]''' Test miner-rss (Martyn)
+  * '''[DONE]''' Check frees in miner-rss (Martyn)
+  * '''[DONE]''' Valgrind miner-rss (Martyn)
+  * '''[DONE]''' Valgrind miner-fs (Martyn)
+  * '''[DONE]''' Valgrind store (Martyn)
+  * '''[DONE]''' Test tracker-search all switches (Martyn)
+  * '''[DONE]''' Update tracker-tag (Martyn)
+  * '''[DONE]''' Implement batch / commit (Juergbi)
+  * '''[DONE]''' Fix update_blank API replacement (Adrien/Pvanhoof)
+  * '''[DONE]''' Update miner-flickr with new update_blank API (Adrien)
+  * '''[DONE]''' Update writeback (Pvanhoof)
+  * '''[DONE]''' Update evolution plugin (Pvanhoof)
+  * '''[DONE]''' Update Steroids examples - Do we need to do this? Can we just remove them? (Martyn)
+  * '''[DONE]''' Migrate Tracker.Sparql.Error domain from libtracker-data to libtracker-sparql (Juergbi)
+  * '''[DONE]''' Implement async_queue in bus backend (Juergbi)
+  * '''[DONE]''' Implement steroids/dbus-glib1 switching in bus backend (Juergbi)
+  * '''[WONT]''' Implement statistics for direct backend (Juergbi)
+  * '''[DONE]''' Fix test cases for steroids (deprecated warnings at this point) (Adrien)
+  * '''[WONT]''' Move test cases to the right place in the tests/ directory?
+  * '''[LATER]''' Search Bar needs converting for GNOME 3 equivalent and away from libtracker-client (Martyn)
+  * '''[DONE]''' A process that uses direct-access should wait for tracker-store to be fully launched before doing any queries. For example by falling back to D-Bus. This must be done because for example ontology-changes might need to be applied before the application should be allowed to make a query (and only tracker-store can apply ontology changes)
+  * '''[DONE]''' Documentation needs writing
+ * '''[DONE]''' IPC improvements (will be done in parallel with direct-access library) (Adrien)
+ * '''[DONE]''' API to request files are extracted without needing monitors/crawling, see https://bugzilla.gnome.org/show_bug.cgi?id=613252
+ * '''[DONE]''' Update automake requirement and fix Vala cases in Makefile.ams (Martyn/Aleksander/Juergbi)
+ * '''[DONE]''' Support libicu and/or libunistring and/or glib (Aleksander)
+  * '''[DONE]''' Related bugs: see https://bugzilla.gnome.org/show_bug.cgi?id=616836
+ * '''[DONE]''' Avoid word counting in extractors, see https://bugzilla.gnome.org/show_bug.cgi?id=616845
+ * '''[DONE]''' Make it possible to disable crawler, see https://bugzilla.gnome.org/show_bug.cgi?id=613256, current work: http://git.gnome.org/browse/tracker/log/?h=crawling-interval (Carlos)
+ * '''[DONE]''' Journal
+  * '''[DONE]''' Compression (waiting on GIO upstream patch, but is available in master)
+  * '''[DONE]''' Rotation
+ * '''[DONE]''' Use short namespace prefixes for tracker-info (Martyn)
+ * '''[DONE]''' Add ontology reflection for all functions (tracker:id, tracker:coalesce) to facilitate automatic client library documentation
+ * '''[DONE]''' Fix libtracker-monitor code, don't handle IN_MODIFY changes and signal them up the stack, only CLOSE/CLOSEWRITE changes (Martyn/Aleksander)
+ * '''[DONE]''' Database Version (don't use db-version.txt, do it properly) (Juergbi)
+ * '''[DONE]''' Remove tracker-search-tool and replace it with tracker-needle (Martyn)
+ * '''[DONE]''' Remove tracker-status-icon, see https://bugzilla.gnome.org/show_bug.cgi?id=631955 (Martyn)
+ * '''[DONE]''' Remove libtracker-client deprecation warnings and document that it is deprecated (Martyn)
+ * Do we need nautilus plugin still?
+ * '''[DONE]''' Update totem plugin to use new libtracker-sparql API , see https://bugzilla.gnome.org/show_bug.cgi?id=639928 (Martyn)
+ * '''[DONE]''' Update GTK+ gtksearchengine backend for Tracker (doesn't use libtracker-sparql right now) (Martyn)
+ * '''[LATER]''' Write GNOME thumbnailer backend (http://git.gnome.org/browse/gnome-desktop/tree/libgnome-desktop/gnome-desktop-thumbnail.h), see bug https://bugzilla.gnome.org/show_bug.cgi?id=639549 (Martyn)
+ * '''[DONE]''' New config option to disable mtime checking during initial crawling on startup, so that only monitors are set up.
+
+= Tracker 0.8 Roadmap =
+
+ * '''[DONE]''' Expose FTS functions in Sparql (fts:snippet, fts:rank) - needed by tracker-search-tool (Jürg)
+ * '''[DONE]''' Write back images and video tags into the files, when modified into tracker.
+ * '''[DONE]''' Unique URIs: handling of collisions or provide a generator of URIs that warranty the uniqueness.
+ * '''[DONE]''' Make sure tracker-miner-fs adds/removes directories in real time according to .cfg file changes (Martyn/Carlos).
+ * '''[DONE]''' Make tracker-processes separate from tracker-utils so it can be used in shell scripts not in a non-core debian package (Martyn).
+ * '''[DONE]''' Optionally index all hard disks mounted in /media. (Martyn)
+ * '''[DONE]''' Add estimated time to tracker-status again/tracker-miner-fs (Martyn)
+ * '''[DONE]''' Evolution plugin exit() in libtracker-miner fix (dbus re-register name issue) (Martyn)
+ * '''[DONE]''' Add tracker:coalesce (Juergbi, "wizard")
+ * '''[DONE]''' Add a binary log (journal support) (Juergbi, Philip, Martyn) (binary-log-2 branch)
+ * '''[DONE]''' Turn TrackerClient into a GObject without too much API breakage (Philip) (clientapi branch)
+ * '''[DONE]''' Improvements for the Evolution plugin, throttling (Philip) (clientapi branch)
+ * '''[DONE]''' Cope with small ontology changes, ontology versioning (Philip)
+ * '''[DONE]''' Warn in utils like tracker-search if stopwords are used to search AND if search word is < 3 for FTS (Martyn)
+ * '''[DONE]''' Add hidden dir check from fremantle in miner (Martyn)
+ * '''[DONE]''' Create libtracker-extract for headers so 3rd parties can build against a framework for extractors (Martyn)
+ * '''[DONE]''' Make libtracker-miner use the API version in the filename/path. Currently has no versioning like other libs (Martyn)
+ * '''[DONE]''' Time-based extractors, so a file that makes tracker-extract take longer than the DBus timeout doesn't also cause later petitions to timeout (Carlos)
+ * '''[DONE]''' Insert files in the correct order so nfo:belongsToContainer is set correctly (carlos)
+ * '''[DONE]''' Fix libenca TrackerParser corruption error, see bug https://bugzilla.gnome.org/show_bug.cgi?id=609850
+ * '''[DONE]''' Fix duplicate _:file blank nodes created by tracker-miner-fs
+ * '''[DONE]''' Add test case + example and make sure libtracker-extract works properly (Martyn)
+ * '''[DONE]''' Fix anonymous node issues with gtk-file-chooser (Philip)
+ * '''[DONE]''' Fix anonymous node issues with nautilus (Philip)
+ * '''[DONE]''' Add option to tracker-miner-fs to push the outcome of a file to tracker-store regardless of config settings, e.g. tracker-miner-fs --add-file foo.png (Carlos)
+ * '''[DONE]''' Add option to tracker-miner-fs to know if a file is eligible for indexing (and not in ignore rules) or not, e.g. tracker-miner-fs --eligible foo.png (Martyn)
+ * '''[DONE]''' Add status about tracker-store to tracker-status, signal + method (include work queue + journal replay status)
+ * '''[DONE]''' Add finer grained control for killing, etc in tracker-control (i.e. just miners). Now [miners|store|all] may be passed to -k and -t, no option equals "all"
+ * '''[DONE]''' Finish journal improvements (to replay journal with any ontology changes) (Philip/Jürg)
+ * '''[DONE]''' Add tracker-store readonly mode for disk space issues (Jürg)
+ * '''[DONE]''' Document tracker-sparql-builder API (Carlos)
+ * '''[DONE]''' Add support for new GIO Move events & libinotify (Carlos)
+   * '''[DONE]''' Fix upstream (Carlos) - Waiting for patch review.
+   * '''[DONE]''' Merge tracker branch gio-dir-monitors, http://git.gnome.org/browse/tracker/log/?h=gio-dir-monitors (Martyn)
+ * '''[DONE]''' Review and merge tracker-miner-rss (Philip/Martyn)
+ * '''[DONE]''' Review and merge tracker-miner-web (Adrien/Philip/Carlos/Martyn)
+ * '''[DONE]''' Fix libtracker-miner includes so we only include one file (Carlos)
+ * '''[DONE]''' Revise UIs before release (Carlos)
+ * '''[DONE]''' Sort out the status of the deskbar applet (Carlos/Martyn)
+ * '''[DONE]''' Fix exported symbols for libtracker-client (Martyn)
+ * '''[DONE]''' Fix header licenses in libraries (Martyn)
+
+= Tracker 0.7 Roadmap =
+
+ * '''[DONE]''' Remove set/get options dbus api
+ * '''[DONE]''' Clean up other daemon API
+ * '''[DONE]''' Fix tracker-sparql-query.vala with get_namespace leak. line ~314
+ * '''[WONT]''' Add some easy sparql generation binary? - tracker-search has some options to help here
+ * '''[DONE]''' Fix volume support (Carlos)
+ * '''[DONE]''' Fix backup support (Philip)
+ * '''[DONE]''' Fix restore support (Philip)
+ * '''[DONE]''' Make a decision between urho-sync and quad
+   * '''[DONE]''' quad + parser is feature complete (except that post-restore the db must still be emptied)
+   * '''[DONE]''' urho-sync + parser
+     * '''[DONE]''' Needs restore fixed to use a meta-backup.db+journal instead of a turtle file
+     * '''[DONE]''' OR Needs backup fixed to convert a meta-backup.db+journal to a turtle file
+ * Port patches from 0.6
+   * Improve error handling/logging in sqlite created functions.tracker-0.6 (Carlos Garnacho)
+   * '''[DONE]''' Unref GstCaps with the right function (Philip)
+   * '''[OBSOLETE]''' Fix corner cases in the RDF parser wrt '%', '[' and '*' chars. Fully fixes NB... (Carlos Garnacho)
+   * Fix NULL crasher in trackerd with strcasecmp (Martyn Russell)
+   * Bug NB#123030 - Attached clip cannot be opened through music>artists, childco... (Carlos Garnacho)
+   * '''[DONE]''' Fixed a compilation error when building without libenca (Martyn Russell, Philip Van Hoof)
+   * '''[DONE]''' Simplify the libenca code here a little (Martyn Russell, Philip Van Hoof)
+   * '''[DONE]''' Bugfix for NB#119318, remaining v2 fields are now processed too (Philip Van Hoof)
+   * '''[DONE]''' NB#119318, only do id3v1 tags if we needed enca to detect encoding	(Philip Van Hoof)
+   * '''[DONE]''' Last commit of this file broke the build if you have enca installed (Philip Van Hoof)
+   * '''[DONE]''' Code clean ups and improvements for stats speed up changes (Martyn Russell)
+   * '''[WONT]''' Small name changes to variables (Martyn Russell)
+   * '''[DONE]''' Use libenca to check for Cyrillic encodings for ID3v1 tags	(Philip Van Hoof)
+   * '''[OBSOLETE]''' Speed up stats calculation	(Ivan Frade)
+   * '''[DONE]''' Performance improvement when registrar disappears (Philip Van Hoof)
+   * '''[OBSOLETE]''' Removed unnecessary DISTINCT in GetByServiceType (Ivan Frade)
+   * '''[DONE]''' Apparently will camel_db_clone create a thread, avoiding (Philip Van Hoof)
+   * '''[DONE]''' Evolution plugin, using mail_msg_unordered_push instead (Philip Van Hoof)
+   * '''[DONE]''' Fixed various things about the plugin running in Evolution's process (Philip Van Hoof)
+   * '''[WONT]''' AMD64 setrlimit() was too low (Martyn Russell)
+   * '''[OBSOLETE]''' Bugfix thumbnailer, when no items must be thumbnailed, don't send a request (Philip Van Hoof)
+   * '''[WONT]''' Tweaked the memory limitations for AMD64 (Martyn Russell)
+   * '''[OBSOLETE]''' Change File:Added to contain index time(), since some apps don't modify mtime... (Carlos Garnacho)
+   * '''[WONT]''' Adapt tracker-extract to create all its resources before setting mem limits. (Carlos Garnacho)
+   * '''[WONT]''' Set memory limit based on current process memory usage. (Carlos Garnacho)
+   * '''[DONE]''' Fixed gtk-doc warnings (Martyn Russell)
+   * Lower tracker-extract's OOM score to the minimum. (Carlos Garnacho)
+   * '''[WONT]''' Fixes: NB#119230, tracker-extract: memory management shall be improved (Martyn Russell)
+ * '''[DONE]''' Fix common libtracker consumers:
+  * '''[DONE]''' Nautilus
+  * '''[DONE]''' GtkFilechooser
+  * '''[DONE]''' Need to make this backwards compatible by checking version of tracker in use and use the appropriate API
+ * '''[DONE]''' Fix UIs
+  * '''[DONE]''' tracker-applet (Carlos) - this is now called tracker-staus-icon, tracker-applet is obsolete.
+  * '''[DONE]''' tracker-search-tool (Jamie)
+  * '''[DONE]''' tracker-preferences (Philip)
+ * '''[DONE]''' Port tracker-explorer to master
+ * '''[DONE]''' Utilities
+  * '''[DONE]''' Update tracker-search to have some simple queries for people used to tracker-files and tracker-search from 0.6
+ * '''[DONE]''' Add docs for:
+  * '''[DONE]''' tracker-import
+  * '''[DONE]''' tracker-info
+  * '''[DONE]''' tracker-sparql
+  * '''[DONE]''' tracker-miner-fs
+  * '''[DONE]''' Update others
+  * '''[DONE]''' All .cfg files
+ * '''[DONE]''' Work on base class for miners to signal status and pause, more ideas needed for status information based on applet control
+  * '''[DONE]''' Implement libtracker-miner
+  * '''[DONE]''' Fix remaining FIXME code snippets and #ifdef FIX statements
+  * '''[DONE]''' Add .desktop file for tracker-status-icon
+  * '''[DONE]''' Add clear text extractor
+  * '''[DONE]''' Add throttling
+  * '''[DONE]''' Add back option to ignore directories based on files inside them
+  * '''[DONE]''' Version DBus API
+ * '''[DONE]''' Add tracker-search-bar applet?
+ * '''[DONE]''' Improve the configuration system between binaries
+  * '''[DONE]''' Have separate config files for each binary
+  * '''[DONE]''' Use a base class for common config operations?
+ * '''[DONE]''' Move from modules to miners?
+ * '''[WONT]''' Move database location from $HOME/.cache to something more sensible ($HOME/.local/share/tracker/db/?)
+ *  '''[DONE]''' Move thumbnailing to one place
+  *  '''[DONE]''' Signal from tracker-extract new files
+  *  '''[DONE]''' Do all operations from tracker-miner-fs.
+  *  '''[DONE]''' Re-add config option to check if we want to enable this.
+ * '''[DONE]'''Version D-Bus API
+ * '''[DONE]''' Fix Evolution Indexing - still needs a bit of love, but good enough for now.
+ * '''[DONE]''' Change tracker:modified from time(NULL) to a modification sequence (transaction number)
+
+----
+CategoryRoadMap
+

@@ -1,0 +1,26 @@
+@startuml
+
+title Tracker Simplified
+
+database "Metadata index" as Store
+
+interface "?" as insert
+insert --> Store
+
+interface "?" as query
+Store --> query
+
+component "Local Files Miner" as LocalMiner
+LocalMiner --> insert
+
+component "Remote Content Miners" as RemoteMiner
+RemoteMiner --> insert
+
+component "App1"
+component "App2"
+
+query --> App1
+query --> App2
+
+@enduml
+
