@@ -1,0 +1,246 @@
+---
+- name: "[Apache Ant](https://ant.apache.org/) + [Apache Ivy](https://ant.apache.org/ivy/)"
+  syntax: XML
+  schemas:
+    - Ant: can't find one..
+    - Ivy: https://ant.apache.org/ivy/schemas/ivy.xsd
+  data-model: "?"
+  documentation:
+    - https://ant.apache.org/manual/index.html
+    - https://ant.apache.org/ivy/history/latest-milestone/reference.html
+  users: Widespread use in Java community
+  machine-readable:
+    They actually implemented an imperative programming langauge in XML.
+    Reimplements a lot of things you might do with a shell, similar to CMake.
+    But it is mostly machine readable.
+  full-distro: no
+  notes:
+    Since Ant and Ivy can run arbitrary tasks and manage the dependencies
+    between multiple artifacts, you could build a whole distro that way.
+    You would probably want to autogenerate the XML from a more sane format.
+  artifact-caching:
+    "[Maven repo](https://maven.apache.org/guides/introduction/introduction-to-repositories.html)": manual version numbers
+- name: "[Baserock definitions](http://wiki.baserock.org/definitions/current/)"
+  syntax: YAML
+  schemas: http://git.baserock.org/cgi-bin/cgit.cgi/baserock/baserock/definitions.git/tree/schemas
+  data-model: http://git.baserock.org/cgi-bin/cgit.cgi/baserock/baserock/definitions.git/tree/schemas/baserock.owl
+  documentation: http://wiki.baserock.org/definitions/current/
+  users: Baserock reference systems, ...
+  examples:
+    cpython: "[strata/core/cpython.morph](http://git.baserock.org/cgi-bin/cgit.cgi/baserock/baserock/definitions.git/tree/strata/core/python3.morph)"
+  machine-readable: Trivially
+  full-distro:
+    - "[Baserock reference systems](http://git.baserock.org/cgi-bin/cgit.cgi/baserock/baserock/definitions.git/tree/)"
+  artifact-caching:
+    "[Baserock artifact cache](http://wiki.baserock.org/caching/)": hash of inputs
+  import-from: [CPAN, NPM, PyPI, RubyGems]
+  export-to: Shell (cross-bootstrap)
+  cross-compile: no
+- name: "[BitBake](https://www.yoctoproject.org/docs/1.6/bitbake-user-manual/bitbake-user-manual.html) recipes"
+  syntax: "[BitBake](https://www.yoctoproject.org/docs/1.6/bitbake-user-manual/bitbake-user-manual.html#bitbake-user-manual-metadata)"
+  users: OpenEmbedded, Yocto, many commercial & some public derivatives, ...
+  examples:
+    cpython: "[meta/recipes-devtools/python/python3_3.4.3.bb](https://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/meta/recipes-devtools/python/python3_3.5.0.bb)"
+  machine-readable: |
+    Lots of work! Need to stub out the base classes.
+    I tried: <http://lists.openembedded.org/pipermail/bitbake-devel/2015-August/006297.html>
+  full-distro:
+    - "[OpenEmbedded-Core](http://www.openembedded.org/wiki/OpenEmbedded-Core)"
+    - "Yocto [Poky](https://www.yoctoproject.org/tools-resources/projects/poky)"
+  artifact-caching:
+    "[Setscene](https://www.yoctoproject.org/docs/1.6/bitbake-user-manual/bitbake-user-manual.html#setscene)": Hash of build inputs
+  cross-compile: yes
+- name: "[BOSH](https://bosh.io/)"
+  syntax: YAML
+  schemas: "?"
+  data-model: "?"
+  documentation: https://bosh.io/docs/deployment-manifest.html
+  users: CloudFoundry, ...
+  full-distro: no
+  notes:
+    BOSH is a very strange tool that could fit in any of the categories of
+    build tool, config management tool or monitoring tool. It works by taking
+    a base OS image ('stem cell') then compiling packages on top ('releases')
+    from source, and then sets up configuration for them and manages instances
+    within a cloud provider as well.
+  artifact-caching: "?"
+- name: "[Bazel](https://bosh.io/)"
+  syntax: Bazel (Python-like)
+  schemas: "?"
+  data-model: "?"
+  documentation:
+    - http://bazel.io/docs/build-ref.html
+  users: Google, ...
+  full-distro: no
+  notes:
+    Bazel is a build tool for applications, but it has handling for [external
+    modules](http://bazel.io/docs/external.html) that can manage external
+    dependencies.
+  artifact-caching: "?"
+- name: "[Buildroot](http://buildroot.uclibc.org/)"
+  syntax: Make
+  users: Buildroot, OpenWRT, widespread commercial use, ...
+  documentation: http://buildroot.uclibc.org/downloads/manual/manual.html#adding-packages
+  examples:
+    cpython: "[package/python3/python3.mk](http://git.buildroot.net/buildroot/tree/package/python3/python3.mk), [package/python3/Config.in](http://git.buildroot.net/buildroot/tree/package/python3/Config.in)"
+  full-distro: yes
+  artifact-caching: no
+  cross-compile: yes
+- name: "[CMake](http://cmake.org/) [ExternalProject](https://cmake.org/cmake/help/v3.3/module/ExternalProject.html) / [CPM](https://github.com/iauns/cpm) / [Hunter](https://github.com/ruslo/hunter) / [biicode](http://biicode.com/)"
+  syntax: CMake
+  users: ...
+  schemas: "?"
+  data-model: not specified
+  machine-readable: not particularly
+  full-distro: no
+  notes:
+    CMake is a build tool for applications, but it has several extensions to
+    deal with building external source code.
+  artifact-caching: no
+  cross-compile: yes
+- name: "[Debian](http://debian.org/)"
+  syntax: key-value (debian/control, debian/copyright, debian/changelog), Make (debian/rules)
+  schemas:
+    control: https://www.debian.org/doc/debian-policy/ch-controlfields.html
+    rules: https://www.debian.org/doc/debian-policy/ch-source.html#s-debianrules
+  data-model: https://www.debian.org/doc/debian-policy/ch-controlfields.html
+  documentation: https://www.debian.org/doc/manuals/developers-reference/ch06.en.html
+  users: Debian, Linux Mint, Ubuntu, many other public and proprietiary Debian derivates
+  examples:
+    cpython: "[debian/rules](https://alioth.debian.org/scm/loggerhead/pkg-python/python3-defaults-debian/view/head:/debian/rules), [debian/control](https://alioth.debian.org/scm/loggerhead/pkg-python/python3-defaults-debian/view/head:/debian/control) ([pkg-python project main page](https://alioth.debian.org/projects/pkg-python)"
+  machine-readable: maybe
+  full-distro: yes
+  artifact-caching:
+    "[deb packages](https://www.debian.org/doc/manuals/debian-faq/ch-pkg_basics)": manual version numbers
+  cross-compile: partial
+- name: "[GNOME Continuous](https://wiki.gnome.org/Projects/GnomeContinuous)"
+  syntax: JSON
+  users: GNOME Continous CI system
+  full-distro: no
+  example:
+    GNOME: https://github.com/GNOME/gnome-continuous/blob/master/manifest.json
+  machine-readable: yes
+  artifact-caching:
+    "[ostree](https://wiki.gnome.org/Projects/OSTree) repo": hash of contents
+  cross-compile: no
+- name: "[GNOME jhbuild](https://wiki.gnome.org/Projects/Jhbuild)"
+  syntax: XML
+  users: GNOME project, ...
+  full-distro: no
+  schemas:
+    - https://git.gnome.org/browse/jhbuild/tree/modulesets/moduleset.dtd
+    - https://git.gnome.org/browse/jhbuild/tree/modulesets/moduleset.rnc
+  data-model: https://developer.gnome.org/jhbuild/unstable/moduleset-syntax.html.en
+  machine-readable: yes
+  artifact-caching: no
+  cross-compile: no
+- name: "[GNU Guix](https://www.gnu.org/software/guix)"
+  syntax: "[GUILE](https://www.gnu.org/software/guile/) (Scheme)"
+  schemas:
+    - https://www.gnu.org/software/guix/manual/html_node/package-Reference.html
+    - https://www.gnu.org/software/guix/manual/html_node/Build-Systems.html
+  documentation:
+    - https://www.gnu.org/software/guix/manual/html_node/Invoking-guix-import.html
+  users: GNU GUIX Software Distribution
+  full-distro: yes
+  examples:
+    cpython: "[gnu/packages/python.scm](http://git.savannah.gnu.org/cgit/guix.git/tree/gnu/packages/python.scm#n204) (this describes many Python add-on libraries in addition to the 'cpython' Python interpreter)"
+  machine-readable: yes
+  import-from: [CPAN (Perl), CRAN (R), ELPA (Emacs), GNU, Haskell, Nix, PyPI, RubyGems]
+  other-features: "[config-management](https://www.gnu.org/software/guix/manual/html_node/System-Configuration.html)"
+  cross-compile: no
+  artifact-caching:
+    "[hydra](https://nixos.org/hydra/)": hash of build inputs
+- name: "[Gradle](https://www.gradle.org/)"
+  syntax: "[Gradle](https://docs.gradle.org/current/dsl/)"
+  users: Widespread use in Java community, C/C++ support limited
+  documentation:
+    - http://gradle.org/maven_vs_gradle/
+    - https://carlosvin.github.io/en/posts/gradle-cpp/
+  full-distro: no
+  artifact-caching:
+    "[Maven repo](https://maven.apache.org/guides/introduction/introduction-to-repositories.html)": manual version numbers
+- name: "[Maven](http://maven.apache.org/)"
+  syntax: XML
+  users: Widespread use in Java community, C/C++ support limited
+  full-distro: no
+  artifact-caching:
+    "[Maven repo](https://maven.apache.org/guides/introduction/introduction-to-repositories.html)": manual version numbers
+- name: "[Meson](http://maven.apache.org/)"
+  syntax: "[Meson](https://github.com/mesonbuild/meson/wiki/Syntax)"
+  users: Projecs using Meson build system
+  full-distro: no
+  artifact-caching: no
+- name: "[Nix expressions](https://nixos.org/nix/manual/#chap-writing-nix-expressions)"
+  syntax: "[Nix Expression Language](https://nixos.org/nix/manual/#ch-expression-language)"
+  users: NixOS, at least some commercial derivatives
+  examples:
+    cpython: "[pkgs/development/interpreters/python/3.4/default.nix](https://github.com/NixOS/nixpkgs/tree/master/pkgs/development/interpreters/python/3.4/default.nix)"
+  full-distro: yes
+  artifact-caching:
+    "Nix [Binary Cache](https://nixos.org/wiki/Binary_Cache)": hash of build inputs
+- name: "Portage [ebuild](https://wiki.gentoo.org/wiki/Ebuild)"
+  syntax: Shell-like
+  data-model: https://wiki.gentoo.org/wiki/Project:Package_Manager_Specification
+  users: Gentoo, Chrome OS, CoreOS, other Gentoo derivatives
+  examples:
+    cpython:
+      - "[Gentoo dev-lang/python/python-3.4.3.ebuild](https://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-lang/python/python-3.4.3.ebuild?view=markup)"
+  full-distro: yes
+- name: "[Ports-style](https://en.wikipedia.org/wiki/Ports_collection)"
+  syntax: Shell
+  data-model:
+    PKGBUILD: https://www.archlinux.org/pacman/PKGBUILD.5.html
+  documentation:
+    - https://wiki.archlinux.org/index.php/Arch_Packaging_Standards
+  users:
+    - Arch Linux & derivatives, FreeBSD ports, OpenBSD ports, NetBSD ports, CRUX, Void Linux, ...
+  examples:
+    cpython:
+      - "[Arch PKGBUILD](https://projects.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python)"
+      - "[Arch packages/extra/x86_64/python info](https://www.archlinux.org/packages/extra/x86_64/python/)"
+  machine-readable:
+    Partly. You can load the shell script and, if it follows PKGBUILD
+    guidelines, extract everything. You would need to parse the script
+    to get build, configure and packaging commands.
+  full-distro: yes
+  artifact-caching: no
+- name: "[RPM](http://rpm.org/) .spec files"
+  syntax: "[RPM spec syntax](https://docs.fedoraproject.org/en-US/Fedora_Draft_Documentation/0.1/html/RPM_Guide/ch-specfile-syntax.html)"
+  users: CentOS, Fedora, Red Hat, Meego, SuSE, commercial derivates
+  examples:
+    cpython:
+      - "[Fedora python.spec](http://pkgs.fedoraproject.org/cgit/python.git/tree/python.spec)"
+      - "[SuSE python/python-base.spec](https://build.opensuse.org/package/view_file/openSUSE:Factory/python/python-base.spec?expand=1) ([openSUSE:Factory/python package info](https://build.opensuse.org/package/show/openSUSE:Factory/python)"
+  full-distro: yes
+  artifact-caching:
+    "[rpm packages](http://rpm.org/)": manual version numbers
+    "[rpm-ostree](https://github.com/projectatomic/rpm-ostree)": hash of contents
+  cross-compile: yes
+- name: "[upkg](http://www.paldo.org/wiki/Development#English)"
+  syntax: XML
+  users: "[Paldo operating system](http://www.paldo.org/wiki/Development#English)"
+  examples:
+    cpython: "[Python.xml](http://paldo.org/paldo/unstable/specs/Python.xml)"
+  full-distro:
+    - "[Paldo operating system](http://www.paldo.org/wiki/Development#English)"
+  artifact-caching:
+    upkg packages: manual version numbers
+- name: "[xdg-app](https://github.com/alexlarsson/xdg-app) builder"
+  syntax: JSON
+  users: Sandboxed GNOME applications
+  documentation:
+    Introduction: https://blogs.gnome.org/alexl/2015/12/17/xdg-app-christmas-update/
+  full-distro: no
+  artifact-caching:
+    "[ostree](https://wiki.gnome.org/Projects/OSTree) repo": hash of contents
+- name: "[ypkg](https://github.com/solus-project/ypkg) and [eopkg](https://github.com/solus-project/package-management)"
+  syntax: XML or YAML
+  data-model: "[https://solus-project.github.io/ypkg-docs/packageyml_format/README.html](package.yml)"
+  users: SolusOS, ...
+  examples:
+    cpython: "[programming/python/python3/pspec.xml](https://github.com/solus-project/repository/blob/master/programming/python/python3/pspec.xml)"
+  full-distro:
+     - yes
+  artifact-caching:
+    "[eopkg packages](https://wiki.solus-project.com/Packaging)": manual version numbers

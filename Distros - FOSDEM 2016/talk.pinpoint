@@ -1,0 +1,299 @@
+# https://fosdem.org/2016/schedule/event/format_for_build_and_integration_instructions/
+
+# bg-1.jpg: http://www.manchestereveningnews.co.uk/news/local-news/image-reddish-vale-country-park-6495444
+
+------------ [bg-1.jpg]
+
+CONTENTS:
+
+---- Intro [bg-1.jpg]
+
+* When I looked at the distros devroom talks this year, I felt a bit
+  of a difference compared to two years ago -- starting to feel like
+  we're beyond the "all software must be built and shipped using the
+  same packaging tools" model.
+
+* Actually, I'm really encouraged by everything I see: I don't think I
+  even need to talk about the problems in the current model, or point
+  out how hugely successful it is in some ways.
+
+* Best yet, with the work that's happening on xdg-app, and OSTree, I can
+  be fairly sure that we'll get stuff happening in the desktop I use
+  right now.
+
+* But I need to go back more than 4 years to introduce the Baserock
+  project, when there didn't seem to be the same energy around this.
+  Only really NixOS was around at that time, and it was rather complex
+  and not actually usable as a distro when I tried it. (That said,
+  N-I-H definitely played a part in me not joining in with it, too).
+
+* The focus of this talk is partly going to be on lessons learned from
+  Baserock, but also on the data modelling aspect of build and integration
+  tools in the free software world. One thing I learned is that data
+  modelling kind of sits at the back of discussions of build tools without
+  actually being ever recognised as a topic. So I want to focus on it,
+  not because drawing diagrams is going to bring around some specific hugely
+  cool new feature, but because it helps me focus my thinking a lot and I hope
+  that it will help others in the room understand a bit more about the work
+  we're all doing.
+
+---
+
+- Brief history of Baserock (5 mins)
+
+* Started within Codethink, consultancy focussing on embedded (+ other
+  stuff), with a few factors:
+
+  - dissatisfaction with tooling for embedded systems -- it's really
+    backwards
+  - create something associated with the company (like a brand)
+  - to make money
+  - to fix every problem in software development
+
+* Similar projects going around the same time, of course possibly we
+  could have joined one instead of starting a new one...
+
+  - NixOS gets honourable mention (many years of work -- but complex, &
+    it's hard to *reduce* complexity of an existing project.)
+
+* Empowering people to make their own distro...
+
+  - without the limits of Buildroot, or the complexity of Yocto/OpenEmbedded
+
+* There were a few key radical ideas (I may be mis-quoting):
+
+  - everything in Git
+     -> This works great!
+
+  - build instructions described in a declarative, structured JSON
+    format (.morph files)
+     -> JSON is awful, use YAML
+     -> *seriously*. Comments, multiline strings, better escaping...
+        less typing. Both are vulnerable to mistakes, but you really
+        *need* comments and multiline strings for this stuff.
+
+  - native compile only
+    -> ARM servers...
+    # http://forums.theregister.co.uk/forum/1/2012/09/13/codethink_basertock_slab_arm_system/
+
+  - build instructions stored in upstream repos
+
+    -> This is a great idea... everyone could benefit!
+    -> Autodetection where possible, to reuse standard autotools/Python/
+       CMake/whatever build systems
+    -> except...
+        - it takes a huge amount of momentum to actually convince all
+          projects to include such a file
+        - passing configure flags, or pretty much anything nonstandard
+          would mean you can't just use the autodetected build
+          instructions
+        - we would fork projects in our Git mirror to
+          add the build instructions/config... which meant
+            - lots of branches named baserock/morph (about the most
+              meaningless name possible...)
+            - a rebase needed every time you want to pull in changes
+              from upstream..
+            - except, rebase results in old SHA1s becoming meaningless,
+              so merge is needed instead, so the patch gets lost in
+              history too
+            - baserock development split across lots of different
+              forks of upstream repos
+        - and for all that pain... it's also hard for the build tool,
+          and meant that just working out *what* to build took minutes in
+          the normal case, because it needs to query *each* repo in the
+          build to look for a .morph file, and to try to autodetect the build
+          system.
+    -> Still a great idea, but the way we went around it was totally
+       wrong
+
+  - proscribed workflow for developers:
+
+    -> Not going to talk about this, but it was a bad idea. In my
+       experience 'workflow' is often a sign of something that is
+       too complicated, and it should be broken down to pieces people
+       understand so they can create whatever workflows they want.
+
+  - atomic upgrade & rollback using Btrfs
+
+    -> Btrfs still isn't something you can enforce on people
+    -> Rollback and upgrade actually works great, but OStree approach
+       is probably better due to working with existing filesystems
+
+#############################################################################################################
+---
+
+Lessons learned from Baserock definitions... and the current state of the format
+
+- Definitions format (2 mins)
+
+---
+
+* Data model
+
+Chunk -> package
+Stratum -> group
+
+    * terminology: "stratum" was a bad choice
+      geological terms...
+System
+
+---
+
+* Syntax
+
+JSON
+
+-> YAML
+
+Writing JSON is horrible.
+
+---
+
+* Variants
+
+Amazingly we still don't support this..
+
+USE flags: neat idea, one problem. Any Gentoo users ever found a combination of
+USE flags that don't produce a working system? Did you have time to contribute a
+fix right then, or were you in the middle of something else?
+
+Baserock: hacks using 'if' in build commands
+
+gnome on x + wayland example. Need to define *two versions of everything*,
+copied & pasted! Which is impractical.. but the truth is *those versions do exist*.
+
+I.e. every time you introduce a 'variant' into the build graph, you've
+effectively doubled each package beyond that one. So you really need to run
+*both* under CI.
+
+I kind of have a vision of a 'grid' where *each variation* of a system is shown.
+Then you could track which ones are tested and which are not.
+
+It may not make sense to do this at the level of the build tool. which is good,
+e.g for Gentoo the boat has completely sailed -- there are many many combinations
+of USEFLAGS, too many to test them all in CI. And any distro that supports runtime
+installation, removal and upgrade of packages
+
+But thinking about the *data model*, all those combinations exist, and we need
+*some kind* of a way to manage them. This is often considered part of
+"configuration management": you wrap a distro's tools with an Ansible script,
+and say "OK THIS is the config that is tested". So there's an extra layer on
+top of the distro.
+
+But is that really needed? And should distros worry that in order to be useful,
+this extra layer is needed?
+
+as we move towards the 'app store' model (which I really hope we do!) there
+will be an opportunity for a specific 'Desktop OS' platform that could have
+a few well-supported configurations, not the infinitely many currently
+available. (Without *removing* that flexibility for those who actually want it).
+
+
+Red Hat/Colin's rpm-ostree project is moving towards this, I won't spoil all
+Colin's talk, but the gist of rpm-ostree is that you specify a set of packages,
+like you would with a configuration-management tool, and effectively each
+combination is 'reified' by assigning a unique SHA256 hash. This is even more
+reliable than using a config-management tool because there is way less
+complexity.
+
+ - rpm-ostree example
+
+Nix and GUIX also solves this problem, in yet another different way. The hash
+there is calculated from source inputs. Once again CI is possible
+
+
+.... need to summarise this. One of the goals of Baserock was to deal with
+explosive complexity of distros & the fact that you can basically never "Test
+Debian" because it has infinite forms. (https://ci.debian.net/)... 
+We tried to solve it at the build tool level. That may not have been the right
+place, but I still would be interested to research whether it is. We have
+got surprisingly far with no support for variance in the syntax at all: since
+everything is in Git we expect people to fork and do their own thing. That's
+hard because stuff conflicts (and merging YAML makes that harder still).
+
+So it's not clear yet at which level you should track different variants.
+Probably there's no right answer: some folk want a single desktop OS that
+works and is stable, which can run apps inside containers/sandboxes. But dev
+tools make this more complex. Others want to use a specific config management
+tool. I actually would bet on the RPM-ostree approach because that is the most
+practical "incremental" change.
+
+#############################################################################################################
+---
+
+- Comparison with other formats (10 mins)
+
+  - Buildroot (+ OpenWRT)
+  - Debian packages (Debian, Ubuntu)
+  - GNU Guix (GuixSD):
+    - https://lwn.net/Articles/663954/
+  - Nix expressions (:
+  - Paldo
+  - RPM .spec files (Fedora, Meego, SuSE)
+  - Solus project
+
+---
+
+- Honourable mentions (build tools that can't be used to build a full
+  distro today):
+
+  - Ant
+  - Bazel
+  - biicode
+  - BOSH
+  - CMake ExternalProject / CPM / Hunter
+  - GNOME Continuous
+  - Go
+  - Gradle
+  - jhbuild (this could go in either category...)
+  - Ivy
+  - Maven
+  - Meson
+  - xdg-app-builder: https://github.com/alexlarsson/xdg-app/tree/master/builder
+
+---
+
+- Future plans for Baserock definitions (10 mins)
+
+    - structed data: avoid the "useflags hell"
+
+----
+
+  Criteria:
+    - how many packages
+    - is it structured to be machine-parsable
+    - is it concise?
+
+-----------------
+
+software-integration-ontology & tooling
+
+Syntax:
+    - shell, make are bad
+    - CMake, Meson: probably just as bad?
+    - GUIX, JSON, XML, YAML: not necessarily any better. Anything can be
+        made impossible to parse. Some people have written programming
+        languages in XML --- awful!
+        
+The main list!
+
+Criteria to be on it:
+    - support dependency management
+    - support building
+    - could theoretically build a whole distro
+    - good support for building C code
+    - free software operating systems (no Windows or Mac OS specific tools)
+
+-> What about Python setuptools and Ruby Gems? Both have support for building C code...
+
+
+Some of these are here just as learning examples, some are here as examples of exactly how NOT to work :-)
+
+Data model: can be 'formal' in some way, but just having a spec that is written down can be good too.
+
+
+----
+
+"There is a lesson here for ambitious system architects: the most dangerous enemy of a better solution is an existing codebase that is just good enough." - ESR
+<http://catb.org/~esr/writings/taoup/html/plan9.html>
+
