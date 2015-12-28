@@ -2,16 +2,11 @@
 
 # Goals
 # - everyone understands Tracker
-# - everyone who understands Tracker from a few
-#   years ago knows what is new
-# - I can have lots of info for all the music on
-#   my computer 
-# - and all of the junk there in general
-# - plan of action that is achievable
+# - we can have a conversation about it
 
 Tracker: introduction and reflection
 
-# 35 mins, 5 min qs, 5 mins walking.
+# 35 mins, 10 min qs
 
 1. < 15 mins
 
@@ -22,9 +17,7 @@ Tracker: introduction and reflection
 # Hi, I'm Sam.
 #
 # I'm not a core Tracker developer,
-# but I have been involved with it on the
-# sidelines for several years, and have fixed some
-# bugs and testcases.
+# but I have been involved with it over several years.
 
 # The goal of this talk is basically to focus on
 # what Tracker is and what its place in GNOME
@@ -37,7 +30,7 @@ Tracker: introduction and reflection
 # many people have no idea why it exists or what
 # use they might have for it?)
 
-# OK. Well Tracker describes itself in a few ways.
+# Tracker describes itself in a few ways.
 # On <https://wiki.gnome.org/Projects/Tracker>
 # it's called a "search engine, search tool and
 # metadata storage system."
@@ -130,14 +123,15 @@ How Tracker works
 
 -------
 
-'<tt>tracker</tt>' binary
+<span color="lightblue"><tt>tracker</tt></span> binary
 
 # This is new in 1.4.0, if you run an old distro
 # you'll have older `tracker-control`,
 # `tracker-sparql`, etc. The new tool is *much*
 # nicer than before.
 #
-# (DEMO!)
+# (the only DEMO!)
+#
 # Show status:
 #   tracker daemon
 #   tracker status
@@ -161,7 +155,13 @@ How Tracker works
 
 -------
 
-<tt>tracker-store</tt>
+<span color="lightblue"><tt>tracker-store</tt></span><span color="black">
+   ꜛ
+D-Bus <span color="black"><tt>org.freedesktop.Tracker1</tt></span>
+   ꜛ
+<tt>libtracker-sparql</tt>
+   ꜛ
+Grilo</span>
 
 # Database. Thin wrapper over SQLite. SQLite is
 # widely used, sustainable. Releases sometimes
@@ -182,6 +182,27 @@ How Tracker works
 # "enterprise-scale". Horrible to work with. KDE
 # abandoned it. Also Neo4j (Java), 4store (new,
 # promising).
+
+-------
+
+<span color="lightblue"><tt>tracker-store</tt></span>
+   ꜛ
+D-Bus <span color="lightyellow"><tt>org.freedesktop.Tracker1</tt></span>
+   ꜛ
+<span color="lightgreen"><tt>libtracker-sparql</tt></span>
+   ꜛ
+<span color="lightgreen">Grilo</span>
+
+# tracker-store is a central daemon, communicate
+# with it over D-Bus.
+#
+# SQLite sucks for concurrent processes writing,
+# hence central daemon approach.
+
+# Library wrapping D-Bus interface, plus an
+# in-process "read" interface.
+#
+# You can insert data and query data using SPARQL.
 
 -------
 
@@ -229,28 +250,9 @@ of Unified Knowledge"
 
 -------
 
-D-Bus
+<span color="lightblue"><tt>tracker-extract</tt></span> and <span color="lightblue"><tt>tracker-miner-fs</tt></span>
 
-<tt>org.freedesktop.Tracker1</tt>
-
-# tracker-store is a central daemon, communicate
-# with it over D-Bus.
-#
-# SQLite sucks for concurrent processes writing,
-# hence central daemon approach.
-
--------
-
-<tt>libtracker-sparql</tt>
-
-# Library wrapping D-Bus interface, plus an
-# in-process "read" interface.
-#
-# You can insert data and query data using SPARQL.
-
--------
-
-<tt>tracker-extract</tt> and <tt>tracker-miner-fs</tt>
+gnome-online-miners
 
 # You can write metadata direct to tracker-store,
 # but most programs don't. Most can't, e.g.
@@ -275,10 +277,6 @@ D-Bus
 # for Tracker to be at all useful.
 #
 # tracker-miner-fs: ~20K significant lines of C.
-
--------
-
-gnome-online-miners
 
 # A separate repo of miners to mirror data from
 # online accounts.
@@ -309,7 +307,13 @@ How can I use Tracker?
 ------- [app-tracker-search-tool.png] [fit]
 
 Tracker Search Tool
-(<tt>tracker-needle</tt>)
+<span color="lightblue"><tt>tracker-needle</tt></span>
+
+------- [app-nautilus.png] [fit]
+
+Nautilus
+
+# GtkFileChooser as well now, I hear...
 
 ------- [app-gnome-documents.png] [fit]
 
@@ -323,15 +327,9 @@ Gnome Music
 
 Gnome Photos
 
-------- [app-nautilus.png] [fit]
-
-Nautilus
-
-# GtkFileChooser as well now, I hear...
-
 ------- [app-grilo-test-ui.png] [fit]
 
-Grilo
+<span color="lightgreen">Grilo</span>
 
 # This is an API, not an application -- some
 # apps don't write SPARQL queries directly but
@@ -371,6 +369,16 @@ existing filesystem
 
 --- [bg-monkey.jpg]
 
+<i>pro</i>: Based on SQLite3
+
+--- [bg-monkey.jpg]
+
+<i>pro</i>: Years of
+integration and testing
+# e.g. tracker-prefs tool
+
+--- [bg-monkey.jpg]
+
 <i>pro</i>: Well-specified interfaces
 between each component
 
@@ -381,15 +389,7 @@ between each component
 # have long, detailed standards. Lots of work
 # already done.
 
---- [bg-monkey.jpg]
-
-<i>pro</i>: Based on SQLite3
-
---- [bg-monkey.jpg]
-
-<i>pro</i>: Years of
-integration and testing
-# e.g. tracker-prefs tool
+--- [tracker-overview_001.png]
 
 ----- [bg-monkey-evil.jpg]
 
@@ -416,12 +416,11 @@ integration and testing
 #
 ----- [bg-monkey-evil.jpg]
 
-<i>con</i>: Misuse of 'inotify' API
+<i>con</i>: <span color="lightblue"><tt>tracker-miner-fs</tt></span> abuses 'inotify' API
 
 ----- [bg-monkey-evil.jpg]
 
-<i>con</i>: Code is complex
-(especially <tt>tracker-miner-fs</tt>)
+<i>con</i>: Code of <span color="lightblue"><tt>tracker-miner-fs</tt></span> is complex
 
 # miner-fs is *really* asynchronous. Super hard to
 # reason about... this is why the 'Tracker eats
@@ -436,17 +435,57 @@ integration and testing
 
 ----- [bg-monkey-evil.jpg]
 
-<i>con</i>: NEPOMUK is not
-widely used in
-Linked Data world
+<i>con</i>: Miner can get clogged up
+by lots of small files
+(e.g. source code repos)
+
+# miner-fs is *really* asynchronous. Super hard to
+# reason about... this is why the 'Tracker eats
+# all my CPU bugs' survived for so long!
+
+# Asynchronous GLib code is *beyond* spaghetti
+# code, and outside into total abstract 4
+# dimensional space code..
+
+# I'd love to delete some of it. But it's all
+# intertwined!
+
+#----- [bg-monkey-evil.jpg]
+
+#<i>con</i>: All data in <span color="lightblue"><tt>tracker-store</tt></span>
+#stored in <tt>$XDG_CACHE_DIR</tt>
+#
+# Easy to delete by accident. Even a command to do
+# it! (`tracker reset`)).
+
+# Whether this matters depends on whether the
+# Tracker database is considered a 'cache' or a
+# 'store'. I'll talk about that later.
+
+#----- [bg-monkey-evil.jpg]
+
+#<i>con</i>: NEPOMUK is not
+#widely used in
+#Linked Data world
 
 # Since KDE abandoned NEPOMUK, it doesn't really
 # get used anywhere except Tracker!
 
 ----- [bg-monkey-evil.jpg]
 
-<i>con</i>: Changes to ontologies
-can destroy data
+<i>con</i>: Difficult to watch for
+changes in <span color="lightblue"><tt>tracker-store</tt></span> data
+
+(<span color="lightyellow"><tt>GraphUpdated</tt></span> D-Bus signal)
+
+# QSparql did solve this, and it'd be possible for
+# us to as well. But it's hard: the API Tracker
+# exposes is horrid.
+
+----- [bg-monkey-evil.jpg]
+
+<i>con</i>: Changing ontologies makes
+<span color="lightblue"><tt>tracker-store</tt></span>'s life difficult
 
 # Not a bug, but a limitation: there are some
 # changes that Tracker will refuse to do, and
@@ -476,29 +515,6 @@ can destroy data
 # investigating as it seems quite
 # lightweight and simple.
 #
-
------ [bg-monkey-evil.jpg]
-
-<i>con</i>: All information is
-stored in a file hidden
-in <tt>$XDG_CACHE_DIR</tt>
-
-# Easy to delete by accident. Even a command to do
-# it! (`tracker reset`)).
-
-# Whether this matters depends on whether the
-# Tracker database is considered a 'cache' or a
-# 'store'. I'll talk about that later.
-
------ [bg-monkey-evil.jpg]
-
-<i>con</i>: watching for changes
-using <tt>GraphUpdated</tt>
-signal is awkward
-
-# QSparql did solve this, and it'd be possible for
-# us to as well. But it's hard: the API Tracker
-# exposes is horrid.
 
 --
 
@@ -621,14 +637,6 @@ Define the scope!
 
 · <span strikethrough="true">A general RDF store</span>
 
----- [tracker-plan.png] [fit]
-
-Consolidate and Simplify
-
-------- [3-abstraction-layers.png] [fit]
-
-# tracker-enumerator, tracker-decorator, Grilo
-
 -----------------
 
 Small plans!
@@ -638,11 +646,16 @@ Small plans!
 # https://tecnocode.co.uk/2015/07/28/gtk-doc-knows-your-package-version/
 # https://tecnocode.co.uk/2015/06/27/gnome-common-deprecation-round-2/
 
+
+------- [3-abstraction-layers.png] [fit]
+
+# tracker-enumerator, tracker-decorator, Grilo
+
 -------
 
 Fix usage of recursive inotify
 
---- [bg-monkey.jpg]
+--- [bg-monkey.jpg] [fit]
 
 Align with:
 
@@ -669,26 +682,25 @@ Align with:
 #· Look at shrinking gnome-online-miners (use TrackerEnumerator?
 #  Use Grilo?)
 
---- [bg-monkey.jpg]
-
-· Turn functional-tests into installed-tests
-
-· No need for docs/version.xml any more
-
-· No need for gnome-common any more
-
---- [bg-monkey.jpg]
-
-· Create view widgets that live-update
-  based on a query from the database
+--- [bg-monkey.jpg] [fill]
 
 · Opt-in scanning of removable devices
 #- Felipe Borges GSOC project
-#
+
 · Bring plugins (Evo, Thunderbird) up to date
 
 · Improve the documentation at
   http://wiki.gnome.org/Projects/Tracker
+
+--- [bg-monkey.jpg] [fill]
+
+· Turn functional-tests into installed-tests
+
+· Collect/generate more realistic "test data" sets
+
+· No need for docs/version.xml any more
+
+· No need for gnome-common any more
 
 --- [bg-copenhagen-river.jpg] [fill]
 
