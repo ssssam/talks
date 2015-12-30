@@ -119,6 +119,8 @@ CONTENTS:
     -> Rollback and upgrade actually works great, but OStree approach
        is probably better due to working with existing filesystems
 
+-> the death of "packaging" ...
+
 #############################################################################################################
 ---
 
@@ -218,6 +220,17 @@ tools make this more complex. Others want to use a specific config management
 tool. I actually would bet on the RPM-ostree approach because that is the most
 practical "incremental" change.
 
+### Other topics:
+#
+# - process for changes
+# - separation of data model from syntax
+# - migrations
+# - standards:
+#     Debian & Gentoo do well here...
+# - 'unpetrify-ref' and continuous integration
+
+    - combinatorial explosion
+
 #############################################################################################################
 ---
 
@@ -263,8 +276,13 @@ practical "incremental" change.
     - how many packages
     - is it structured to be machine-parsable
     - is it concise?
+    - how does artifact caching work?
+    - what build tools support it?
+    - how well documented is it? how standardised?
 
 -----------------
+
+# wikipedia calls these "Meta build tools": https://en.wikipedia.org/wiki/List_of_build_automation_software
 
 software-integration-ontology & tooling
 
@@ -286,6 +304,7 @@ Criteria to be on it:
 
 -> What about Python setuptools and Ruby Gems? Both have support for building C code...
 
+-> What about Slackware, Aboriginal Linux, ... ?
 
 Some of these are here just as learning examples, some are here as examples of exactly how NOT to work :-)
 
