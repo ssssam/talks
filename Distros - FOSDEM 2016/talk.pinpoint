@@ -312,7 +312,71 @@ Data model: can be 'formal' in some way, but just having a spec that is written 
 
 
 ----
-
 "There is a lesson here for ambitious system architects: the most dangerous enemy of a better solution is an existing codebase that is just good enough." - ESR
 <http://catb.org/~esr/writings/taoup/html/plan9.html>
 
+----
+
+
+Desktop distros and their problems!
+
+-> sent to baserock-dev !
+
+Arch Linux:
+  - infinite number of possible configurations that cannot all be tested
+  - upgrades are not atomic
+  - cannot rollback after upgrade
+
+Baserock reference systems:
+  - lack of packages
+  - lack of easy runtime configurability
+  - lack of momentum
+  - lack of good documentation
+  - no serious handling of security updates
+  - rebuild of a single component may require rebuilding 1000s of packages
+
+Debian/Ubuntu:
+  - very complex, lots of moving parts, many of which overlap
+  - sources spread across many repos of different types
+    -> dgit mitigates this problem: it makes all Debian source packages
+       available through consistant Git interface
+  - infinite number of possible configurations that cannot all be tested
+    -> reproducible-builds project will help this to an extent
+  - upgrades are not atomic
+  - cannot rollback after upgrade
+  - packages lag behind upstream versions at times
+  - packages sometimes have a big delta compared to upstream
+
+Fedora:
+  - very complex, lots of moving parts, many of which overlap
+  - infinite number of possible configurations that cannot all be tested
+    -> rpm-ostree project will help with this: you can create a manifest
+       that is a specific set of tested packages, and provide the entire
+       tree as a single OSTree commit. Users can then layer changes on
+       top of the well-known base image, which could be reapplied on each
+       upgrade of the base OS.
+  - upgrades are not atomic
+    -> rpm-ostree project will help with this: a rootfs managed with `ostree`
+       can be upgraded atomically
+  - cannot rollback after upgrade
+    -> rpm-ostree project will help with this: a rootfs managed with `ostree`
+       can be rolled back to an old version
+
+Gentoo:
+  - no way to share prebuilt artifacts
+  - infinite number of possible configurations that cannot all be tested
+  - upgrades are not atomic
+  - cannot rollback after upgrade
+
+GNU Guix Software Distribution:
+  - lack of packages
+  - nonstandard filesystem layout makes packaging some software very difficult
+  - rebuild of a single component may require rebuilding 1000s of packages
+    -> experimental 'grafts' feature solves this: https://www.gnu.org/software/guix/manual/html_node/Security-Updates.html
+  - no serious handling of security updates
+
+NixOS:
+  - lack of packages
+  - nonstandard filesystem layout makes packaging some software very difficult
+  - rebuild of a single component may require rebuilding 1000s of packages
+  - I'm not sure how quickly NixOS handle security updates currently
