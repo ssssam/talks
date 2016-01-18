@@ -1,0 +1,42 @@
+# Build+integration tools
+
+Criteria:
+  - actually build the software (running the compilers directly, or just
+    running configure+make -- the former approach is cooler because you
+    can theoretically have incremental builds of everything)
+  - handle building multiple components in the correct order
+
+Baserock: Morph, YBD
+
+
+-----------------
+
+# wikipedia calls these "Meta build tools": https://en.wikipedia.org/wiki/List_of_build_automation_software
+
+software-integration-ontology & tooling
+
+Syntax:
+    - shell, make are bad
+    - CMake, Meson: probably just as bad?
+    - GUIX, JSON, XML, YAML: not necessarily any better. Anything can be
+        made impossible to parse. Some people have written programming
+        languages in XML --- awful!
+       ' 
+The main list!
+
+Criteria to be on it:
+    - support dependency management
+    - support building
+    - could theoretically build a whole distro
+    - good support for building C code
+    - free software operating systems (no Windows or Mac OS specific tools)
+
+-> What about Python setuptools and Ruby Gems? Both have support for building C code...
+
+-> What about Slackware, Aboriginal Linux, ... ?
+
+Some of these are here just as learning examples, some are here as examples of exactly how NOT to work :-)
+
+Data model: can be 'formal' in some way, but just having a spec that is written down can be good too.
+
+

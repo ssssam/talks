@@ -1,0 +1,7 @@
+# Importing from other formats
+
+baserock-import tool: reasonably successful although not really finished
+
+Nix has similar tool. does Guix ?
+
+what do Debian, Arch, Gentoo, Fedora do here, for packaging e.g. Python?

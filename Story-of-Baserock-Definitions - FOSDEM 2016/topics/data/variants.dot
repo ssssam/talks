@@ -1,0 +1,13 @@
+digraph {
+    "core" [fontname="Cantarell", fillcolor=lightyellow, style=filled]
+    "x.org" [fontname="Cantarell", fillcolor=lightyellow, style=filled]
+    "wayland" [fontname="Cantarell", fillcolor=lightyellow, style=filled]
+    "gnome-x" [fontname="Cantarell", fillcolor=lightyellow, style=filled]
+    "gnome-wayland" [fontname="Cantarell", fillcolor=orange, style=filled]
+
+    "core" -> "x.org"
+    "x.org" -> "gnome-x"
+    "core" -> "wayland"
+
+    "wayland" -> "gnome-wayland"
+}

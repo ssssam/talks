@@ -1,0 +1,44 @@
+graph {
+   // "Baserock" -- "Baserock definitions format"
+   // "Baserock" -- "Baserock reference systems"
+   // "Baserock" -- "Baserock build tool"
+    layout="fdp"
+    root="Baserock"
+    overlap="false"
+    splines="true"
+
+    node[fontname="Cantarell", style=filled, fillcolor=lightyellow];
+
+    "Baserock" [fontsize=24];
+
+    "Baserock" -- "CI of everything"
+
+    "Baserock" -- "Atomic upgrade & rollback"
+
+    "Baserock" -- "Everything in Git"
+
+    "Baserock" -- "Clean, reproducible\nbuilds"
+
+    "Baserock" -- "System-wide\nbranch & merge"
+
+    "Baserock" -- "Reliable"
+
+    "Baserock" -- "Simple"
+
+    "Everything in Git" -- "CI of everything"
+    "Everything in Git" -- "System-wide\nbranch & merge"
+    "Everything in Git" -- "Simple"
+
+    "Baserock" -- "JSON build+integration\ninstructions"
+
+    "CI of everything" -- "No packaging"
+    "Atomic upgrade & rollback" -- "No packaging"
+
+    "Baserock" -- "Build+integration\ninstructions upstream"
+
+    "Simple" -- "Native compile"
+    "Simple" -- "No packaging"
+    "Simple" -- "JSON build+integration\ninstructions"
+
+    "Clean, reproducible\nbuilds" -- "Reliable"
+}

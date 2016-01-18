@@ -1,0 +1,24 @@
+# Variants
+
+Lesson 7:
+Keep track of variants
+
+# Not done this yet -- if you don't try you don't fail!
+#
+--- [topics/images/variants.png]
+
+# Example: 100 GNOME packages built differently
+
+# Currently you'd need to duplicate!
+# This is crazy.
+
+# But... in the data model those *do* exist
+
+# USE flags: every combination tested? how many work?
+
+# Ideally: variants, but limited inputs so we still know
+# exactly everything we need to test
+
+# Alternative approach: OStree: traditional package manager
+# produces any random combination of bits, then you transfer
+# exactly that tree.

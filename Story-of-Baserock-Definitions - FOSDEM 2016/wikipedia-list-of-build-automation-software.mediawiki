@@ -1,0 +1,287 @@
+'''[[Build automation]]''' involves [[Scripting language|scripting]] or automating the process of [[Compiler|compiling]] computer [[source code]] into [[binary code]].  Below is a list of notable tools associated with automating build processes.
+
+==Make-based tools==
+* [[make (software)#Modern versions|GNU make]], a widely used make implementation with a large set of extensions
+* [[make (software)|make]], a classic Unix build tool
+* [[mk (software)|mk]], developed originally for [[Version 10 Unix]] and [[Plan 9 from Bell Labs|Plan 9]], and ported to Unix as part of [[Plan 9 from User Space|plan9port]]
+* [[Macintosh Programmer's Workshop|MPW Make]], developed for [[history of Mac OS|Mac OS Classic]] and similar to but not compatible with Unix make; [[OS X]] comes with both GNU make and BSD make; available as part of Macintosh Programmer's Workshop as a free, unsupported download from Apple
+* [[nmake]]
+* [[PVCS]]-make, basically follows the concept of [[make (software)|make]] but with a noticeable set of unique syntax features<ref>[http://lists.gnu.org/archive/html/bug-make/2003-02/msg00019.html mailing list discussion about porting PVCS-make scripts to GNU-make]</ref>
+
+==Non-Make-based tools==
+* [[Apache Ant]], popular for [[Java (software platform)|Java]] platform development and uses an [[XML]] file format
+* [[Apache Buildr]], open-source build system, [[Rake (software)|Rake]]-based, gives full power of scripting in [[Ruby]] with integral support for most abilities wanted in a build system
+* [[Apache Maven]], a Java platform tool for project management and automated software build
+* [[Another System Definition Facility|ASDF]] LISP buildsystem for building LISP projects
+* [[A-A-P]], a [[Python (programming language)|Python]] based build tool
+* [[BitBake]], a Python-based tool with the special focus of distributions and packages for embedded Linux cross compilation
+* [[Cabal (software)|Cabal]], common architecture for building applications and libraries in the programming language [[Haskell (programming language)|Haskell]]
+* [[FinalBuilder]], for Windows software developers. FinalBuilder provides a graphical IDE to both create and run build projects in a single application. Final builder also includes the ability the execute unit test, deploy web projects or install and test applications.
+* [[Flowtracer]]
+* [[Gradle]], an open-source build and automation system with a [[Groovy (programming language)|Groovy]]-based [[domain specific language]] (DSL), combining features of [[Apache Ant]] and [[Apache Maven]] with additional features like a reliable incremental build
+* [[IncrediBuild]]
+* [[Leiningen (software)|Leiningen]], a tool providing commonly performed tasks in Clojure projects, including build automation
+* [[MSBuild]], the [[Microsoft]] build engine
+* [[NAnt]], a tool similar to Ant for the [[.NET Framework]]
+* [[Octopus Deploy]], an automated deployment and release management server for deployment of ASP.NET applications, Windows Services and databases
+* [[Perforce Jam]], a generally enhanced, ground-up tool which is similar to Make
+* [[Psake]],  domain-specific language and build automation tool written in PowerShell
+* [[Rake (software)|Rake]], a [[Ruby (programming language)|Ruby]]-based build tool
+* [[SBT (software)|sbt (Scala Build Tool)]], a build tool built on a [[Scala (programming language)|Scala]]-based DSL
+* [[SCons]], Python-based, with integrated functionality similar to [[autoconf]]/[[automake]]
+* [[Tup]], Lua based, make-like DSL with a pure focus on speed and scalability
+* [[Tweaker (build tool)|Tweaker]], allowing task definitions to be written in any languages (or intermixed languages) while providing a consistent interface for them all
+* [[Visual Build]], a [[graphical user interface]] software for software builds
+* [[Waf]] is a Python-based tool for configuring, compiling and installing applications. It is a replacement for other tools such as [[Autotools]], [[Scons]], [[CMake]] or Ant
+
+==Build script generation tools==
+* [[BuildAMation]], a multi-platform tool, using a declarative syntax in C# scripts, that builds C/C++ code in a terminal using multiple threads, or generates project files for Microsoft Visual Studio, Xcode or MakeFiles.
+* [[configure script|configure]]
+* [[CMake]], a cross-platform tool that generates files for the native build environment, such as makefiles for Unix or Workspace files for Visual Studio
+* [[GNU build system]]  (aka autotools), a collection of tools for portable builds. These in particular include [[Autoconf]] and [[Automake]], cross-platform tools that together generate appropriate localized makefiles.
+* [[GYP (software)|GYP]] (Generate Your Projects) - Created for [[Chromium (web browser)|Chromium]]; it is another tool that generates files for the native build environment
+* [[imake]]
+* [[Premake]], a Lua-based tool for making makefiles, Visual Studio files, Xcode projects, and more
+* [[qmake]]
+
+==Continuous integration tools==
+* [[AnthillPro]], build automation with pipeline support for deployment automation and testing. Cross-platform, cross-language
+* [[Bamboo (software)|Bamboo]], continuous integration software
+* [[Apache Continuum]]
+* [[Buildbot]], a Python-based software development continuous integration tool which automates the compile/test cycle
+* [[BuildIT]], a free graphical build or task tool for Windows with an emphasis on simplicity and ease of use
+* [[Buildout]], a Python-based build system for creating, assembling and deploying applications from multiple parts
+* [[CABIE]] Continuous Automated Build and Integration Environment, open source, written in Perl
+* [[CruiseControl]], for Java and .NET
+* [[Wildbit#DeployBot|DeployBot]], a hosted continuous integration service
+* [[Hudson (software)|Hudson]], an extensible continuous integration engine
+* [[Jenkins (software)|Jenkins]], an extensible continuous integration engine, [[fork (software development)|forked]] from Hudson
+* [[Team Foundation Server]], an extensible continuous integration engine from Microsoft
+* [[TeamCity]]
+* [[Travis CI]], a hosted continuous integration service
+
+==Configuration management tools==
+* [[Ansible (software)|Ansible]] (Python-based)
+* [[CFEngine]]
+* [[Chef (software)|Chef]] (Ruby-based)
+* [[Distelli]]
+* [[Puppet (software)|Puppet]] (Ruby-based)
+* [[Salt (software)|Salt]] (Python-based)
+* [[Rex (software)|Rex]] (Perl-based)
+
+==Meta-build tools==
+A meta-build tool is capable of building many different projects using a subset of existing buildtools. Since these usually provide a list of packages to build, they are also often called package managers.
+
+* [[Pkgsrc]], package manager of NetBSD and other operating systems.
+* [[Portage (software)|Portage]], package manager of the Gentoo Linux distribution
+* [[Nix package manager|Nix]], functional package manager for the Nixos Linux distribution
+
+==Other tools==
+* [[checkinstall]], checkinstall is a program that monitors an installation procedure, and creates a standard package for your distribution.
+* [[Open Build Service]], a hosted service to help build packages for various Linux distributions
+
+==Comparison of build automation software==
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s). -->
+
+{| class="wikitable sortable" style="font-size: 80%; text-align: center; width: auto;"
+|-
+! Tool name
+! Operating system
+! Build language
+! Description language
+! License
+|-
+! [[A-A-P]]
+| [[Unix]], [[Microsoft Windows|Windows]], [[OS X]]
+| [[C (programming language)|C]]
+| recipe
+| {{free|[[GNU General Public License|GNU GPL]]}}
+|-
+! [[Apache Ant|Ant]]
+| [[cross-platform]]
+| [[Java (programming language)|Java]]
+| [[XML]]
+| {{free|[[Apache License 2.0]]}}
+|-
+! [[AnthillPro]]
+| cross-platform
+| cross-language
+| Wraps Make, Ant, Maven, MsBuild, Nant, etc. for controlled build, deploy, test processes.
+| {{proprietary}}
+|-
+! [[Atlassian bamboo|Bamboo]]
+| cross-platform
+| cross-language
+| continuous integration
+| {{Proprietary}}
+|-
+! [[BuildAMation]]
+| [[Windows]], [[OSX]], [[Linux]]
+| [[C (programming language)|C]], [[C++]], [[Objective-C]]
+| [[C_Sharp_(programming_language)|C#]] for build scripts, [[XML]] for high level dependencies
+| {{free|[[New BSD License]]}}
+|-
+! [[Apache Buildr|Buildr]]
+| cross-platform
+| Java
+| [[Ruby (programming language)|Ruby]]
+| {{free|[[Apache License 2.0]]}}
+|-
+! [[Capistrano (software)|Capistrano]]
+| cross-platform
+| [[Ruby (programming language)|Ruby]]
+| [[XML]]
+| {{free|[[MIT License]]}}
+|-
+! [[CMake]]
+| cross-platform
+| cross-language
+| uses CMakeLists.txt file
+| {{free|[[New BSD License]]}}
+|-
+! [[Apache Continuum|Continuum]]
+| cross-platform
+| [[Java (programming language)|Java]]
+| ?
+| {{free|[[Apache License 2.0]]}}
+|-
+! [[CruiseControl]]
+| cross-platform
+| cross-language
+| [[XML]]
+| {{free|[[BSD licenses|BSD]]-style license}}
+|-
+! [[Electric Cloud|ElectricCommander]]
+| cross-platform
+| cross-language
+| flexible including gmake, bmake, emake and ant scripts
+| {{proprietary}}
+|-
+! [[FinalBuilder]]
+| Windows
+| cross-language
+| graphical IDE with support for Ant/NAnt, MSBuild, JScript, VBScript, [[IronPython]], [[Windows PowerShell|PowerShell]]
+| {{proprietary}}
+|-
+! [[Gradle]]
+| cross-platform
+| cross-language
+| Groovy based DSL
+| {{free|[[Apache License 2.0]]}}
+|-
+! [[Jenkins (software)|Jenkins]]
+| cross-platform
+| cross-language
+| continuous integration
+| {{free|[[MIT License]]}}
+|-
+! [[Leiningen (software)|Leiningen]]
+| cross-platform
+| [[Clojure]]-Java
+| Clojure
+| {{free|[[Eclipse Public License]]}}
+|-
+! [[make (software)|make]]
+| cross-platform
+| cross-language
+| uses Makefile
+| Various
+|-
+! [[Apache Maven|Maven]]
+| cross-platform
+| Java
+| [[Project Object Model]]
+| {{free|[[Apache License 2.0]]}}
+|-
+! [[Macintosh Programmer's Workshop#Other tools|MPW Make]]
+| Mac OS Classic
+| ?
+| ?
+| ?
+|-
+! [[MSBuild]]
+| Windows
+| cross-language
+| [[XML]]
+| {{free|[[MIT]]}}
+|-
+! [[NAnt]]
+| cross-platform
+| .NET
+| [[XML]]
+| {{free|[[GNU General Public License|GNU GPL]]}}
+|-
+! [[nmake]]
+| Unix, Linux, Windows/Interix
+| cross-language
+| uses Makefile
+| ?
+|-
+! [[Open Build Service]]
+| Unix, Linux, Windows
+| cross-language
+| uses various package and image description formats (spec, dsc, ARCH, kiwi)
+| {{free|[[GNU General Public License|GNU GPL]]}}
+|-
+! [[Perforce Jam]]
+| cross-platform
+| cross-language
+| uses Jamfile
+| Proprietary, free license for open source projects
+|-
+! [[Rake (software)|Rake]]
+| cross-platform
+| Ruby
+| Ruby
+| {{free|[[MIT License]]}}
+|-
+! [[SBT (software)|sbt (Simple Build Tool)]]
+| cross-platform
+| [[Scala (programming language)|Scala]], Java
+| Scala based DSL
+| {{free|[[New BSD License]]}}
+|-
+! [[SCons]]
+| cross-platform
+| cross-language
+| [[Python (programming language)|Python]]
+| {{free|[[MIT License]]}}
+|-
+| [[Team Foundation Server]] (Team Build)
+| Windows
+| cross-language
+| MSBuild, Windows Presentation Foundation
+| {{Proprietary}}
+|-
+! [[Tweaker (build tool)]]
+| cross-platform
+| cross-language
+| Any (Ant, bash, batch, C, Erlang, Java, SQL, and VBScript by default, with 3rd party interface for extensions)
+| {{free|[[GNU General Public License|GNU GPLv3]]}}
+|-
+! [[Visual Build]]
+| Windows
+| cross-language
+| [[XML]]
+| {{Proprietary}}
+|-
+! [[Waf]]
+| cross-platform
+| cross-language
+| [[Python (programming language)|Python]]
+| {{free|[[New BSD License]]}}
+|-class="sortbottom"
+! Tool name
+! Operating system
+! Build language
+! Description language
+! License
+|}
+
+==References==
+{{reflist}}
+
+==External Links==
+* {{Wikia | software | Software Wiki | List of build automation software }}
+
+[[Category:Build automation]]

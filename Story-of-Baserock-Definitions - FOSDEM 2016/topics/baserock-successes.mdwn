@@ -1,0 +1,6 @@
+* Being able to find the source to anything, and how it is built, right away.
+
+* Functional reproducibility
+    -> relates to components which autodetect a feature based on existance
+       of a header, for example. If you disable the feature, does everything
+       rebuild?

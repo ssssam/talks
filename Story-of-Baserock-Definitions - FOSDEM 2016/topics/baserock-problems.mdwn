@@ -1,0 +1,17 @@
+# Problems with Baserock as it is now
+
+Rebuilds from scratch if you change something low down the stack.
+If you have to rebuild qtwebkit, for example, this sucks.
+    -> Early idea of auto-detecting what ABI is exposed, but it's hard to
+       really know if some file affects the build of something else, without
+       actually being told (like Bazel, for example -- full incremental
+       builds but you can't reuse existing Makefiles)
+    -> this is a problem if you do automated versioning, I guess
+
+Sometimes not clear why builds start from scratch instead of using the cache.
+Did I change something by accident? Is the cache down? Am I on the wrong branch?
+
+No support for variants [variants]
+
+Native compile is too slow in many cases. - 
+

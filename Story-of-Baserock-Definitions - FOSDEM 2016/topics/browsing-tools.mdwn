@@ -1,0 +1,14 @@
+# Browsing tools
+
+-> This is something that you can easily take screenshots of!
+
+Baserock: Trove cgit
+
+Fedora: pkgs.fedoraproject.org -- again ,just cgit, but this is actually really cool!
+
+debian: ...
+
+all this is in data.yaml
+
+
+It's REALLY USEFUL! To be able to get a view over your whole OS!!!

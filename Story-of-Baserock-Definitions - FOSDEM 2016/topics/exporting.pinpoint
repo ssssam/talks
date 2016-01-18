@@ -1,0 +1,25 @@
+# Exporting definitions to other formats
+
+---
+
+Exporting to code
+
+# Morph already does this: `cross-bootstrap`
+# command generates a shell script + tarball.
+
+# One suggestion for solving Baserock
+# bootstrapping problems is to have a bootstrap
+# script *generator* checked into the definitions
+# repo.
+
+# Export-to-cmake: started, but not sure if this
+# is going to open up a portal to hell or not.
+
+--- [topics/images/concourse-1.png]
+
+Example: Concourse CI
+
+# This is just showing you the *entire* build
+# graph of the GENIVI demo platform system
+
+--- [topics/images/concourse-2.png]

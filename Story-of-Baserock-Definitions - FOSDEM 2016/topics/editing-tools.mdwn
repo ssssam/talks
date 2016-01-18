@@ -1,0 +1,9 @@
+# Tools for editing 
+
+    -> Not going to talk about this, but it was a bad idea. In my
+       experience 'workflow' is often a sign of something that is
+       too complicated, and it should be broken down to pieces people
+       understand so they can create whatever workflows they want.
+
+-> Not sure whether to count debhelper as 'editing tool': it's part of the
+   *format* in my opinion.

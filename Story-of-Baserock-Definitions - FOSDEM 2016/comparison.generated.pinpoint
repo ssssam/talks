@@ -1,0 +1,131 @@
+--- [topics/images/comparison/baserock-definitions-cpython3.png]
+Baserock definitions
+---
+<b><u>Baserock definitions</u></b>
+
+# Baserock reference systems, ...
+<span color="lightgreen">✔ Data all in one place</span>
+<span color="lightgreen">✔ Syntax: YAML</span>
+<span color="lightgreen">✔ Versioned: yes, with automatic migrations</span>
+<span color="lightgreen">✔ Structure specified</span>
+<span color="lightgreen">✔ Data model specified</span>
+--- [topics/images/comparison/bitbake-poky-cpython3-python.inc.png]
+BitBake recipes
+--- [topics/images/comparison/bitbake-poky-cpython3-top.png]
+BitBake recipes
+---
+<b><u>BitBake recipes</u></b>
+
+# OpenEmbedded, Yocto, many commercial & some public derivatives, ...
+<span color="red">✘ Data in different repos</span>
+<span color="red">✘ Syntax: BitBake</span>
+<span color="red">✘ Versioned: no (build tool lives alongside recipes)</span>
+<span color="red">✘ Syntax/structure not specified</span>
+<span color="red">✘ Data model not specified</span>
+--- [topics/images/comparison/buildroot-cpython3-top.png]
+Buildroot
+---
+<b><u>Buildroot</u></b>
+
+# Buildroot, OpenWRT, widespread commercial use, ...
+<span color="lightgreen">✔ Data all in one place</span>
+<span color="red">✘ Syntax: Make</span>
+<span color="red">✘ Syntax/structure not specified</span>
+<span color="red">✘ Data model not specified</span>
+--- [topics/images/comparison/debian-cpython3-control.png]
+Debian
+--- [topics/images/comparison/debian-cpython3-rules-top.png]
+Debian
+---
+<b><u>Debian</u></b>
+
+# Debian, Linux Mint, Ubuntu, many other public and proprietiary Debian derivates
+<span color="red">✘ Data in different repos</span>
+Syntax: Key-value (control, copyright, changelog)
+<span color="red">✘ Syntax: Make (rules)</span>
+Versioned: if you use debhelper... (no automated migrartions)
+<span color="lightgreen">✔ Structure specified</span>
+<span color="lightgreen">✔ Data model specified</span>
+--- [topics/images/comparison/guix-cpython2.png]
+GNU Guix
+--- [topics/images/comparison/guix-cpython3.png]
+GNU Guix
+---
+<b><u>GNU Guix</u></b>
+
+# GNU GUIX Software Distribution
+<span color="lightgreen">✔ Data all in one place</span>
+<span color="red">✘ Syntax: GUILE</span>
+<span color="lightgreen">✔ Structure specified</span>
+<span color="red">✘ Data model not specified</span>
+--- [topics/images/comparison/nix-cpython3-top.png]
+Nix expressions
+---
+<b><u>Nix expressions</u></b>
+
+# NixOS, at least some commercial derivatives
+<span color="lightgreen">✔ Data all in one place</span>
+<span color="red">✘ Syntax: Nix Expression Language</span>
+<span color="lightgreen">✔ Versioned: yes, no automated migrations</span>
+<span color="lightgreen">✔ Structure specified</span>
+<span color="red">✘ Data model not specified</span>
+--- [topics/images/comparison/portage-gentoo-cpython3-top.png]
+Portage ebuild
+---
+<b><u>Portage ebuild</u></b>
+
+# Gentoo, Chrome OS, CoreOS, other Gentoo derivatives, Exherbo (kind of)
+<span color="lightgreen">✔ Data all in one place</span>
+<span color="red">✘ Syntax: Shell subset</span>
+<span color="lightgreen">✔ Versioned: yes, no automated migrations</span>
+<span color="red">✘ Syntax/structure not specified</span>
+<span color="lightgreen">✔ Data model specified</span>
+--- [topics/images/comparison/pkgbuild-arch-cpython3-middle.png]
+Ports-style
+---
+<b><u>Ports-style</u></b>
+
+# ['Alpine Linux, Arch Linux & derivatives, FreeBSD ports, OpenBSD ports, pkgsrc (NetBSD ports), CRUX, Void Linux, ...']
+<span color="lightgreen">✔ Data all in one place</span>
+<span color="red">✘ Syntax: Shell</span>
+<span color="red">✘ Syntax/structure not specified</span>
+<span color="lightgreen">✔ Data model specified</span>
+--- [topics/images/comparison/rpmbuild-fedora-cpython3-top.png]
+RPM .spec files
+--- [topics/images/comparison/rpmbuild-fedora-cpython3-package-info.png]
+RPM .spec files
+--- [topics/images/comparison/rpmbuild-fedora-cpython3-build-script.png]
+RPM .spec files
+--- [topics/images/comparison/rpmbuild-fedora-cpython3-package-rules.png]
+RPM .spec files
+--- [topics/images/comparison/rpmbuild-fedora-cpython3-changelog.png]
+RPM .spec files
+---
+<b><u>RPM .spec files</u></b>
+
+# CentOS, Fedora, Red Hat, Meego, SuSE, commercial derivates
+<span color="red">✘ Data in different repos</span>
+<span color="red">✘ Syntax: RPM spec syntax</span>
+<span color="red">✘ Versioned: no (but never changes!)</span>
+<span color="red">✘ Syntax/structure not specified</span>
+<span color="red">✘ Data model not specified</span>
+--- [topics/images/comparison/upkg-paldo-cpython3.png]
+upkg
+---
+<b><u>upkg</u></b>
+
+# [Paldo operating system](http://www.paldo.org/wiki/Development#English)
+<span color="lightgreen">✔ Data all in one place</span>
+Syntax: XML
+<span color="red">✘ Syntax/structure not specified</span>
+<span color="red">✘ Data model not specified</span>
+--- [topics/images/comparison/ypkg-solusos-cpython3.png]
+ypkg and eopkg
+---
+<b><u>ypkg and eopkg</u></b>
+
+# SolusOS, and ancestors (PiSi Linux, Pardus Linux)
+<span color="red">✘ Data in different repos</span>
+Syntax: XML or YAML
+<span color="red">✘ Syntax/structure not specified</span>
+<span color="lightgreen">✔ Data model specified</span>

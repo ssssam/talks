@@ -1,0 +1,18 @@
+# Packaging
+
+I've explicitly used the term 'build+integration instructions' rather
+than 'packaging instructions', not because I want to get an award for
+longest talk title,  but because it's kind of a loaded term.
+
+It implies:
+  - systems are not in a known state -- hard to debug them. If you install
+  - carrying a big delta???
+  - 
+
+ I think package management isn't a necessity.
+
+Runtime configurability: can be achieved with sandboxing tools e.g. Docker,
+xdg-app.
+
+I'm in favour of 'thin' distributions, not because I think policies and coherence are irrelevant, but because it just complicates the world of
+software having all these layers. I hope we can agree that it's complicated enough.

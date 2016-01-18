@@ -1,0 +1,10 @@
+
+In the right hands
+  Yocto can do great work, but in the wrong hands it fails because:
+    - it's not rigorous about where source is fetched from
+    - patches are committed to Git as files and lose context
+    - recipes exist in a global namespace where anything can override anything
+      else
+    - it's not rigorous about doing isolated builds, or rebuilding
+      when a dependency changes: you have a 'golden master', you
+      can't reproduce an exact build again from the same sources

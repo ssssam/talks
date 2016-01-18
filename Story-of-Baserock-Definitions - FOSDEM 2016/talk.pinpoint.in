@@ -1,194 +1,216 @@
+dnl This file is processed with GNU m4 to produce the final talk.pinpoint file.
+dnl The only m4 feature actually used is include().
+changequote()
+dnl
 # https://fosdem.org/2016/schedule/event/format_for_build_and_integration_instructions/
 
 # bg-1.jpg: http://www.manchestereveningnews.co.uk/news/local-news/image-reddish-vale-country-park-6495444
-
-# What's the STORY? Well, what's the timeline? [don't actually talk about this!]
-#    2011/7: Rob + Daniel in Korea, apparently want something better than Meego
-#            or Yocto, and invent it
-#    2011/8: Paul is sold on the idea, Lars is hired. Plan is that this will
-#            all be done in 6 months.
-#    2011/9-?: Initial work on Morph build tool, aiming to bootstrap Baserock
-#            reference system (just called 'Baserock' at this point) from
-#            Debian 6 (Squeeze), following Linux From Scratch etc. Should be
-#            done by Christmas. Code all hosted on Gitorious.
-#    2011/12:
-#    ... blah blah blah ...
-#    2012/08: About when I got involved
-#    2012/09: Attempted initial commercial "release"
-#             MUSTARD introduced, lots of "requirements"
-#    2015/11: Baserock kind of unwanted, but it's still not entirely clear to
-#            go about achieving its goals using existing tools, either.
-
-# * Focus on definitions formats! Everyone knows about distros.
-# * YAML formats:
-#       - need to be welldefined!
-#         BOSH as a *bad* example!
-#         XML does much better there.
-# * JSON:
-#       oh, god, hideous
-#       give examples of old Baserock defs in JSON
+# bg-rocks.jpg: https://en.wikipedia.org/wiki/File:Vasquez_Rocks_County_Park.jpg
+# bg-petrify.jpg: https://www.flickr.com/photos/lorix/3575618833
+# bg-boots.jpg: https://en.wikipedia.org/wiki/File:Tanker_boots.jpg
 #
-# * Branching:
-#       - all build instructions in one repo makes it much easier to branch and
-#         merge the whole system!
+# structured-food.jpg: https://en.wikipedia.org/wiki/File:Supermarkt.jpg
+# migrations.png: https://en.wikipedia.org/wiki/File:Sort_sol_pdfnet.jpg
 
-# * Deployment:
-#       - "packaging" completely separate
-#       - Baserock provides its own deployment stuff, which is probably a mistake
-#       - might involve simply taking a .tar file of the filesystem tree
-#       - at the other extreme, might involve setting up and booting an OpenStack VM
-#         (which Morph can do, but could just as easily use e.g. Ansible)
-#       - Most things that Baserock deployment stuff does, another tool already
-#         exists to do it.
-
-# History:
-# #     - "all in one" solution
-
-topics: 20
-    baserock-components.mdwn
-    baserock-data-model.mdwn
-    baserock-introduction.mdwn
-    baserock-manifesto.mdwn
-    browsing-tools.mdwn
-    build+integration-tools.mdwn
-    conclusion.mdwn
-    continuous-integration.mdwn
-    declarative-and-structured.mdwn
-    disclaimer.mdwn
-    editing-tools.mdwn
-    exporting.mdwn
-    importing.mdwn
-    introduction.mdwn
-    json-vs-yaml.mdwn
-    native-compile-vs-cross-compile.mdwn
-    universal-data-model.mdwn
-    upstream-provides-their-own-build+integration-instructions.mdwn
-    variants.mdwn
-    versioning.mdwn
-
-
--> OpenStack disk-image-builder: you forgot that 1 from data.yaml!
-
------------- [bg-1.jpg]
-
-CONTENTS:
-
----- Intro [bg-1.jpg]
-
-    [introduction]
-    [baserock-introduction]
-
-##############
+# TODO:
 #
-#    Story
+#  - highlight the relevant bits of the definitions that you're talking about,
+#    in the slides!
+#  - redo some of them in Vim
+#  - remove title bars from screenshots!
+#  - set up browser
+
+[font=Cantarell 50px]
+---- [bg-1.jpg]
+
+The story of a
+declarative &amp;
+structured
+format for
+build + integration
+instructions
+
+# Welcome to my title with a really long talk.
+
+# I'd prefer to give one that shows off cool
+# things you can do with structured build
+# instructions: automation, and visualation
+# tools.
+
+# I don't know of many though.
+
+# So instead I want to convince everyone to use
+# structured data.
+
+--- [topics/images/structured-food.jpg]
+
+Structured
+
+--- [topics/images/food_waste.jpg]
+
+Unstructured
+
+# I've been involved in the development of
+# a structured build language; part of project
+# named Baserock. Imaginatively, that language
+# is called the "Baserock definitions format."
+
+# We learned a lot of lessons the hard way
+# & I want to save everyone else the trouble!
+
+# I try to sum up Baserock a lot, but it's not
+# easy to summarise!
+
+---- Intro [topics/images/baserock-manifesto.png]
+
+# Here's my attempt to capture some goals and
+# decisions from early on!
+
+# Notice the "simple" goal: that is the main
+# justification for Baserock n-i-h, instead of
+# us trying to work in existing projects.
+
+# Note the "no packaging": runtime package
+# management is not needed for some class of OS.
+
+# Goal of JSON build instructions (not something
+# that can be retrofitted to an existing distro):
+# this is what makes me interested in it (I guess)
+
+--- [topics/images/baserock-components.png]
+
+# Graph of the build process.
 #
-##############
+# Misses off the build instructions, and the
+# format of the build instructions! For a long
+# time we treated them as an implementation detail
+# of the build tool :(
+#
+# Development also involves reference systems and
+# a source mirroring tool.
+#
+include(topics/baserock-trove.pinpoint)
+
+--- [topics/images/baserock-slab.jpg]
+
+Native compilation
 
 include(topics/baserock-definitions-evolution.pinpoint)
 
-#############################################################################################################
+######################
+#
+#    Current state
+#
+######################
 
-Lessons learned from Baserock definitions... and the current state of the format
+# Here's where the story ends
 
-- Definitions format (2 mins)
+--- [topics/images/bg-rocks.jpg]
 
-[baserock-data-model]
-[json-vs-yaml]
-[variants]
-[versioning]
+Some features
 
-#############################################################################################################
+· Splitting artifacts (runtime/devel)
+· Versions &amp; migration
+· Integration hooks
+· Some real systems
+    [GENIVI, GNOME, OpenStack]
+
+# And it's all declarative!
+
+--- [topics/images/bg-rocks.jpg]
+
+Some missing features
+
+· Cross compilation
+· Incremental builds
+· Variants
+
+# in reference systems: security updates
+#
 ---
 
-- Comparison with other formats (10 mins)
-
----
-
-# - Future plans for Baserock definitions (10 mins)
-#    - structed data: avoid the "useflags hell"
-
-----
-
-  Criteria:
-    - how many packages
-    - is it structured to be machine-parsable
-    - is it concise?
-    - how does artifact caching work?
-    - what build tools support it?
-    - how well documented is it? how standardised?
-
-----
-"There is a lesson here for ambitious system architects: the most dangerous enemy of a better solution is an existing codebase that is just good enough." - ESR
-<http://catb.org/~esr/writings/taoup/html/plan9.html>
-
-----
-
-
-Desktop distros and their problems!
-
--> sent to baserock-dev !
-
-Arch Linux:
-  - infinite number of possible configurations that cannot all be tested
-  - upgrades are not atomic
-  - cannot rollback after upgrade
-
-Baserock reference systems:
-  - lack of packages
-  - lack of easy runtime configurability
-  - lack of momentum
-  - lack of good documentation
-  - no serious handling of security updates
-  - rebuild of a single component may require rebuilding 1000s of packages
-
-Debian/Ubuntu:
-  - very complex, lots of moving parts, many of which overlap
-  - sources spread across many repos of different types
-    -> dgit mitigates this problem: it makes all Debian source packages
-       available through consistant Git interface
-  - infinite number of possible configurations that cannot all be tested
-    -> reproducible-builds project will help this to an extent
-  - upgrades are not atomic
-  - cannot rollback after upgrade
-  - packages lag behind upstream versions at times
-  - packages sometimes have a big delta compared to upstream
-
-Fedora:
-  - very complex, lots of moving parts, many of which overlap
-  - infinite number of possible configurations that cannot all be tested
-    -> rpm-ostree project will help with this: you can create a manifest
-       that is a specific set of tested packages, and provide the entire
-       tree as a single OSTree commit. Users can then layer changes on
-       top of the well-known base image, which could be reapplied on each
-       upgrade of the base OS.
-  - upgrades are not atomic
-    -> rpm-ostree project will help with this: a rootfs managed with `ostree`
-       can be upgraded atomically
-  - cannot rollback after upgrade
-    -> rpm-ostree project will help with this: a rootfs managed with `ostree`
-       can be rolled back to an old version
-
-Gentoo:
-  - no way to share prebuilt artifacts
-  - infinite number of possible configurations that cannot all be tested
-  - upgrades are not atomic
-  - cannot rollback after upgrade
-
-GNU Guix Software Distribution:
-  - lack of packages
-  - nonstandard filesystem layout makes packaging some software very difficult
-  - rebuild of a single component may require rebuilding 1000s of packages
-    -> experimental 'grafts' feature solves this: https://www.gnu.org/software/guix/manual/html_node/Security-Updates.html
-  - no serious handling of security updates
-
-NixOS:
-  - lack of packages
-  - nonstandard filesystem layout makes packaging some software very difficult
-  - rebuild of a single component may require rebuilding 1000s of packages
-  - I'm not sure how quickly NixOS handle security updates currently
+include(topics/variants.pinpoint)
 
 ---
 
-## The software ontology -- towards a unified model
+Benefits of structured data
 
+include(topics/exporting.pinpoint)
 
+# Importing: also a big topic, but this is much
+# easier and many distros have an answer (from
+# e.g. PyPI, RubyGems, CPAN, ...).
+
+---
+
+Visualation
+
+--- [topics/images/debian-packages-browser.png]
+
+packages.debian.org
+#    - ~4K lines of Perl
+
+--- [topics/images/debian-package-tracker.png]
+
+# Cool info connected to the package.
+
+# Fedora & SuSE have similar things, probably
+# other distros too!
+
+---
+
+Example: hyperlinked definitions
+
+# Some other cheapass things:
+#   - the rdflib-web browser
+#   - the d3 circle-packing
+
+---
+
+# Demo the rdflib-web browser, too
+
+Automation
+
+· Migrating between formats
+· Updating refs
+
+--- [topics/images/bg-rocks.jpg]
+
+# Ladies & gentlemen: use structured data
+# for build+integration instructions. Not code.
+#
+# Best practices / the 7 commandments
+
+Keep all data in one place
+Use YAML
+Write multiple tools
+Version the format
+Specify the syntax/structure
+Specify the data model
+Keep track of variance
+
+# Hopefully next time I give a talk it will be
+# about all the cool automation & visualisation
+# tools we've made since then!
+
+# Finally, I'm going to compare existing languages
+# for build and integration instructions against
+# the lessons we learned from messing up the Baserock definitions format!
+#
+# please take this with a pinch of salt...
+# of course not all distros are equal. FWIW
+# I run Fedora, which has a pretty bad format!
+# The aim is to inform not to criticise! ..
+
+include(comparison.generated.pinpoint)
+
+--- [bg-1.jpg] [fill]
+
+Baserock definitions format
+<span color="lightyellow"><u>http://wiki.baserock.org/definitions</u></span>
+
+Slides:
+<span color="lightyellow"><u>https://github.com/ssssam/talks</u></span>
+
+<span color="orange">Sam Thursfield
+<u>ssssam@gmail.com</u></span>

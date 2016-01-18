@@ -1,0 +1,17 @@
+digraph {
+    "morphs | master | build-essential.morph" [fontname="Cantarell", fillcolor=lightyellow, style=filled]
+    "morphs | master | core.morph" [fontname="Cantarell", fillcolor=lightyellow, style=filled]
+    "morphs | baserock-13 | core.morph" [fontname="Cantarell", fillcolor=red, style=filled]
+    "morphs | master | foundation.morph" [fontname="Cantarell", fillcolor=lightyellow, style=filled]
+    "morphs | master | bsp-x86_64-generic.morph" [fontname="Cantarell", fillcolor=lightyellow, style=filled]
+    "morphs | master | system.morph" [fontname="Cantarell", fillcolor=orange, style=filled]
+
+    "morphs | master | build-essential.morph" -> "morphs | master | core.morph"
+    "morphs | master | core.morph" -> "morphs | master | foundation.morph"
+    "morphs | baserock-13 | core.morph" -> "morphs | master | bsp-x86_64-generic.morph"
+
+    "morphs | master | build-essential.morph" -> "morphs | master | system.morph"
+    "morphs | master | core.morph" -> "morphs | master | system.morph"
+    "morphs | master | foundation.morph" -> "morphs | master | system.morph"
+    "morphs | master | bsp-x86_64-generic.morph" -> "morphs | master | system.morph"
+}

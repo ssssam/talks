@@ -1,0 +1,40 @@
+# On being declarative and structured
+
+-> "Declarative" sounds really nice, but it's
+actually a vague term. The border between code and
+data is not well defined.
+
+-> A functional programming language is not necessarily either.
+
+-> Images of a border perhaps.
+
+-> Example of system V init vs. systemd .service file
+    -> which one is declarative + structured?
+
+-> More difficult example: CMake. Is that an
+absurdly flexible declarative representation, or a
+programming language with helper functions for
+defining build rules? Both really.
+
+-> Other examples?
+    * shell launcher script vs. .desktop file 
+
+Dig into existing formats. Some that are shell
+scripts are actually quite structured. While
+
+* It's clear that a format can only encourage
+  declarative and structured build+integration
+  instructions. You can abuse any tool!
+
+* Likewise, you can do a good job using quite
+  bad tools.
+
+-> Lots of illustrutive examples here would be nice...
+
+-> Good test is how easily the format can be convered to another...
+    -> BitBake: !
+    -> Nix: PEdro tried this, -> read info from Baserock wiki
+
+[exporting]
+
+[universal-data-model]

@@ -1,0 +1,18 @@
+name: gtk3
+kind: stratum
+description: the gtk3 stratum
+
+build-depends:
+- morph: strata/gtk-deps.morph
+- morph: strata/wayland-generic.morph
+# x-common contains packages that the
+# GTK Wayland backend requires. We do
+# not built the GTK X11 backend here.
+- morph: strata/x-common.morph
+
+chunks:
+- name: gtk3
+  morph: strata/gtk3/gtk3.morph
+  repo: upstream:gtk+
+  ref: 1ed442180d65da78d071019c0dc0d365932e4503
+  unpetrify-ref: 3.18.2

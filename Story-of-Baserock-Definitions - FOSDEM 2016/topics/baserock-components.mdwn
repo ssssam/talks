@@ -1,0 +1,39 @@
+# Baserock - components
+
+* On naming of components:
+
+    One problem Baserock turned out to have is that it covers all sorts of areas.
+
+    Every try to explain what OpenStack is? What GNOME is? Much harder than
+    explaining GIMP, Ardour or GCC. But people already know what GNOME and
+    OpenStack are, at least.
+
+    A logical solution to this is try to break Baserock up into its logical
+    components and treat them separately, but it's actually quite hard to do.
+
+    OpenStack solves this by having lots of names that are meaningless outside
+    the project: Horizon, Neutron, Trove, Heat, ...
+
+* Core Components:
+
+    -> you've done this before! from EuroPython talk.
+
+        1. Source code mirroring service
+        2. A language for build/integration/deployment instructions
+        3. Some build/integration/deployment instructions (reference systems)
+        4. Build/integration tool to execute them
+        5. Deployment tool
+        6. Cache service for built artifacts
+
+* Actually being able to divide it up like this is quite recent; for a
+  while there was a lot of 'Baserock does this', 'Baserock should do this
+  but doesn't', 'my Baserock is broken', etc. which is too high level to
+  be meaningful.
+
+    -> Possibly it was conceived as if in a vacuum, when in fact everyone
+       who might use it already *has* processes, and needs a *gradual*
+       improvement rather than a complete fresh start.
+
+* I really only want to talk about (2) today, but it ties into the other
+  things.
+

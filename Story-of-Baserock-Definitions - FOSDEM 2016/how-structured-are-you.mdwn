@@ -1,0 +1,24 @@
+[[!table data="""Name | Data in one place | Syntax | Versioned | Syntax/structure | Data model
+[Apache Ant](https://ant.apache.org/) + [Apache Ivy](https://ant.apache.org/ivy/) | ✘ | XML | Ant: no, Ivy: https://ant.apache.org/ivy/schemas/ivy.xsd
+[Baserock definitions](http://wiki.baserock.org/definitions/current/) | ✔ | YAML | ✔ | [✔](http://git.baserock.org/cgi-bin/cgit.cgi/baserock/baserock/definitions.git/tree/schemas)
+[BitBake](https://www.yoctoproject.org/docs/1.6/bitbake-user-manual/bitbake-user-manual.html) recipes | ✘ | [BitBake](https://www.yoctoproject.org/docs/1.6/bitbake-user-manual/bitbake-user-manual.html#bitbake-user-manual-metadata) | ✘ | ✘
+[BOSH](https://bosh.io/) | ✘ | YAML | ?
+[Bazel](https://bosh.io/) | ✘ | Bazel BUILD language (Python-like) | ?
+[Buildroot](http://buildroot.uclibc.org/) | ✔ | Make | ✘
+[Cerbero](http://cgit.freedesktop.org/gstreamer/cerbero/) | ✔ | Python | ✘
+[CMake](http://cmake.org/) [ExternalProject](https://cmake.org/cmake/help/v3.3/module/ExternalProject.html) / [CPM](https://github.com/iauns/cpm) / [Hunter](https://github.com/ruslo/hunter) / [biicode](http://biicode.com/) | ✔ | CMake | ?
+[Conary](https://github.com/sassoftware/conary) | ✘ | Python | ✘
+[Debian](http://debian.org/) | ✘ | Key-value (control, copyright, changelog), Make (rules) | {'control': 'https://www.debian.org/doc/debian-policy/ch-controlfields.html', 'rules': 'https://www.debian.org/doc/debian-policy/ch-source.html#s-debianrules'}
+[GNOME Continuous](https://wiki.gnome.org/Projects/GnomeContinuous) | ✔ | JSON | ✘
+[GNOME jhbuild](https://wiki.gnome.org/Projects/Jhbuild) | ✔ | XML | https://git.gnome.org/browse/jhbuild/tree/modulesets/moduleset.dtd, https://git.gnome.org/browse/jhbuild/tree/modulesets/moduleset.rnc
+[GNU Guix](https://www.gnu.org/software/guix) | ✔ | [GUILE](https://www.gnu.org/software/guile/) (Scheme) | https://www.gnu.org/software/guix/manual/html_node/package-Reference.html, https://www.gnu.org/software/guix/manual/html_node/Build-Systems.html
+[Gradle](https://www.gradle.org/) | ✘ | [Gradle](https://docs.gradle.org/current/dsl/) | ✘
+[Maven](http://maven.apache.org/) | ✘ | XML | ✘
+[Meson](http://maven.apache.org/) | ✘ | [Meson](https://github.com/mesonbuild/meson/wiki/Syntax) | ✘
+[Nix expressions](https://nixos.org/nix/manual/#chap-writing-nix-expressions) | ✔ | [Nix Expression Language](https://nixos.org/nix/manual/#ch-expression-language) | ✔ | https://nixos.org/nix/manual/#ch-expression-language
+Portage [ebuild](https://wiki.gentoo.org/wiki/Ebuild) | ✔ | Shell subset | ✔ | ✘
+[Ports-style](https://en.wikipedia.org/wiki/Ports_collection) | ✔ | Shell | ✘
+[RPM](http://rpm.org/) .spec files | ✘ | [RPM spec syntax](https://docs.fedoraproject.org/en-US/Fedora_Draft_Documentation/0.1/html/RPM_Guide/ch-specfile-syntax.html) | ✘ | ✘
+[upkg](http://www.paldo.org/wiki/Development#English) | ✔ | XML | ✘
+[xdg-app](https://github.com/alexlarsson/xdg-app) builder | ✘ | JSON | ✘
+[ypkg](https://github.com/solus-project/ypkg) and [eopkg](https://github.com/solus-project/package-management) | ✘ | XML or YAML | ✘"""]]

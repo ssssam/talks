@@ -1,0 +1,78 @@
+# Variants
+
+Amazingly Baserock definitions still don't support this..
+
+USE flags: neat idea, one problem. Any Gentoo users ever found a combination of
+USE flags that don't produce a working system? Did you have time to contribute a
+fix right then, or were you in the middle of something else?
+
+Baserock: hacks using 'if' in build commands
+
+gnome on x + wayland example. Need to define *two versions of everything*,
+copied & pasted! Which is impractical.. but the truth is *those versions do exist*.
+
+I.e. every time you introduce a 'variant' into the build graph, you've
+effectively doubled each package beyond that one. So you really need to run
+*both* under CI.
+
+I kind of have a vision of a 'grid' where *each variation* of a system is shown.
+Then you could track which ones are tested and which are not.
+
+It may not make sense to do this at the level of the build tool. which is good,
+e.g for Gentoo the boat has completely sailed -- there are many many combinations
+of USEFLAGS, too many to test them all in CI. And any distro that supports runtime
+installation, removal and upgrade of packages
+
+But thinking about the *data model*, all those combinations exist, and we need
+*some kind* of a way to manage them. This is often considered part of
+"configuration management": you wrap a distro's tools with an Ansible script,
+and say "OK THIS is the config that is tested". So there's an extra layer on
+top of the distro.
+
+But is that really needed? And should distros worry that in order to be useful,
+this extra layer is needed?
+
+as we move towards the 'app store' model (which I really hope we do!) there
+will be an opportunity for a specific 'Desktop OS' platform that could have
+a few well-supported configurations, not the infinitely many currently
+available. (Without *removing* that flexibility for those who actually want it).
+
+
+Red Hat/Colin's rpm-ostree project is moving towards this, I won't spoil all
+Colin's talk, but the gist of rpm-ostree is that you specify a set of packages,
+like you would with a configuration-management tool, and effectively each
+combination is 'reified' by assigning a unique SHA256 hash. This is even more
+reliable than using a config-management tool because there is way less
+complexity.
+
+ - rpm-ostree example
+
+Nix and GUIX also solves this problem, in yet another different way. The hash
+there is calculated from source inputs. Once again CI is possible
+
+
+.... need to summarise this. One of the goals of Baserock was to deal with
+explosive complexity of distros & the fact that you can basically never "Test
+Debian" because it has infinite forms. (https://ci.debian.net/)... 
+We tried to solve it at the build tool level. That may not have been the right
+place, but I still would be interested to research whether it is. We have
+got surprisingly far with no support for variance in the syntax at all: since
+everything is in Git we expect people to fork and do their own thing. That's
+hard because stuff conflicts (and merging YAML makes that harder still).
+
+So it's not clear yet at which level you should track different variants.
+Probably there's no right answer: some folk want a single desktop OS that
+works and is stable, which can run apps inside containers/sandboxes. But dev
+tools make this more complex. Others want to use a specific config management
+tool. I actually would bet on the RPM-ostree approach because that is the most
+practical "incremental" change.
+
+# Also: Fedora now has *3* main versions: recognising that it's just not
+# possible to produce something that works on servers and workstations
+# using a "one package to rule them all" approach. Things like default
+# firewall config just cannot be shared between desktop and server.
+# https://blogs.gnome.org/uraeus/2016/01/05/fedora-workstation-and-the-quest-for-stability-and-robustness/
+
+# And Ubuntu was formed specifically to avoid having to coexist with Debian's
+# "universal" aim.
+

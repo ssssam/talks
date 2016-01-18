@@ -1,0 +1,47 @@
+# The Baserock data model
+
+--- [topics/images/bg-rocks.jpg]
+
+# There was a whole geology theme in fact (from "Baserock")
+
+# We have a data model of:
+
+Chunks
+Strata
+Systems
+
+# Later "clusters" got added too
+
+# This is really just "groups" and "components".
+# Chunk is 'package', except not (necessarily!)
+# removable at runtime.
+
+# Oh and the build instructions are called
+# "morphologies"... hence build tool Morph.
+# Morphology is the study of derivation, so
+# it's not quite so strange.
+
+# There was a deliberate goal of *not* using
+# standard terms, to set apart from what others
+# were doing.
+
+# This is a double edged sword.
+
+# Some hate the special terms, and I usually
+# ignore them or explain them dismissively when
+# explaining Baserock to new folk.
+
+# On the other hand, widely used terms get diluted
+# really easily. E.G. if strata were called
+# 'groups' ... 'bash' is in the 'core group'
+
+# There's been talk about changing to a more
+# flexible model for years, and of dropping the
+# obscure terminology. But it's not happened yet
+# ... the current model can't be so bad.
+
+--- [topics/images/baserock-data-model.current.png]
+
+# Years later I mapped the actual data model...
+#
+# and it's not nearly so clean!

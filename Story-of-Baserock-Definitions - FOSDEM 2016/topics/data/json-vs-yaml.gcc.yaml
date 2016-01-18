@@ -1,0 +1,24 @@
+name: gcc
+kind: chunk
+
+configure-commands:
+- sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+- mkdir o
+- |
+    cd o && ../configure
+        --prefix=/usr --enable-clocale=gnu --disable-shared
+        --enable-threads=posix --enable-__cxa_atexit --enable-languages=c,c++
+        --disable-libstdcxx-pch --disable-multilib
+        --disable-libgomp --without-ppl --without-cloog
+
+build-commands:
+- cd o && make
+
+install-commands:
+- cd o && make DESTDIR="$DESTDIR" install
+- |
+    for f in `find "$DESTDIR" -name libgcc.a`; do
+        EH="`echo "$f" | sed 's/libgcc/&_eh/'`" && \
+        if [ ! -e "$EH" ]; then ln -s libgcc.a "$EH"; fi;
+    done
+- ln -s gcc "$DESTDIR/usr/bin/cc"

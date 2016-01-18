@@ -1,0 +1,6 @@
+# Continuous integration
+
+* Manual versioning schemes make it pretty difficult to do automated
+  continuous integration.
+
+* Baserock definitions format was designed to make that easy...

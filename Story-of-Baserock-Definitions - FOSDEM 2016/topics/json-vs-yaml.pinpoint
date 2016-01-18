@@ -1,0 +1,107 @@
+# JSON vs YAML
+
+---
+
+Lesson 2: Use YAML!
+
+--- [topics/images/json-vs-yaml.gcc.json.png]
+
+# A TABLE would be nice here!
+
+JSON
+
+# Using JSON is good: it's better than an ad-hoc programming
+# language that you have to execute to analyse.
+
+
+--- [topics/images/json-vs-yaml.gcc.yaml.png]
+
+YAML
+
+# But using YAML is better!
+
+# · Multiline strings
+# · Comments
+# · Sane escaping
+
+# YAML's syntax is a bit bananas at times, but
+# even if you hate it I suggest using it for a
+# bit rather than developing a new language
+# right away: it keeps you HONEST because
+# procedural stuff *feels* wrong
+#
+# Otherwise you can end up with something like 
+# CMake which must be executed to be parsed (although
+# it's still better than Shell!)
+
+---
+
+Automated editing
+
+# If you have data in a format that can easily be
+# parsed & serialised, it's tempting to automated editing
+
+# With Baserock definitions we made automated
+# edits part of the workflow, for a while. BAD!
+
+-- [topics/images/yaml-roundtripping.pyyaml.png] [bottom]
+
+PyYAML
+
+# YAML roundtripping with PyYAML is disappointing!
+
+# We muddled through by mandating a rather terrible set
+# layout for the .morph files for a while...
+
+--- [topics/images/yaml-roundtripping.ruamel.yaml.png] [bottom]
+
+ruamel.yaml
+
+# This library makes it all better! Blank lines are only
+# issue, & I sent a patch to improve that already..
+
+---
+
+Lesson 2: Use YAML!
+
+#qualified with:
+#   clearly define how you are using it
+#   use it in parallel with a custom syntax, if
+#     you want, but do *something* to avoid
+#     becoming procedural! You don't want to turn out like CMake!
+
+--- [topics/images/comparison/ypkg-solusos-cpython3.png] [top]
+
+# Only other distribution that uses YAML to
+# describe package files currently, I *think*.
+#
+# Builds on the older PiSi system that
+# used XML.
+
+
+Bonus points: ypkg (SolusOS)
+
+--- [topics/images/comparison/guix-cpython3.png]
+
+GNU Guix
+
+# Easy to parse, but needs to be executed to
+# be understood: YAML much easier to analyse.
+
+# Hooking into Guile and importing the right Guix
+# library can't be too hard, though. A Guix tool
+# to serialise data out would be super cool!
+
+--- [topics/images/comparison/nix-cpython3-top.png]
+
+Nix
+
+# Not so easy to parse, needs to be executed
+# to be understood, for which you more or less
+# need to somehow link against Nix's internals.
+
+# A Nix tool to serialise data out would be super
+# cool!
+
+# Tools to serialise stuff out from other distros
+# would be super cool.. ??

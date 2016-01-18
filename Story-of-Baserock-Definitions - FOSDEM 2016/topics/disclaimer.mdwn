@@ -1,0 +1,6 @@
+# Disclaimer
+
+I wasn't around during the initial design or implementation of Baserock. This
+isn't an exact depiction of history. In case it's not clear, the point of the
+talk isn't to criticise but to share lessons that I learned during my
+involvement.

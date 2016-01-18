@@ -1,0 +1,80 @@
+# Conclusion
+
+Baserock: 
+
+    * Between Baserock and a hard place!
+
+    * Project is still going, and has actually achieved a lot of
+      interesting stuff...
+
+        - GNOME
+        - NVIDIA Jetson support, with 3D, with completely free software.
+        - OpenStack
+        - Infrastructure largely Baserock
+
+    * Still lacks goals: not sure anyone is going to run it on their
+      desktop
+
+    * Some people are building embedded systems with it.
+
+Definitions format is interesting outside of Baserock:
+
+    * It's so simple that exporting to other formats is pretty easy
+
+    * Reference systems are pretty functional.
+
+
+-> Any other points?
+
+-> The reason I've told this story is because I think writing
+   build+integration instructions (packaging) is still quite hard to do
+   and I think we could make it easier.
+ 
+-> Paul S says to begin with a story, and end with
+a story. Which perhaps makes sense if your talk has
+a point and you are trying to make it using
+available evidence. But all I have here is the
+evidence. What is the point?
+
+
+# What do you want to see changing?
+-> this could help you decide what to include in the talk :-)
+
+- Reduce the number of supported variants: embracing OSTree
+    [variants]
+
+- Reproducible builds
+
+- Be able to browse how my system was built in a rich, usable interface
+    [browsing-tools]
+
+- Easily editable instructions
+    [json-vs-yaml]
+
+- Greater interoperation between different distros, different packaging
+  ecosystems, and individual projects.
+    [universal-data-model]
+
+- Project specific:
+    Debian:
+        - produce 'spins' like Fedora now does?
+        - provide a universal interface across all packages
+            - dgit looks amazing
+            - web interface would be better still 
+        - use ostree or other snapshot-updates method
+    Fedora:
+        - move to a better format than rpmbuild ??
+        - use ostree or other snapshot-updates method
+    NixOS:
+        - move to a better format than the current one (heh)
+        - produce 'spins' like Fedora
+
+- Even longer term: use structured+declarative build systems in
+  all software projects, to allow for Bazel-like incremental
+  builds of the entire OS ! [but can't you already do that with
+  packaging? isn't that kind of the point of packages?]
+
+- Embedded software:
+    - this is distros devroom, not embedded devroom
+    - but this is all super relevant to 'embedded' / 'appliance' dev
+- Same for people producing containers

@@ -1,0 +1,42 @@
+# Baserock - hopes and dreams
+
+-> Use the term 'manifesto'? We never used it before, but seems appropriate
+
+-> It's hard to discuss this right at the beginning without spoiling a lot of
+the talk, right? or not?
+
+* There were a few key radical ideas (I may be mis-quoting):
+
+  - everything in Git
+     -> This works great!
+
+  - build instructions described in a declarative, structured JSON
+    format (.morph files)
+        [json-vs-yaml]
+
+  - native compile only
+        [native-compile-vs-cross-compile]
+
+  - build instructions stored in upstream repos
+        [upstream-project-providing-their-own-build+integration-instructions]
+
+  - proscribed workflow for developers:
+
+        [editing-tools]
+
+  - atomic upgrade & rollback using Btrfs
+
+    -> Btrfs still isn't something you can enforce on people
+    -> Rollback and upgrade actually works great, but OStree approach
+       is probably better due to working with existing filesystems
+
+  - the death of "packaging" ...
+
+    * why I used "build+integration instructions" rather than "packaging" in the title.
+    * this is kind of hyperbolic, what it meant was:
+        * using upstream directly as much of possible instead of patching (some distros do this already more than others, apparently Arch is good in this respect)
+        * avoiding the combinatorial explosion that comes from
+          attempting to support arbitrary sets of packages
+          at arbitrary versions
+        
+      [variants]

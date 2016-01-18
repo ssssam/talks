@@ -1,0 +1,16 @@
+# baserock-trove
+
+--- [topics/images/trove-example.png]
+
+Git mirroring
+
+# All sources are mirrored into a Git server
+# (we use an appliance system named Trove
+# that makes this convenient).
+
+# Reduces complexity of build tool and definititions
+# language, and is convenient for development
+# too.
+
+# Folk sometimes clone stuff from git.baserock.org
+# just because URL is predicatable

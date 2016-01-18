@@ -1,0 +1,291 @@
+# Evolution of the Baserock Definitions format
+
+# -> needs to include some chunk examples too! GCC for example!
+
+# a "cautionary tale" perhaps of how starting your own meta-distro is NOT all
+# fun and games ...
+
+--- [topics/images/evolution/2012-01.png]
+# commit 3656d5f42d5fbf53bb38a783d85aa9062bf12c6e
+# no public release
+
+Baserock definitions:
+<span color="orange">January 2012</span>
+
+# Baserock started a few months ago with the idea
+# that it'd be "done by Christmas" (it's just
+# automating linux-from-scratch, right???)
+
+# Still in JSON
+# Not even bootstrapped at this point - just a toy
+
+include(topics/baserock-data-model.pinpoint)
+
+--- [topics/images/evolution/2012-01.png]
+
+--- [topics/images/json-vs-yaml.gcc.json.png]
+
+# Here is an example of build instructions.
+#
+# Note that these are wrapping the existing build
+# commands (configure, make, make install). One
+# day it would be cool to do incremental builds
+# down to the file level across the whole OS ...
+# look at Bazel for how this could work... but
+# that's a whole different and much larger
+# project!
+
+# We kept them in branches of the actual component
+# repos, at this point. E.G. gcc.morph lives in
+# gcc.git.
+
+# But:
+#   - this of course means making a local fork for everything we add build
+#     instructions to
+#   - which makes updating versions painful: you need to merge!
+#   - autodetection supposed to help..
+#   - configure options are often needed: so more components needed build
+#     instructions than we thought
+#   - and it's generally rubbish having Baserock development spread across
+#     loads of branches in loads of different repos.
+
+# Most of all, it's SLOW!
+#   - you need to pull loads of git repos just to validate or analyse the build
+#     instructions
+#   - autodetection actually causes more trouble than it's worth, for this reason,
+#     and we later removed it.
+---
+
+Lesson 1: Keep all the
+data in one place!
+
+--- [topics/images/evolution/2012-10.png]
+
+# October 2012: we introduced the ability to
+# split strata across different repos.
+
+# This was a pain in the ass!
+
+--- [topics/images/evolution/2014-01.conflicting.png]
+
+# Veteran Baserock users will recognise this error...
+
+# The build graph became impossible to deal with
+# given all this flexibility: you'd always have
+# this:
+
+--- [topics/images/conflicting-versions.png]
+
+#A .morph file includes another one, but something
+#else build-depends on that .morph file *from a
+#different ref*. This would *always* happen just
+#when you least expected it!!
+
+# 2 years later (Jan 2014)
+
+# We set the refs to 'null' and later removed the
+# ability to do this.
+#
+# This had quite large implications because it
+# means that to develop systems based on Baserock
+# definitions you pretty much have to fork the
+# reference systems repo itself. But this is a
+# pretty established pattern, e.g. Buildroot works
+# the same way.
+#
+# Nobody has ever really asked for that feature to
+# be readded...
+
+Lesson 1: Keep all the
+data in one place!
+
+# Up til last year the build tool would do
+# automated guessing of what build system
+# a component used.
+#
+# People kinda liked this, but it had the
+# *massive* downside that to compute the
+# build graph, you had to have *all* repos
+# available.
+#
+# No amount of caching solves the actual
+# problem: the build graph depends on the
+# contents of half of the source repos
+# involved in the build.
+
+--- [topics/images/build-system-explicit.png]
+
+# Now you have to specify build-system manually,
+# and it's OK! and all the data is in one place!
+
+# You might be thinking that keeping all data
+# in one place is at odds with pushing all the
+# build+integration instructions upstream.
+#
+# I'm totally in favour of having the instructions
+# upstream but I don't think that they can be
+# interpreted by the top level build tool
+# directly.
+#
+# There should be some kind of manually
+# triggered "update these definitions from
+# upstream information" step.
+#
+# Trying to have the
+# toplevel build tool do this implicitly &
+# automatically is a no go!
+
+--- [topics/images/evolution/2013-03.release.png]
+# "Baserock 6"
+
+March 2013:
+Baserock 6 release
+
+--- [topics/images/evolution/2013-03.build-essential.png]
+
+# Became properly bootstrapped.
+
+include(topics/json-vs-yaml.pinpoint)
+
+--- [topics/images/evolution/2015-03.release.png]
+
+March 2015
+
+Baserock 15.10
+
+Definitions format version 0
+
+# Move towards recognising the format matters independently of the tool
+
+# Definitions VERSION: current version "0"
+
+include(topics/versioning.pinpoint)
+
+--- [topics/images/migrations.jpg]
+
+Migrations
+
+#- `git merge` was the recommended tool for updating from upstream definitions
+#  Git repo. How well does that work? It doesn't work very well. Line-by-line
+#  merge of structured YAML data is rubbish.
+# 
+#
+#   The use of SHA1s in the 'ref' field makes it
+#   pretty hard to `git merge` updates in, too. Do I
+#   want to upgrade from version
+#   b96713f3913f7624163f3199906654a17358708b of
+#   Linux to version
+#   fd5b9b75ed1af41cc6c967d729bd1c41d33bacf7 of
+#   Linux?
+#
+#    -> Give some examples, or demo.
+#
+#- Writing a git merge driver for the YAML format would have helped a lot, and
+#  wouldn't be super hard but we've never done it [probably because the Baserock
+#  developers themselves mostly use the upstream repo, so they don't see this
+#  pain]
+# 
+#- Migrations: automated -- this seems to be working OK (not many complaints, at
+#  least).
+#
+#    - Migrations live in the Baserock reference system definitions Git repo,
+#      which doesn't actually make sense, because if updating an old fork you
+#      want to *first* run the migrations, *then* git merge from 'master' of
+#      the reference system definitions. We should move them elsewhere.
+#
+#    -> Maybe talk thru them?
+#
+# Using ruamel.yaml
+# Seem to work well
+#
+# Only mistake is keeping them in the upstream
+# definitions repo. If you have a fork of
+# definitions, to make the merge easier, you
+# usually should run the migrations *first*, then
+# `git merge`.
+#
+# Having the migrations you need to run in the
+# repo you need to merge from after you have run
+# them: that's unnecessarily confusing!
+#
+# It's a pain having many different repos, but in
+# this case it's necessary!
+
+--
+
+Lesson 4:
+Version the format
+
+--- [topics/images/evolution/2015-11.release.png]
+
+Nov 2015
+
+Baserock 15.47
+
+Definitions format version 7
+
+# Adds schemas using json-schema!
+
+---
+
+Lesson 5:
+Specify the syntax &amp; structure
+
+# If you use YAML the syntax is specified..
+# good reason to use it!
+
+--- [topics/images/json-schema-example.png]
+
+json-schema
+
+#  json-schema works for either JSON or YAML, since you are validating the data
+#  structures and not the syntax.
+#  careful with types! e.g. unpetrify-ref can be an int or float,
+#  unless properly quoted.
+
+---
+
+Lesson 6:
+Specify the data model
+
+# I mentioned already how Baserock has
+# this chunks -> strata -> systems model..
+
+--- [topics/images/baserock-data-model.current.png]
+
+# ... which turned out like this.
+
+# I mapped this in OWL ("Web Ontology Language"),
+# a data modelling language.
+
+#### insert the source maybe?
+#
+# Formally modelling it, and trying to convert the
+# data into RDF, was a lot better than just
+# drawing the data model onto a piece of paper
+# because it made it obvious that the data model
+# was more complex than intended!
+#
+# RDF and OWL for programmers is a whole other
+# talk... no time to dig into it now.
+
+--- [topics/images/software-integration-ontology.png]
+
+## The software ontology -- towards a unified data model
+
+# This is a base vocabulary for all distro/build/integration tools
+
+#   - you can introduce whatever other types you want: that's the beauty of
+#   linked data!
+#   - e.g. Project from DOAP, Package from SPDX
+
+# If you can get all this info out accurately of
+# your build instructions, or update it automatically,
+# congratulations, your language is structured enough!
+#
+# + upstream provides their own build instructions
+
+--- [topics/images/software-integration-ontology.png]
+
+<u>https://github.com/ssssam/software-integration-ontology/</u>
+

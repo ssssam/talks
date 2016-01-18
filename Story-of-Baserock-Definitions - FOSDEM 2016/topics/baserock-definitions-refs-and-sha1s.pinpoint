@@ -1,0 +1,87 @@
+# petrify, CI, refs and sha1s
+
+# This is a super significant commit.
+
+# First I need to talk a bit about one of the original design principles of
+# Baserock: reproducibility.
+
+# This has been always slightly fuzzy ... the idea is.
+#  - you should keep source for everything you release
+#  - source for everything you release should be buildable
+#    even years later
+
+# Trove is one part of the puzzle. You set one up locally as a VM and it
+# mirrors every commit of everything you care about. Handy!
+
+# Free software projects are *generally* good at keeping repos alive... unless
+# they're on Gitorious! And who knows what might vanish in future!
+
+# Existing tools for this exist, e.g. Buildroot `make sources` which downloads
+# all sources. But how useful is it having Git history for everything
+# available? It's really useful!
+
+--- [topics/images/bg-petrify.jpg]
+
+Petrify??
+
+--- [topics/images/evolution/2014-04.petrify-master.png]
+
+April 2014
+# commit ed106b012c454e7dc172051744db094cdddd766c
+
+# Another case of rock terminology..
+
+# The idea here was that normal definitions
+# would refer to a specific *branch* of a
+# component to build, e.g. 'master'.
+
+# Then when you make a release you *petrify*,
+# which means "convert all refs to SHA1s".
+
+# Can anyone see the hole in this idea?
+# Bear in mind we still keep build instructions
+# in branches of the actual component repos at
+# this point!
+
+# So if someone forks definitions, their repo
+# points our baserock/whatever branch of gcc.git,
+# for example. Someone pushes to that branch.
+# Suddenly the downstream user has to rebuild!
+
+# It's a pretty big design flaw to have things
+# "changing under your feet" like this.
+
+# The simplest solution at the time was to just
+# always use SHA1s for the 'ref' field. Hence this
+# commit:
+
+--- [topics/images/evolution/2014-04.petrify-master.png]
+
+# The petrify and unpetrify commands were
+# removed from Morph...
+
+# The 'unpetrify-ref' field became an unofficial
+# 'whatever the upstream branch this SHA1 came
+# from' field ...
+
+# Nobody likes dealing with SHA1s directly... it
+# has and continues to draw complaints!
+
+# Continuous integration of stuff from upstream is
+# still very much a concern... we have a prototype
+# tool named Firehose to do this. But we realised
+# that "what you want to build" and "where you
+# want to integrate updates from" are really
+# *different* concerns (although closely related!)
+#
+# I'll not talk about continuous integration in
+# this talk, but notice how the definitions format
+# makes it very easy? You update one field, then
+# run a build. This is what we get for giving up
+# incremental builds. It can all be done
+# automatically. Although, due to lack of
+# incremental builds, the resources required can
+# be too much. Perhaps this is why it's not yet
+# solved and we aren't actually doing this
+# automated integration yet.
+

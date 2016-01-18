@@ -1,0 +1,19 @@
+# Upstream projects providing their own build+integration instructions
+
+[baserock-chunks-in-definitions]
+
+-> Approaches:
+
+    language-specific, e.g. CPAN, PyPI, RubyGems
+        -> only partial dependency information
+
+-> Needs:
+    * a universal way of referring to dependencies. Not as hard as you think:
+      the URL of the version control repo or .doap file would do it. 'Import'
+      tools could use this info.
+
+walters' Build API
+
+[importing]
+
+[universal-data-model]

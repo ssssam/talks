@@ -1,0 +1,55 @@
+# Versioning
+
+----
+
+Lesson 3:
+
+Write multiple tools
+
+# Around this time a new build tool was
+# introduced, YBD, and it found lots of
+# holes in the definitions format. Things
+# that were built into build tool like
+# default build commands.
+
+---
+
+Lesson 4:
+Version the format
+
+# Initially we had no versioning, leading to
+# unpredictable crashes in build tools when things
+# changed.
+#
+# Native compile, and build tool running inside the
+# systems it builds, made this into a preposterously
+# bad issue: users would try to upgrade, try to
+# build an upgrade using their build worker, and
+# it would be too old to build the new version.
+# Comically broken.
+#
+#- Added a VERSION field with an integer. Still doesn't please everyone,
+#  but now error is likely to be "this build tool is too old/new for these
+#  definitions" rather than a random Python backtrace.
+#
+# Other tools:
+# 
+# - Portage/Gentoo: EAPI version (1-6) migrations?
+# - Debian: has a versioning thing. migrations?
+# - RPM: ??
+# 
+# - BitBake: no versioning, tightly coupled to the OE-Core metadata, and they
+#   live in the same repo.
+# 
+# - Ant/Maven: plugin-based, plugins can extend the input format.
+# 
+# - CMake: rather advanced 'policies' framework; whatever you think of the CMake
+#   language, they really do make a lot of effort for backwards compatibility.
+#   Woeful for forward migrations, though -- how many CMake users are using the
+#   'imported targets' pattern? Barely any of the modules built into CMake even
+#   use it right now.
+# 
+# - Nix: ??
+# 
+# - Guix: ??
+

@@ -3,8 +3,8 @@
 - name: "[Apache Ant](https://ant.apache.org/) + [Apache Ivy](https://ant.apache.org/ivy/)"
   syntax: XML
   schemas:
-    - Ant: can't find one..
-    - Ivy: https://ant.apache.org/ivy/schemas/ivy.xsd
+    - "Ant: no"
+    - "Ivy: https://ant.apache.org/ivy/schemas/ivy.xsd"
   data-model: "?"
   declarative: yes (Ivy)
   procedural: yes (Ant)
@@ -19,8 +19,13 @@
     You would probably want to autogenerate the XML from a more sane format.
   artifact-caching:
     "[Maven repo](https://maven.apache.org/guides/introduction/introduction-to-repositories.html)": manual version numbers
+  incremental-builds: \?
+  data-in-one-place: no
+  build-tools: Ant
 
 - name: "[Baserock definitions](http://wiki.baserock.org/definitions/current/)"
+  images:
+    - topics/images/comparison/baserock-definitions-cpython3.png
   syntax: YAML
   schemas: http://git.baserock.org/cgi-bin/cgit.cgi/baserock/baserock/definitions.git/tree/schemas
   data-model: http://git.baserock.org/cgi-bin/cgit.cgi/baserock/baserock/definitions.git/tree/schemas/baserock.owl
@@ -32,20 +37,28 @@
   machine-readable: Trivially
   full-distro:
     - "[Baserock reference systems](http://git.baserock.org/cgi-bin/cgit.cgi/baserock/baserock/definitions.git/tree/)"
+  branch-whole-system: yes
   artifact-caching:
     "[Baserock artifact cache](http://wiki.baserock.org/caching/)": hash of inputs
   import-from: [CPAN, NPM, PyPI, RubyGems]
   export-to: Shell (cross-bootstrap)
   cross-compile: no
   build-tools:
-    - [Morph](http://wiki.baserock.org/Morph/)
-    - [YBD](http://wiki.baserock.org/ybd/)
+    - "[Morph](http://wiki.baserock.org/Morph/)"
+    - "[YBD](http://wiki.baserock.org/ybd/)"
   browse-tools:
     - cgit frontend in [Trove](http://wiki.baserock.org/Trove/) Git server
   edit-tools:
-    - [Morph](http://wiki.baserock.org/Morph/)
+    - "[Morph](http://wiki.baserock.org/Morph/)"
+  incremental-builds: not easily
+  reproducible-builds: functionally reproducible
+  data-in-one-place: yes   # http://git.baserock.org/cgi-bin/cgit.cgi/baserock/baserock/definitions.git/tree/
+  versioned: yes, with automatic migrations
 
 - name: "[BitBake](https://www.yoctoproject.org/docs/1.6/bitbake-user-manual/bitbake-user-manual.html) recipes"
+  images:
+      - topics/images/comparison/bitbake-poky-cpython3-python.inc.png
+      - topics/images/comparison/bitbake-poky-cpython3-top.png
   syntax: "[BitBake](https://www.yoctoproject.org/docs/1.6/bitbake-user-manual/bitbake-user-manual.html#bitbake-user-manual-metadata)"
   users: OpenEmbedded, Yocto, many commercial & some public derivatives, ...
   procedural: yes
@@ -57,9 +70,15 @@
   full-distro:
     - "[OpenEmbedded-Core](http://www.openembedded.org/wiki/OpenEmbedded-Core)"
     - "Yocto [Poky](https://www.yoctoproject.org/tools-resources/projects/poky)"
+  branch-whole-system: yes (multiple layers though)
+  data-in-one-place: no
   artifact-caching:
     "[Setscene](https://www.yoctoproject.org/docs/1.6/bitbake-user-manual/bitbake-user-manual.html#setscene)": Hash of build inputs
   cross-compile: yes
+  incremental-builds: yes
+  reproducible-builds: no
+  versioned: no (build tool lives alongside recipes)
+  build-tools: BitBake
 
 - name: "[BOSH](https://bosh.io/)"
   syntax: YAML
@@ -76,9 +95,10 @@
     from source, and then sets up configuration for them and manages instances
     within a cloud provider as well.
   artifact-caching: "?"
+  build-tools: BOSH
 
 - name: "[Bazel](https://bosh.io/)"
-  syntax: Bazel (Python-like)
+  syntax: Bazel BUILD language (Python-like)
   schemas: "?"
   data-model: "?"
   procedural: yes
@@ -90,9 +110,20 @@
     Bazel is a build tool for applications, but it has handling for [external
     modules](http://bazel.io/docs/external.html) that can manage external
     dependencies.
+
+    It requires knowledge of exactly which files depend on other files in
+    order to do reproducible builds, i.e. it can't "magically" work out the
+    dependencies from an existing Makefile.
   artifact-caching: "?"
+  incremental-builds: yes
+  reproducible-builds: yes
+  data-in-one-place: no
+  versioned: no
+  build-tools: Bazel
 
 - name: "[Buildroot](http://buildroot.uclibc.org/)"
+  images:
+    - topics/images/comparison/buildroot-cpython3-top.png
   syntax: Make
   users: Buildroot, OpenWRT, widespread commercial use, ...
   documentation: http://buildroot.uclibc.org/downloads/manual/manual.html#adding-packages
@@ -100,8 +131,28 @@
   examples:
     cpython: "[package/python3/python3.mk](http://git.buildroot.net/buildroot/tree/package/python3/python3.mk), [package/python3/Config.in](http://git.buildroot.net/buildroot/tree/package/python3/Config.in)"
   full-distro: yes
+  branch-whole-system: yes
   artifact-caching: no
   cross-compile: yes
+  incremental-builds: yes
+  data-in-one-place: yes
+
+- name: "[Cerbero](http://cgit.freedesktop.org/gstreamer/cerbero/)"
+  syntax: Python
+  users: GStreamer SDK
+  schemas: no
+  documentation:
+    - http://docs.gstreamer.com/display/GstSDK/Multiplatform+deployment+using+Cerbero
+  procedural: yes
+  examples:
+    cpython: http://cgit.freedesktop.org/gstreamer/cerbero/tree/packages/python3.package
+  data-model: not specified
+  full-distro: no
+  artifact-caching: no
+  cross-compile: yes
+  data-in-one-place: yes
+  versioned: no
+  build-tools: Cerbero
 
 - name: "[CMake](http://cmake.org/) [ExternalProject](https://cmake.org/cmake/help/v3.3/module/ExternalProject.html) / [CPM](https://github.com/iauns/cpm) / [Hunter](https://github.com/ruslo/hunter) / [biicode](http://biicode.com/)"
   syntax: CMake
@@ -115,18 +166,27 @@
     deal with building external source code.
   artifact-caching: no
   cross-compile: yes
+  data-in-one-place: yes
+  versioned: core only (with very strong backwards-compatibility)
+  build-tools: CMake
 
 - name: "[Conary](https://github.com/sassoftware/conary)"
   syntax: Python
   procedural: yes
   users: Foresight Linux (discontinued)
   full-distro: yes
+  branch-whole-system: \?
   artifact-caching:
     Conary packages: manual version numbers
   machine-readable: no
 
 - name: "[Debian](http://debian.org/)"
-  syntax: key-value (debian/control, debian/copyright, debian/changelog), Make (debian/rules)
+  images:
+    - topics/images/comparison/debian-cpython3-control.png
+    - topics/images/comparison/debian-cpython3-rules-top.png
+  syntax:
+    - Key-value (control, copyright, changelog)
+    - Make (rules)
   declarative: yes (control)
   procedural: yes (rules)
   schemas:
@@ -139,6 +199,7 @@
     cpython: "[debian/rules](https://alioth.debian.org/scm/loggerhead/pkg-python/python3-defaults-debian/view/head:/debian/rules), [debian/control](https://alioth.debian.org/scm/loggerhead/pkg-python/python3-defaults-debian/view/head:/debian/control) ([pkg-python project main page](https://alioth.debian.org/projects/pkg-python)"
   machine-readable: maybe
   full-distro: yes
+  branch-whole-system: no (dgit helps)
   artifact-caching:
     "[deb packages](https://www.debian.org/doc/manuals/debian-faq/ch-pkg_basics)": manual version numbers
   cross-compile: partial
@@ -160,24 +221,33 @@
   edit-tools:
     "[dgit](https://lwn.net/Articles/651673/)": |
       Git interface across all Debian source packages.
+  incremental-builds: yes
+  data-in-one-place: no
+  versioned: if you use debhelper... (no automated migrartions)
 
 - name: "[GNOME Continuous](https://wiki.gnome.org/Projects/GnomeContinuous)"
   syntax: JSON
   declarative: yes
   users: GNOME Continous CI system
   full-distro: no
+  branch-whole-system: yes
   example:
     GNOME: https://github.com/GNOME/gnome-continuous/blob/master/manifest.json
   machine-readable: yes
   artifact-caching:
     "[ostree](https://wiki.gnome.org/Projects/OSTree) repo": hash of contents
   cross-compile: no
+  incremental-builds: yes
+  data-in-one-place: yes   # https://github.com/GNOME/gnome-continuous/blob/master/manifest.json
+  versioned: no
+  build-tools: gnome-continuous
 
 - name: "[GNOME jhbuild](https://wiki.gnome.org/Projects/Jhbuild)"
   syntax: XML
   declarative: yes
   users: GNOME project, ...
   full-distro: no
+  branch-whole-system: not easy
   schemas:
     - https://git.gnome.org/browse/jhbuild/tree/modulesets/moduleset.dtd
     - https://git.gnome.org/browse/jhbuild/tree/modulesets/moduleset.rnc
@@ -185,9 +255,16 @@
   machine-readable: yes
   artifact-caching: no
   cross-compile: no
+  incremental-builds: yes
+  data-in-one-place: yes   # https://git.gnome.org/browse/jhbuild/tree/modulesets/
+  versioned: no
+  build-tools: jhbuild
 
 - name: "[GNU Guix](https://www.gnu.org/software/guix)"
   syntax: "[GUILE](https://www.gnu.org/software/guile/) (Scheme)"
+  images:
+    - topics/images/comparison/guix-cpython2.png
+    - topics/images/comparison/guix-cpython3.png
   declarative: yes
   procedural: yes
   schemas:
@@ -196,9 +273,11 @@
   documentation:
     - https://www.gnu.org/software/guix/manual/html_node/Invoking-guix-import.html
   users: GNU GUIX Software Distribution
+  versioned: no
   full-distro: yes
+  branch-whole-system: yes
   examples:
-    cpython: "[gnu/packages/python.scm](http://git.savannah.gnu.org/cgit/guix.git/tree/gnu/packages/python.scm#n204) (this describes many Python add-on libraries in addition to the 'cpython' Python interpreter)"
+    cpython: "[gnu/packages/python.scm](http://git.savannah.gnu.org/cgit/guix.git/tree/gnu/packages/python.scm#n258) (this describes many Python add-on libraries in addition to the 'cpython' Python interpreter)"
   machine-readable: yes
   import-from: [CPAN (Perl), CRAN (R), ELPA (Emacs), GNU, Haskell, Nix, PyPI, RubyGems]
   other-features: "[config-management](https://www.gnu.org/software/guix/manual/html_node/System-Configuration.html)"
@@ -209,6 +288,10 @@
     "[packages.scm](http://git.savannah.gnu.org/cgit/guix/guix-artwork.git/tree/website/www/packages.scm": |
       Web frontend to Guix package list. Deployed at
       <https://www.gnu.org/software/guix/packages/>.
+  incremental-builds: no
+  data-in-one-place: yes     # http://git.savannah.gnu.org/cgit/guix.git/
+  versioned: no
+  build-tools: GUIX
 
 - name: "[Gradle](https://www.gradle.org/)"
   syntax: "[Gradle](https://docs.gradle.org/current/dsl/)"
@@ -219,6 +302,8 @@
   full-distro: no
   artifact-caching:
     "[Maven repo](https://maven.apache.org/guides/introduction/introduction-to-repositories.html)": manual version numbers
+  data-in-one-place: no
+  build-tools: Gradle
 
 - name: "[Maven](http://maven.apache.org/)"
   syntax: XML
@@ -227,38 +312,63 @@
   full-distro: no
   artifact-caching:
     "[Maven repo](https://maven.apache.org/guides/introduction/introduction-to-repositories.html)": manual version numbers
+  data-in-one-place: no
+  build-tools: Maven
 
 - name: "[Meson](http://maven.apache.org/)"
   syntax: "[Meson](https://github.com/mesonbuild/meson/wiki/Syntax)"
   users: Projecs using Meson build system
   full-distro: no
   artifact-caching: no
+  data-in-one-place: no
+  versioned: no
+  build-tools: Meson
 
 - name: "[Nix expressions](https://nixos.org/nix/manual/#chap-writing-nix-expressions)"
+  images:
+    - topics/images/comparison/nix-cpython3-top.png
   syntax: "[Nix Expression Language](https://nixos.org/nix/manual/#ch-expression-language)"
+  schemas:
+    - https://nixos.org/nix/manual/#ch-expression-language
   declarative: yes
   users: NixOS, at least some commercial derivatives
   examples:
     cpython: "[pkgs/development/interpreters/python/3.4/default.nix](https://github.com/NixOS/nixpkgs/tree/master/pkgs/development/interpreters/python/3.4/default.nix)"
   full-distro: yes
+  branch-whole-system: yes
   artifact-caching:
     "Nix [Binary Cache](https://nixos.org/wiki/Binary_Cache)": hash of build inputs
+  incremental-builds: no
+  data-in-one-place: yes   # https://github.com/NixOS/nixpkgs/
+  # version marker is lib/minver.nix
+  versioned: yes, no automated migrations
+  build-tools: Nix
 
 - name: "Portage [ebuild](https://wiki.gentoo.org/wiki/Ebuild)"
-  syntax: Shell-like
+  images:
+    - topics/images/comparison/portage-gentoo-cpython3-top.png
+  syntax: Shell subset
   data-model: https://wiki.gentoo.org/wiki/Project:Package_Manager_Specification
   declarative: yes (metadata)
   procedural: yes
   users: Gentoo, Chrome OS, CoreOS, other Gentoo derivatives, Exherbo (kind of)
   examples:
     cpython:
-      - "[Gentoo dev-lang/python/python-3.4.3.ebuild](https://gitweb.gentoo.org/repo/gentoo.git/tree/dev-lang/python/python-3.4.3.ebuild)"
+        - "[Gentoo dev-lang/python/python-3.4.3.ebuild](https://gitweb.gentoo.org/repo/gentoo.git/tree/dev-lang/python/python-3.4.3-r7.ebuild)"
   full-distro: yes
+  branch-whole-system: yes (ish)
   editing-tools:
     - "[Gentoolkit](https://wiki.gentoo.org/wiki/Gentoolkit)"
     - "[Q Applets](https://wiki.gentoo.org/wiki/Q_applets)"
+  incremental-builds: \?
+  data-in-one-place: yes   # https://gitweb.gentoo.org/repo/gentoo.git
+  # EAPI standard versioned
+  versioned: yes, no automated migrations
+  build-tools: Portage, others?
 
 - name: "[Ports-style](https://en.wikipedia.org/wiki/Ports_collection)"
+  images:
+    - topics/images/comparison/pkgbuild-arch-cpython3-middle.png
   syntax: Shell
   data-model:
     PKGBUILD: https://www.archlinux.org/pacman/PKGBUILD.5.html
@@ -267,7 +377,8 @@
   documentation:
     - https://wiki.archlinux.org/index.php/Arch_Packaging_Standards
   users:
-    - Arch Linux & derivatives, FreeBSD ports, OpenBSD ports, pkgsrc (NetBSD ports), CRUX, Void Linux, ...
+    - Alpine Linux, Arch Linux & derivatives, FreeBSD ports, OpenBSD ports,
+      pkgsrc (NetBSD ports), CRUX, Void Linux, ...
   examples:
     cpython:
       - "[Arch PKGBUILD](https://projects.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python)"
@@ -277,18 +388,29 @@
     guidelines, extract everything. You would need to parse the script
     to get build, configure and packaging commands.
   full-distro: yes
+  branch-whole-system: depends on layout
   artifact-caching: no
+  incremental-builds: \?
+  data-in-one-place: yes   # https://projects.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python
+  versioned: no
 
 - name: "[RPM](http://rpm.org/) .spec files"
+  images:
+    - topics/images/comparison/rpmbuild-fedora-cpython3-top.png
+    - topics/images/comparison/rpmbuild-fedora-cpython3-package-info.png
+    - topics/images/comparison/rpmbuild-fedora-cpython3-build-script.png
+    - topics/images/comparison/rpmbuild-fedora-cpython3-package-rules.png
+    - topics/images/comparison/rpmbuild-fedora-cpython3-changelog.png
   syntax: "[RPM spec syntax](https://docs.fedoraproject.org/en-US/Fedora_Draft_Documentation/0.1/html/RPM_Guide/ch-specfile-syntax.html)"
   users: CentOS, Fedora, Red Hat, Meego, SuSE, commercial derivates
   declarative: yes (metadata)
   procedural: yes
   examples:
     cpython:
-      - "[Fedora python.spec](http://pkgs.fedoraproject.org/cgit/python.git/tree/python.spec)"
-      - "[SuSE python/python-base.spec](https://build.opensuse.org/package/view_file/openSUSE:Factory/python/python-base.spec?expand=1) ([openSUSE:Factory/python package info](https://build.opensuse.org/package/show/openSUSE:Factory/python)"
+      - "[Fedora python.spec](http://pkgs.fedoraproject.org/cgit/python3.git/tree/python3.spec)"
+      - "[SuSE python/python-base.spec](https://build.opensuse.org/package/view_file/openSUSE:Factory/python3/python3-base.spec?expand=1) ([openSUSE:Factory/python package info](https://build.opensuse.org/package/show/openSUSE:Factory/python)"
   full-distro: yes
+  branch-whole-system: no
   artifact-caching:
     "[rpm packages](http://rpm.org/)": manual version numbers
     "[rpm-ostree](https://github.com/projectatomic/rpm-ostree)": hash of contents
@@ -298,17 +420,26 @@
       Open Build service, Runs at <https://build.opensuse.org/> and other places.
     "[rpmbuild](http://www.rpm.org/max-rpm-snapshot/rpmbuild.8.html)": Default tool
   cross-compile: yes
+  incremental-builds: yes
+  data-in-one-place: no
+  versioned: no (but never changes!)
+  build-tools: rpmbuild
 
 - name: "[upkg](http://www.paldo.org/wiki/Development#English)"
+  images:
+    - topics/images/comparison/upkg-paldo-cpython3.png
   syntax: XML
   declarative: yes
   users: "[Paldo operating system](http://www.paldo.org/wiki/Development#English)"
   examples:
-    cpython: "[Python.xml](http://paldo.org/paldo/unstable/specs/Python.xml)"
+    cpython: "[Python.xml](http://paldo.org/paldo/unstable/specs/Python3.xml)"
   full-distro:
     - "[Paldo operating system](http://www.paldo.org/wiki/Development#English)"
+  branch-whole-system: yes
   artifact-caching:
     upkg packages: manual version numbers
+  data-in-one-place: yes
+  versioned: no
 
 - name: "[xdg-app](https://github.com/alexlarsson/xdg-app) builder"
   syntax: JSON
@@ -319,14 +450,23 @@
   full-distro: no
   artifact-caching:
     "[ostree](https://wiki.gnome.org/Projects/OSTree) repo": hash of contents
+  versioned: no
+  build-tools: xdg-app-builder
 
 - name: "[ypkg](https://github.com/solus-project/ypkg) and [eopkg](https://github.com/solus-project/package-management)"
+  images:
+    - topics/images/comparison/ypkg-solusos-cpython3.png
   syntax: XML or YAML
   data-model: "[https://solus-project.github.io/ypkg-docs/packageyml_format/README.html](package.yml)"
   users: SolusOS, and ancestors (PiSi Linux, Pardus Linux)
   examples:
-    cpython: "[programming/python/python3/pspec.xml](https://github.com/solus-project/repository/blob/master/programming/python/python3/pspec.xml)"
+    cpython: "[python3/package.yml](https://git.solus-project.com/packages/python3/tree/package.yml)"
   full-distro:
      - yes
+  branch-whole-system: yes
   artifact-caching:
     "[eopkg packages](https://wiki.solus-project.com/Packaging)": manual version numbers
+  incremental-builds: \?
+  reproducible-builds: \?
+  data-in-one-place: no
+  versioned: no

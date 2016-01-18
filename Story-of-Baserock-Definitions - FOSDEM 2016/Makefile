@@ -1,2 +1,2 @@
-talk.pinpoint: talk.pinpoint.in
-	m4 $> > $@
+talk.pinpoint: talk.pinpoint.in topics/*
+	m4 $< > $@
