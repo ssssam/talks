@@ -1,0 +1,194 @@
+# https://fosdem.org/2016/schedule/event/format_for_build_and_integration_instructions/
+
+# bg-1.jpg: http://www.manchestereveningnews.co.uk/news/local-news/image-reddish-vale-country-park-6495444
+
+# What's the STORY? Well, what's the timeline? [don't actually talk about this!]
+#    2011/7: Rob + Daniel in Korea, apparently want something better than Meego
+#            or Yocto, and invent it
+#    2011/8: Paul is sold on the idea, Lars is hired. Plan is that this will
+#            all be done in 6 months.
+#    2011/9-?: Initial work on Morph build tool, aiming to bootstrap Baserock
+#            reference system (just called 'Baserock' at this point) from
+#            Debian 6 (Squeeze), following Linux From Scratch etc. Should be
+#            done by Christmas. Code all hosted on Gitorious.
+#    2011/12:
+#    ... blah blah blah ...
+#    2012/08: About when I got involved
+#    2012/09: Attempted initial commercial "release"
+#             MUSTARD introduced, lots of "requirements"
+#    2015/11: Baserock kind of unwanted, but it's still not entirely clear to
+#            go about achieving its goals using existing tools, either.
+
+# * Focus on definitions formats! Everyone knows about distros.
+# * YAML formats:
+#       - need to be welldefined!
+#         BOSH as a *bad* example!
+#         XML does much better there.
+# * JSON:
+#       oh, god, hideous
+#       give examples of old Baserock defs in JSON
+#
+# * Branching:
+#       - all build instructions in one repo makes it much easier to branch and
+#         merge the whole system!
+
+# * Deployment:
+#       - "packaging" completely separate
+#       - Baserock provides its own deployment stuff, which is probably a mistake
+#       - might involve simply taking a .tar file of the filesystem tree
+#       - at the other extreme, might involve setting up and booting an OpenStack VM
+#         (which Morph can do, but could just as easily use e.g. Ansible)
+#       - Most things that Baserock deployment stuff does, another tool already
+#         exists to do it.
+
+# History:
+# #     - "all in one" solution
+
+topics: 20
+    baserock-components.mdwn
+    baserock-data-model.mdwn
+    baserock-introduction.mdwn
+    baserock-manifesto.mdwn
+    browsing-tools.mdwn
+    build+integration-tools.mdwn
+    conclusion.mdwn
+    continuous-integration.mdwn
+    declarative-and-structured.mdwn
+    disclaimer.mdwn
+    editing-tools.mdwn
+    exporting.mdwn
+    importing.mdwn
+    introduction.mdwn
+    json-vs-yaml.mdwn
+    native-compile-vs-cross-compile.mdwn
+    universal-data-model.mdwn
+    upstream-provides-their-own-build+integration-instructions.mdwn
+    variants.mdwn
+    versioning.mdwn
+
+
+-> OpenStack disk-image-builder: you forgot that 1 from data.yaml!
+
+------------ [bg-1.jpg]
+
+CONTENTS:
+
+---- Intro [bg-1.jpg]
+
+    [introduction]
+    [baserock-introduction]
+
+##############
+#
+#    Story
+#
+##############
+
+include(topics/baserock-definitions-evolution.pinpoint)
+
+#############################################################################################################
+
+Lessons learned from Baserock definitions... and the current state of the format
+
+- Definitions format (2 mins)
+
+[baserock-data-model]
+[json-vs-yaml]
+[variants]
+[versioning]
+
+#############################################################################################################
+---
+
+- Comparison with other formats (10 mins)
+
+---
+
+# - Future plans for Baserock definitions (10 mins)
+#    - structed data: avoid the "useflags hell"
+
+----
+
+  Criteria:
+    - how many packages
+    - is it structured to be machine-parsable
+    - is it concise?
+    - how does artifact caching work?
+    - what build tools support it?
+    - how well documented is it? how standardised?
+
+----
+"There is a lesson here for ambitious system architects: the most dangerous enemy of a better solution is an existing codebase that is just good enough." - ESR
+<http://catb.org/~esr/writings/taoup/html/plan9.html>
+
+----
+
+
+Desktop distros and their problems!
+
+-> sent to baserock-dev !
+
+Arch Linux:
+  - infinite number of possible configurations that cannot all be tested
+  - upgrades are not atomic
+  - cannot rollback after upgrade
+
+Baserock reference systems:
+  - lack of packages
+  - lack of easy runtime configurability
+  - lack of momentum
+  - lack of good documentation
+  - no serious handling of security updates
+  - rebuild of a single component may require rebuilding 1000s of packages
+
+Debian/Ubuntu:
+  - very complex, lots of moving parts, many of which overlap
+  - sources spread across many repos of different types
+    -> dgit mitigates this problem: it makes all Debian source packages
+       available through consistant Git interface
+  - infinite number of possible configurations that cannot all be tested
+    -> reproducible-builds project will help this to an extent
+  - upgrades are not atomic
+  - cannot rollback after upgrade
+  - packages lag behind upstream versions at times
+  - packages sometimes have a big delta compared to upstream
+
+Fedora:
+  - very complex, lots of moving parts, many of which overlap
+  - infinite number of possible configurations that cannot all be tested
+    -> rpm-ostree project will help with this: you can create a manifest
+       that is a specific set of tested packages, and provide the entire
+       tree as a single OSTree commit. Users can then layer changes on
+       top of the well-known base image, which could be reapplied on each
+       upgrade of the base OS.
+  - upgrades are not atomic
+    -> rpm-ostree project will help with this: a rootfs managed with `ostree`
+       can be upgraded atomically
+  - cannot rollback after upgrade
+    -> rpm-ostree project will help with this: a rootfs managed with `ostree`
+       can be rolled back to an old version
+
+Gentoo:
+  - no way to share prebuilt artifacts
+  - infinite number of possible configurations that cannot all be tested
+  - upgrades are not atomic
+  - cannot rollback after upgrade
+
+GNU Guix Software Distribution:
+  - lack of packages
+  - nonstandard filesystem layout makes packaging some software very difficult
+  - rebuild of a single component may require rebuilding 1000s of packages
+    -> experimental 'grafts' feature solves this: https://www.gnu.org/software/guix/manual/html_node/Security-Updates.html
+  - no serious handling of security updates
+
+NixOS:
+  - lack of packages
+  - nonstandard filesystem layout makes packaging some software very difficult
+  - rebuild of a single component may require rebuilding 1000s of packages
+  - I'm not sure how quickly NixOS handle security updates currently
+
+---
+
+## The software ontology -- towards a unified model
+
+
