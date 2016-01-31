@@ -1,0 +1,25 @@
+digraph {
+
+    "Gnome SDK repo" -> "gnome-platform-3.18"
+    "Gnome SDK repo" -> "gnome-sdk-3.18"
+
+    "Developer" -> "xdg-app-builder"
+    "gnome-sdk-3.18" -> "xdg-app-builder"
+
+    "Developer" -> "App source code"
+    "App source code" -> "xdg-app-builder"
+
+    "xdg-app-builder" -> "App binary"
+    "App binary" -> "App developer repo"
+
+    "App developer repo" -> "gnome-software"
+
+    "User" -> "gnome-software"
+    "gnome-platform-3.18" -> "App binary "
+
+    "User" -> "App binary "
+
+    "gnome-software" -> "App binary "
+//    "Gnome SDK repo" -> "User"
+//    "App developer repo" -> "User"
+}

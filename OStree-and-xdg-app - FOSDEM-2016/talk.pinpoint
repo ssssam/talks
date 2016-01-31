@@ -1,0 +1,146 @@
+[font=Cantarell 50px]
+
+--- [dog-sandbox.jpg]
+
+Application sandboxing
+
+---
+
+# The problem
+
+Distro packaging model
+
+Good for base OS...
+
+---
+
+... not often good for apps
+
+# User reports bug in application to developer
+
+--- [computer-user.jpg]
+
+User discovers a bug
+
+--- [computer-developer.jpg]
+
+Developer fixes the bug!
+
+--- [skeleton-using-computer.jpg]
+
+User waits for updated package...
+
+---
+
+Many workarounds
+
+--- [computer-user.jpg]
+
+What about end users?
+
+----
+
+xdg-app
+
+· Binary delivery
+· Sandboxing
+<b>· Desktop integration</b>
+
+# If you allow installing arbitrary binaries...
+# you increase risk. Sandboxing limits risk
+
+# Of course distro maintainers security review
+# everything before packaging
+
+# ...right?
+
+# xdp-app doesn't make packaging *easier*, it
+# just *empowers app developers to do it*
+
+----
+
+Binary delivery: OSTree
+
+"Git for OS binaries"
+
+# Distro agnostic
+# Updates are efficient
+
+----
+
+xdg-app-builder
+
+# Build, push to a remote
+
+# link against a runtime
+
+---
+
+xdg-app remotes
+
+<span font-size="small">
+<tt>gnome:
+http://sdk.gnome.org/repo/</tt>
+
+<tt>test-apps:
+https://people.gnome.org/~alexl/test-apps/repo/</tt>
+</span>
+
+# jhbuild run xdg-app --user remote-list
+
+# jhbuild run xdg-app --user remote-ls gnome
+
+# xdg-app remote-add --user test-apps 
+# jhbuild run xdg-app --user remote-ls test-apps
+
+---
+
+Installing and running an app
+
+# jhbuild run xdg-app --user remote-modify --no-gpg-verify test-apps
+
+# jhbuild run xdg-app --user install test-apps org.gnome.gedit
+
+# jhbuild run xdg-app run org.gnome.gedit
+
+# You can see the filesystem
+
+# edit:
+#    ~/.local/share/xdg-app/app/org.gnome.gedit/current/5fc18d86a2f1f8726ded1064a4217bc0fa932a463921fbfd2c7a97a92189630e/metadata
+
+### FIXME: doing this with xdg-app override doesn't work!!
+
+---- [xdg-app-flow.png]
+
+# libxdg-app
+
+---
+
+Sandboxing...
+
+· Docker
+· Firejail
+· Garden
+· Genode
+· Libertine
+· LXC
+· Qubes
+· runC
+· rkt
+· Sandstorm.io
+· schroot
+· selinux
+· systemd-nspawn
+· Warden
+
+# Open container initiative https://groups.google.com/a/opencontainers.org/forum/#!topic/dev/wiRqu5oQ6y4
+
+---
+
+Portals
+
+--- [dog-sandbox.jpg]
+
+Freenode #xdg-app
+
+<u>https://wiki.gnome.org/Projects/SandboxedApps</u>
