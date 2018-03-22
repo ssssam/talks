@@ -1,0 +1,116 @@
+TALK: Highly Recommended
+
+ABSTRACT:
+
+This talk discusses how we can combine desktop and Web technology to
+provide recommendation algorithms and discovery tools without requiring the
+user to give up their privacy.
+
+The focus will be on music recommendations but the principles apply to many
+other areas too.
+
+
+
+---
+
+Recommendations are a big thing
+
+# The commercial Web has plenty of options for recommending content to users.
+
+# A popular way to make money from tech right now is to run a free-to-access
+# web platform, and run state of the art profiling on your users in order
+# to run targeted advertising that you can profit from.
+
+# You can be recommended: Articles, Blogs, Friends, Jobs, Movies, Purchases, Music ...
+
+---
+
+Music recommendations: important?
+
+---
+
+"Spotify’s data set—100 billion events a day over 10 years, and over 140
+million monthly active users—is pretty unique in its potential to understand
+people.
+
+...
+
+We can communicate with the user on a more fundamental emotional level."
+
+https://spotifyforbrands.com/en-GB/insights/what-is-the-value-of-streaming-data/
+
+# also: https://mobile.twitter.com/davidclowery/status/976468670208794624 --
+#
+# Tencent, an enourmous Chinese firm involved in the creepy "social credit score" system
+# over there have a 10% stake in Spotify 
+
+---
+
+Key points :
+
+  - analyzing your own data
+     - web giants know all this stuff about you: video preferences,
+       music preferences, 
+     - let's focus on music; although it could just as well be
+       microblogs from e.g. Twitter, purchaces from ebay, or whatever
+     - Spotify, Youtube, Last.fm, Bandcamp, ...
+        -> ask what services everyone uses ?
+     - who owns them?
+        https://www.16best.net/blog/the-web-world-who-owns-who/?utm_content=bufferf1b42&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
+       [doesn't focus on music so much though]
+     - do they give you the correct results ?
+
+  - we are free software hackers, we should be doing our own
+    recommendation algorithms
+
+  - users may consider one online service more trustworthy than another;
+    there are region-specific blocks, and sometimes they just vanish.
+    need to integrate with all of them. so, needs to be very lightweight.
+
+Tools:
+
+  - Tracker -- knows all about your files
+  - Musicbrainz -- community-maintained database of metadata
+  - API clients for Spotify, Youtube
+
+Approach:
+
+  - "bucket of parts"
+        -> once upon a time I dreamed of doing this by starting with a
+           GUI app. then adding the recommendation features after.
+           but of course you get sucked in to the huge job of making
+           a GUI app, and since it doesn't have the features you want
+           yet, nobody really understands why you are doing it.
+        -> as an end user of the tool you want a shiny frontend with lots
+           of design thinking; but its effectively blocked on the r&d phase
+    - where do you *always* end up working from, during the development?
+      the *commandline* -- the greatest "scratch" programming environment
+      of all time. So let's stick as close to shell as possible.
+      Pipelines + text as first class citizen
+    - standard data model & interchange format
+    - adding new data sources and processing features becomes simple;
+      each is a ~100 line python script, with minimal boilerplate
+    - language agnostic though, since communication is through YAML
+    - automated testing is straightforward
+    - everything can be compiled in interesting ways.
+    - not stuck with specific database or data language; I'm using
+      Tracker and SPARQL but someone else could add an export to Neo4j,
+      MySQL, whatever.
+    - easy to collaborate
+    - YAML for communication; some tradeoffs here but the balance between
+      human & machine readability and editability is great.
+    - minimal amount of code!
+
+Topics:
+  - collecting content, importing and exporting collections and playlists
+  - annotating with extra metadata
+  - 
+
+Demos:
+  - pretty lists of things
+  - a playlist of recommended stuff
+
+recommendation engines:
+
+  - https://github.com/grahamjenson/list_of_recommender_systems
+
