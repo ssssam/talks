@@ -1,0 +1,285 @@
+# This file contains closed captions of the GUADEC 2021 talk
+# "Simple, open music recommendations". They are unedited from
+# the live captioning.
+
+
+>> SAM: Are you able to hear me? Let me check the chat. Yes, excellent, okay. I
+>> can't hear you, but that's fine. I'll figure that out later. 
+
+So, my name is Sam, and I'm going to be talking about music recommendations.
+So, the concepts today are actually going to be relevant for more than just
+music. I'm really interested in music, so that's what I want to talk about, but
+it's more generally about recommendations. So, stay tuned even if you're not a
+music fan yourself. 
+
+It's going to be slightly technical. I'm going to go into details, but, again,
+I want it to be as understandable as possible. So, if there's anything you
+don't understand, please, ask, and, hopefully, there will be lots of time at
+the end for questions. 
+
+So, if you saw the last talk, this kind of builds on the same topics. Rob said,
+who decides what it's important for you to see? The answer is also the
+recommendation algorithm these days. Recommendations are everywhere. If you
+think about your day, maybe a recommendation algorithm told you to see a
+specific video, to buy a product, to view a social media post that you
+disagreed with. And more so, recommendation engines are here to stay, I think.
+People now, young people, are growing up with YouTube as their main source of
+entertainment, and you don't browse YouTube. YouTube gives you a list of
+recommendations, then you look at the list of recommendations. You don't open
+all 5 billion videos and then try and choose one yourself. You are influenced
+by YouTube's algorithm. 
+
+So, I thought, well, it's not very open, letting these algorithms tell me what
+to do. You know, my web browser is open source, but I go on to YouTube, I run
+Spotify, and I don't know why they've decided to recommend me things. So, I
+thought, maybe I can make a recommendation algorithm. How hard can it be,
+right? The answer is, not very. 
+
+So, a recommendation algorithm. You start with some data, goes through some
+kind of process, and then at the other end of the process comes some more data.
+In the context of music, on the left side, maybe it's a collection of music,
+maybe it's some social data, like other people's playlists, maybe it's things
+you'd listen to in the past, maybe it's analysis, like how fast a piece of
+music is, how dark, or happy, or how full of lyrics a piece of music is. So,
+all that goes into a process, and out comes a list of songs, which, hopefully,
+are songs that you want to listen to. 
+
+But we can simplify this a little bit. A list of songs is a playlist, right?
+I'm going to call it a playlist. A music collection is really a list of songs,
+as well, it's a playlist that the order isn't important. Social data, probably
+other people's playlists, your listening history, list of songs ordered by
+time. And audio analysis of songs, that can really be metadata in a playlist,
+as well. So, we can simplify things again. A music recommendation engine.
+Playlists go in, processing happens, and a playlist goes out the other end,
+which is hopefully more interesting than the inputs. 
+
+So, I've been developing a simple piece of software, more of a toolkit, a kit
+of parts, which works with playlists to implement this red bit in the middle,
+the process. And first I'm going to explain what I've got, and then I'm going
+to go into a bit more detail about how it compares to Spotify, for example, and
+how we can extend it in the future. 
+
+So, a playlist, we don't have to worry about apps here. A list of songs is a
+simple thing. We can represent it as a list of -- this is JSON, so this is a
+list of JSON objects with five songs in it. We can import that into any app
+that we want, GNOME Music, Spotify, or anywhere. 
+
+The process, this is a pipeline. I'm more of an operating systems developer
+than a data scientist. So, when I think of a process, I think of shell
+pipelines. So, here's a very simple shell pipeline. And it asks the Tracker
+file indexer for all the songs in my music collection or my computer. Then it
+shuffles them, picks five, and then makes the output pretty using this command
+line tool, and there we go, there's the list. 
+
+This is a couple hundred lines of Python code. Am I going to do a demo already?
+I think I am. I wanted to do a demo early on, so that you had an idea of what
+exactly I'm talking about, what it is and what it isn't, more importantly. So,
+let me see if screen-sharing is going to work. I recently upgraded to Pipe
+Wire, and it seems to fix screen-sharing. Let's see. Share my display. 
+
+All right. Can you see the screen? Excellent. The future is now. So, let me
+show you that same demo from before. One thing I don't have is a list of what I
+was going to do. But here we go. So, I can connect to the Tracker database,
+which has a list of all my songs, and ask it to spit out a list. And here they
+are. Here's five songs. In a not very nice format. 
+
+So, maybe I'm going to use the jq tool to make it more colorful. Oops, now I've
+got all the songs, but it's more colorful, mission accomplished. 
+
+Okay, so, these, in case you're not familiar with how bash works, each is a
+program. CPE is a program. And the full name is Caliope. Tracker is a
+subcommand, and it's talking to another program on the system, which is the
+Tracker file system indexer, which is part of GNOME. And this pipe symbol means
+that we take the output of this, and feed it into another program, which is
+what's responsible for making it more colorful. 
+
+So, this is really powerful. I can take on my list of tracks, say, okay,
+shuffle, give me five, and then make it colorful. I forgot to tell it where to
+read the playlist from. I need to put a dash, so it reads from the standard
+input. Little bit slower, but there we go, now I've got five songs chosen at
+random. Okay, I'm going to write that to a file, so that I don't have to wait
+for it every time. And now I'm going to export it as an M3U play list, which is
+a simple playlist format. Again, I forgot the dash. Any music player app can
+import this. We just generate a playlist, right? Easy. 
+
+Let me close the window and go back to the slides. So, I haven't talked yet
+about the playlist format. It's based on an existing format, heavily based on
+an existing format called XSPF, or spif. I only changed a few things to make it
+suitable for a command line profiling. I switched to using JSON, and rather
+than using one big JSON object for everything, it uses one JSON object per
+track, which is much more useful with command line tools, because instead of
+having to wait for the entire object, which might take a year to produce, you
+can go line by line and consult when you want to. So, described as a portable
+play list format. What's that mean? These days, music travels. You don't always
+carry a desktop PC around with you to play music. 
+
+So, instead of storing location, it stores the metadata, like the creator,
+title of the track, and the idea is you have a separate step called resolution,
+where you resolve the playlist, you find the location of each of the tracks,
+and then you can listen to it. 
+
+So, let me show you how that, works. I'm going to share my screen again. I'm
+confident now. Okay, this time I'm going to go on this tab. Here's a list of
+five songs, but it's not got the location information anymore. I'm going to
+have to do it in this tab. 
+
+So, here's a list of five songs. That still does have the location... okay,
+which is fine. Let me copy this one. Right here. Okay, no location anymore. 
+
+So, I can find the location by resolving the content. Let me resolve the
+content using Tracker. Resolve content. Okay, and it's resolved it all to files
+on my computer. That's pretty simple. 
+
+What if I want to upload it to somewhere public like YouTube or Spotify? That's
+also possible. Again, instead of resolving the content with Tracker, you
+resolve it with Spotify. So, I pipe it here. Got a different name just to annoy
+you, resolve, instead of resolve content. 
+
+So, this is contacting the Spotify API, and it's come up with a link of Spotify
+links, except for this song, which isn't on Spotify. So, we only have four of
+them. 
+
+Now I can import the playlist into Spotify, I can upload it, and all being
+well, let's see if this worked. Now you can see an advert, but here you can see
+the playlist that was uploaded. That's the power of this playlist format. We're
+no longer stuck in the 2000s, where your music collection lives on your
+computer. You can create playlists and upload to any streaming service. You can
+create it on one computer, resolve the content on another computer. And that's
+what the first stage of this project involved, was making a toolkit that was
+kind of flexible for doing music recommendations, doing research. 
+
+Okay, so, you're thinking that's a good way to shuffle songs, but it hasn't
+really recommended anything yet more than random choice. So, let me go into a
+little bit more detail about recommendations. The king of music recommendations
+at the moment is Spotify, I think. They employ a huge number of researchers to
+generate big machine learning algorithms, which listen to music, listen to
+inverted commerce, come up with metadata, such as how fast it is, how exciting
+it is, what language it's in. And then they generate playlists based on 9,000
+data pipelines, it said. And half a trillion events captured per day. These are
+Spotify's own figures. So, half a trillion events. If they have 250 million
+users, think how much data they are recording about every user to have a
+trillion events, or half a trillion events every day. That's a lot of data that
+they log about you every time you use it. And with so much experience in
+research, they know how you're feeling, they know your mood, they know your
+personality, they know where you live, just based on what you're listening to.
+How do we compete with Spotify, with their 1,600 engineers? The answer is, we
+don't. And we don't really have to either. Just like GNOME manages to compete
+with Microsoft, when there are hundreds of times as many engineers working on
+Windows as there are on GNOME. 
+
+A music recommendation algorithm doesn't have to be super complicated. Anything
+is better than nothing, right? So, we need data. And there's a few data
+sources. There's actually plenty of data sources that we can use. I've
+screenshotted a few. Musicbrainz is an open project that gives you a lot of
+information about what record label and lots of data about music. ListenBrainz
+you can log music you're listening to. Last.fm you can log what you're
+listening to, which isn't open. Spotify itself has an API. You can access it
+yourself for free, you need an API key. So, the Spotify demo I used before used
+my API key. If you want to do the same things, you need to apply for a free API
+key, as well. You can get their data, not all of it, but you can get small
+amounts. 
+
+So, I want to leave plenty of time for questions, actually, but first I'm going
+to show a bit about the exciting things you can do with data from ListenBrainz
+and Last.fm. So, if you have a log of what a person's listened to, you can do
+some fun kind of queries with their data. Let me do one more demo now. And
+think carefully about what you want to ask. I want the last part to be more of
+a discussion. This is a work in progress. Not something we're going to ship to
+GNOME users next year. I hope it's fruitful, research that produces features we
+can ship, but it's not currently aiming to do that. It's not at that stage.
+It's at a stage where we can play with it, see what's possible, see what's
+interesting, and later use that to improve recommendations in GNOME. 
+
+So, like I said, last.fm is a website which logs things you listen to
+voluntarily, so you submit what you're listening to, and I can query what I've
+been listening to, for example. So, if I run this command, hopefully, it's
+going to give me a list of the last five tracks I've listened to. You can see
+this is a live demo, so I've typed every command slightly wrong. 
+
+So, the way it's worked, this has scraped beforehand. That all happens
+automatically, and then it queries the in-built SQL database and gets the last
+five tracks I've listened to. 
+
+What else can we do? There's one I ran earlier, which can give you -- here we
+go. So, this one, again, it's querying my last.fm history, artists, where the
+first play is within the last six months and I've listened to it ten times. So,
+this should return all of the artists that I discovered in the last six months.
+And, obviously, liked, because I listened to them more than ten times and
+wouldn't if I didn't like them. 
+
+Okay. So, say what you will about my music tastes. Finally, we can create a
+playlist based on the last artists from the last six months. So, I'm going to
+have to switch back to the other tab. Hopefully, I ran the command on here
+before, so I don't have to type it again. Here we go. Yeah, so, same command.
+I'm asking the tracker subcommand to expand the list of artists into a list of
+tracks that are on my local music collection. Takes a little bit of time. This
+is running on raspberryPi, so not greatest experience. These are all the tracks
+of the artists I've listened to in the last six months. I wrote it to a file
+earlier. There's the same content in a file. And now I can create a 30-minute
+playlist, shuffled, that contains some of those songs. 
+
+I would like to talk about the select command, because it's very interesting,
+but there's not time for that today. I'm going to wrap up, and then there will
+be a few minutes for questions. Let me end the screen-sharing one last time. 
+
+Let me skip the very interesting content that we didn't have time for, and let
+me summarize. Recommendation engines are here to stay. Not just for music, but
+I think the expectation for this decade is going to be the computer suggests
+things for you. You go on a web browser, it suggests what websites you should
+look at from your bookmarks and history. If you open a file browser, it should
+suggest what you looked at recently. Dropbox already did that, already does
+that. We have the technology to do this in GNOME. We had it ten years ago to a
+point, but we haven't really focused on it, and I hope that we're going to
+start focusing on recommendations again, because I think it's going to become
+more and more expected. 
+
+My tiny contribution to this effort is a piece of software called Calliope
+which is a research project making simple music recommendations. Here's links
+to find more about it, it's in Gitlab. It's written in Python, so you can start
+playing with it immediately. As I said before, the approach, Calliope itself is
+going to be about music, but the approach itself is going to be useful for
+developing video recommenders, web engage recommendation plug-ins, suggesting
+apps in GNOME software. At the end of the day, it's a list of items going into
+a shell pipeline and coming out again. So, I'm going to wrap up there. Let's
+see if there are any questions. Hopefully, so. If not, I shall keep talking. 
+
+I just realized I never fixed the audio problem, so I can't actually hear if
+anyone else is speaking. So, apologies. Don't bother reading the questions. I
+shall read them. The first question, how easy is it to add support for other
+services? That's a good question. Answer is very easy. Each of these is a
+couple hundred lines Python script, and one of the reasons for choosing Python
+is most services already have a Python binding. So, we don't reimplement
+anything. We, for example, for Spotify, use Spotify as an official Python
+wrapper and simply add consistent interface and nothing more. So, it's really a
+couple hundred lines of Python. Usually, the most complicated thing is
+integrating the API keys, but there's ways to do that. 
+
+The second question. In the future, will there be recommendations made for
+music players? Yeah, that's a good question. These are already available to
+music players, because you can export the playlists in any form of playlist
+format. On my local machine I have timer units, which generate a daily playlist
+every day. Now, the point where it kind of just works is difficult. One of the
+biggest road blocks is people don't really download music anymore. So, I don't
+see -- if we simply build this functionality into GNOME Music, that's
+interesting, but it's not the whole problem. Most people probably don't have a
+local music collection for us to recommend. And I don't see there's much point
+in GNOME Music wrapping other services, because you can use your web browser to
+access them. So, it will kind of go in tandem, perhaps with some other changes
+in GNOME Music. Maybe we can, in GNOME Music, partner with some music download
+sites, encourage people to buy music, rather than renting it from streaming
+services, and in parallel with that, integrate recommendation engines. 
+
+So the graphical user interface, again, that's a good question. I definitely
+won't be making any kind of graphical app, because I have one or two hours a
+week to dedicate this. So, there's a reason it's all done from the command
+line, because that's much simpler. Because it's all Python, you can use
+something like iPython, and that gives a bit more access to graphics than the
+command line itself. But my end goal really is this would be more of a library
+eventually, and it would be used by existing apps. 
+
+So, I hope this was interesting. The next talk, I believe, yes, starts in one
+minute. So, I'm going to wrap up. I'm just going to reiterate. If you want to
+get involved in the project, then have a look at the GitHub project, the
+website, chat to me in the GNOME Music channel. That's a good place to talk
+about this until there's enough interest that it deserves its own channel.
+Thanks a lot for listening. 
