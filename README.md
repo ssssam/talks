@@ -5,6 +5,9 @@ This repo has slides for some talks I gave.
 
 Here are some videos of talks I gave:
 
+  * [Generating different base systems from the same inputs in Freedesktop SDK](https://www.youtube.com/watch?v=76Uw8QCBgGk)
+    at [PackagingCon](https://packaging-con.org/) 2021
+  * [Simple. open music recommendations](https://www.youtube.com/watch?v=7APk4GqIlD0) at [EuroPython 2021](https://ep2021.europython.eu/).
   * [Tracker 3: The future is
     present](https://www.youtube.com/watch?v=QrH5WW0MD0c&t=216s) (with
     [Carlos Garnacho] at GUADEC 2020)
