@@ -5,6 +5,7 @@ This repo has slides for some talks I gave.
 
 Here are some videos of talks I gave:
 
+  * [Integrating Software Stacks with BuildStream 2.0 and the Remote Execution API](https://www.youtube.com/watch?v=Mvi6pylo-8o) at [OSSEU 2022](https://osseu2022.sched.com/).
   * [Generating different base systems from the same inputs in Freedesktop SDK](https://www.youtube.com/watch?v=76Uw8QCBgGk)
     at [PackagingCon](https://packaging-con.org/) 2021
   * [Simple. open music recommendations](https://www.youtube.com/watch?v=7APk4GqIlD0) at [EuroPython 2021](https://ep2021.europython.eu/).
