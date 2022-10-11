@@ -1,0 +1,774 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+		<style>
+			:root {
+				--r-main-font: Raleway;
+				--r-main-font-size: 40px;
+			}
+
+			/* Horizontal alignment for <p> and friends */
+			.left {
+				text-align: left;
+				width: 100%;
+			}
+			.right {
+				text-align: right;
+				width: 100%;
+			}
+
+			/* Weird named text sizes */
+			.smalltext {
+				font-size: 35px;
+			}
+			.smallertext {
+				font-size: 32px;
+			}
+			.smallesttext {
+				font-size: 20px;
+			}
+			.smallest2text {
+				font-size: 15px;
+			}
+			.smallest3text {
+				font-size: 12px;
+			}
+
+			/* Horizontal flexbox that stretches its contents vertically to fill space. */
+			.flex-row-stretch {
+				display: flex;
+				align-items: stretch;
+				flex-direction: row;
+				justify-content: center;
+			}
+
+			/* Vertical flexbox */
+			.flex-col {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+
+			/* Tweak the reveal.js default green highlight colour to be Codethink green */
+			.reveal .slides section .fragment.highlight-current-green.current-fragment {
+				color: #64a800;
+			}
+
+			/* Add fragment style to highlight table cell background */
+			.reveal .slides section .fragment.highlight-current-bg {
+				opacity: 1;
+				visibility: inherit;
+				background-color: inherit;
+			}
+			.reveal .slides section .fragment.highlight-current-bg.current-fragment {
+				background-color: #f0f0c0;
+			}
+
+			/* Quote attribution style */
+			figcaption {
+				font-size: 20px;
+			}
+
+			/* Styles for comparison tables */
+			.reveal table td.logo {
+				padding-right: 0;
+			}
+			img.logo-small {
+				height: 1em;
+				margin-top: 0;
+				margin-bottom: 0;
+				margin-right: 0.1em;
+				object-fit: scale-down;
+				vertical-align: middle;
+			}
+			.toolclass {
+				font-weight: lighter;
+			}
+			.toolname {
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1 class="r-fit-text">Integrating Software Stacks</h1>
+					<span class="r-fit-text">With <b>BuildStream 2.0</b> and the <b>Remote Execution API</b></span>
+
+					<div class="r-stretch"></div>
+
+					<div>
+						<div class="flex-row-stretch">
+							<div class='flex-col left' style="flex: 1;">
+								<p class="left">Sam Thursfield</p>
+								<p class="left">OSSEU 2022</p>
+							</div>
+
+							<img class='right' src="images/codethink-logo.svg" style="flex: 1;">
+						</div>
+					</div>
+				</section>
+
+				<section class="smalltext">
+					<h2 class="r-fit-text">The basic problem</h2>
+					<p>Compiling source code to binaries</p>
+					<div class="r-stretch flex-col r-stack">
+						<img class="fade-out" src="images/compile-simple.png" style="max-width: 40%;">
+						<img class="fragment fade-up" src="images/compile-complex.png" height="435px">
+					</div>
+				</section>
+
+				<section class="smalltext">
+					<h2 class="r-fit-text">A brief history of integration tools</h2>
+					<p>In the beginning was: <b>Make</b></p>
+					<div class="r-stretch flex-col r-stack">
+						<!-- <p class="fragment fade-out" data-fragment-index="0" style="font-size: 400px;">💡</p> -->
+						<img src="images/lightbulb.png" class="fragment fade-out" data-fragment-index="0">
+						<table class="fragment fade-in-then-out" data-fragment-index="0">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Compiler</th>
+									<th>Make</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="r-frame">
+									<td>Dependency tracking</td>
+									<td>None</td>
+									<td>File level</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="fragment fade-in" data-fragment-index="1">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Compiler</th>
+									<th>Make</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Dependency tracking</td>
+									<td>None</td>
+									<td>File level</td>
+								</tr>
+								<tr>
+									<td>Multiple repos</td>
+									<td>No</td>
+									<td>No</td>
+								</tr>
+								<tr>
+									<td>Repeatable builds</td>
+									<td>No</td>
+									<td>No</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+				<section class="smalltext">
+					<h2 class="r-fit-text">A brief history of integration tools</h2>
+					<p>Then came the <b>packaging tools</b>...</p>
+					<div class="r-stretch flex-col">
+						<table class="smallertext">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Compiler</th>
+									<th>Make</th>
+									<th>Packaging tools</th>
+								</tr>
+							</thead>
+							<tbody><tr>
+									<td>Dependency tracking</td>
+									<td>None</td>
+									<td>File-level</td>
+									<td>Package-level</td>
+								</tr>
+								<tr>
+									<td>Multiple repos</td>
+									<td>No</td>
+									<td>No</td>
+									<td>Yes</td>
+								</tr>
+								<tr>
+									<td>Repeatable builds</td>
+									<td>No</td>
+									<td>No</td>
+									<td>Mostly</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+				<section class="smalltext">
+					<h2 class="r-fit-text">A brief history of integration tools</h2>
+					<div class="r-stretch flex-col">
+						<ul>
+							<li><b>Meta-build tools</b> (Buildroot, BuildStream, Yocto)
+							<li><b>Containers</b> (Docker, Podman, Flatpak)
+							<li><b>Continuous integration</b>
+							<li>and more...</li>
+						</ul>
+						<table class="smallertext">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Compiler</th>
+									<th>Build tools</th>
+									<th>Integration tools</th>
+								</tr>
+							</thead>
+							<tbody><tr>
+									<td>Dependency tracking</td>
+									<td>None</td>
+									<td>File-level</td>
+									<td>Package-level</td>
+								</tr>
+								<tr>
+									<td>Multiple repos</td>
+									<td>No</td>
+									<td>No</td>
+									<td>Yes</td>
+								</tr>
+								<tr>
+									<td>Repeatable builds</td>
+									<td>No</td>
+									<td>No</td>
+									<td>Mostly</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+				<section>
+					<h2>Integrating at scale in 2022</h2>
+					<div class="r-stretch flex-col">
+						<p>One tool to "rule them all" ...?</p>
+					</div>
+				</section>
+
+				<section data-background-image="images/one_ring_to_rule_them_all_by_selrond-d8dyoyz.png" style="color: #FFFFFF;">
+					<div class="r-stretch flex-col">
+						<p class="r-fit-text">One tool to "rule them all" ...?</p>
+					</div>
+					<div class="smallesttext">Image by <a href="https://www.deviantart.com/selrond/art/One-Ring-To-Rule-Them-All-507183083">Selrond</a>, used under Creative Commons BY-NC-SA license</div>
+				</section>
+
+				<section class="smalltext">
+					<h2>Integrating at scale in 2022</h2>
+					<div class="r-stretch flex-col">
+						<div style="flex: 1 1 auto;">
+							<figure>
+							<blockquote>Make each program do one thing well.</blockquote>
+							<figcaption>— Doug McIlroy, The Bell System Technical Journal, July-August 1978</figcaption>
+							</figure>
+						</div>
+						<div class="fragment fade-in" style="flex: 1 1 auto;">
+							<p class="r-fit-text"><b>How can our integration tools work together?</b></p>
+						</div>
+					</div>
+				</section>
+
+				<section>
+
+				<section>
+					<h2>The Remote Execution API</h2>
+					<div class="r-stretch flex-col">
+						<div class="left smalltext">
+							<p>Introduced in 2017, by team at Google working on Bazel.</p>
+							<br>
+							<p>Designed around:
+							<ul>
+								<li>Content addressable storage for directories and files
+								<li>An execution request interface
+								<li>A <b>result cache</b>
+							</ul>
+							</p>
+							<br>
+							<p>Building blocks for any integration pipeline you can think of.</p>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>The Remote Execution API</h2>
+					<p>Traditional build tools</p>
+					<img src="images/flowchart-local-simple.png">
+				</section>
+
+				<section>
+					<h2>The Remote Execution API</h2>
+					<p>Content-addressed caching</p>
+					<img src="images/flowchart-local-caching.png" class="r-stretch">
+					<p class="left smallesttext">For cache to be trusted and shared, cache key must capture all factors that can affect build output.</p>
+					<p class="left smallesttext">The cache and the builder can be local, or remote.</p>
+				</section>
+
+				</section>
+
+				<section>
+					<h2>The Remote Execution API</h2>
+					<div class="r-stack flex-col">
+						<img class="r-frame fragment fade-out" src="images/reapi-intro-1.png" data-fragment-index="0">
+						<img class="r-frame fragment fade-in-then-out" src="images/reapi-intro-2.png" data-fragment-index="0">
+						<img class="r-frame fragment fade-in" src="images/reapi-intro-3.png">
+					</div>
+				</section>
+
+				<section>
+					<h2>REAPI clients</h2>
+					<div class="r-stack flex-col">
+						<img class="r-frame fragment fade-out" src="images/reapi-clients-1.png" data-fragment-index="0">
+						<div class="fragment" data-fragment-index="0">
+							<p class="smallesttext">All these tools support remote caching and distributed builds via the Remote Execution API.</p>
+							<table class="smallesttext">
+								<thead>
+									<tr>
+										<th></th>
+										<th></th>
+										<th>Name</th>
+										<th>Dependency tracking</th>
+										<th>Repeatable builds</th>
+										<th>Multiple repos</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="fragment highlight-current-bg" data-fragment-index="2">
+										<td rowspan="2" class="toolclass">Compiler tools</td>
+										<td></td>
+										<td class="toolname">Goma Server</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+									</tr>
+									<tr class="fragment highlight-current-bg" data-fragment-index="2">
+										<td></td>
+										<td class="toolname">Recc</td>
+										<td>-</td>
+										<td>-</td>
+										<td>-</td>
+									</tr>
+									<tr class="fragment highlight-current-bg" data-fragment-index="3">
+										<td rowspan="3" class="toolclass">Build tools</td>
+										<td class="logo"><div><img class="logo-small" src="images/logo-bazel.svg"></div></td>
+										<td class="toolname">Bazel</td>
+										<td>File-level</td>
+										<td>Partly<sup>1</sup></td>
+										<td>Partly</td>
+									</tr>
+									<tr class="fragment highlight-current-bg" data-fragment-index="3">
+										<td class="logo"><div><img class="logo-small" src="images/logo-pants.svg"></div></td>
+										<td class="toolname">Pants</td>
+										<td>File-level</td>
+										<td>Partly<sup>1</sup></td>
+										<td>No</td>
+									</tr>
+									<tr class="fragment highlight-current-bg" data-fragment-index="3">
+										<td class="logo"><div><img class="logo-small" src="images/logo-please.png"></div></td>
+										<td class="toolname">Please</td>
+										<td>File-level</td>
+										<td>Yes</td>
+										<td>No</td>
+									</tr>
+									<tr class="fragment highlight-current-bg" data-fragment-index="4">
+										<td rowspan="2" class="toolclass">Integration tools</td>
+										<td class="logo"><div><img class="logo-small" src="images/logo-bst.png"></div></td>
+										<td class="toolname">BuildStream</td>
+										<td>Element-level</td>
+										<td>Yes</td>
+										<td>Yes</td>
+									</tr>
+								</tbody>
+							</table>
+							<br>
+							<div class="fragment fade-in" data-fragment-index="2">
+								<p class="smallest2text left"><span class="toolclass">Compiler tools</span>: replacements for ccache + distcc.</p>
+							</div>
+							<div class="fragment fade-in" data-fragment-index="3">
+								<p class="smallest2text left"><span class="toolclass">Build tools</span>: replacements for Make
+								<br>
+								&nbsp;&nbsp;<span class="smallest3text">1. Bazel and Pants sandboxing doesn't hide host environment in any way.</span></p>
+							</div>
+							<div class="fragment fade-in" data-fragment-index="4">
+								<p class="smallest2text left"><span class="toolclass">Integration tools</span>: designed for integrating multiple components, such as packages.</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>Things to be aware of</h2>
+					<ul>
+						<li>Bazel isn't magic
+							<ul class="smallesttext">
+								<li>Adapting an existing project to Bazel means rewriting its entire build system
+								<li>Requires a <tt>BUILD</tt> file for each 3rd party dependency
+								<li>Sandbox can be leaky.
+								<li>Hard to extend beyond built-in languages, no plugin mechanism
+								<li>Hard to land changes upstream
+								<li>CLI is not pleasant to use
+							</ul>
+						<br>
+						<li>BuildStream isn't magic
+							<ul class="smallesttext">
+								<li>Designed more for integrators and less for developers
+								<li>If making frequent changes to slow-to-build elements, be prepared to wait
+								<li>Sandboxing helps ensure repeatable builds, but nothing is foolproof
+							</ul>
+					</ul>
+				</section>
+
+				<section>
+					<h2>REAPI infrastructure</h2>
+					<div class="r-stretch flex-col">
+					<table class="smallesttext">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Language</th>
+								<th>Storage</th>
+								<th>Execution</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><img class="logo-small" src="images/logo-bazel.svg"></td>
+								<td class="toolname"><a href="https://bazelbuild.github.io/bazel-buildfarm/">Bazel Buildfarm</a></td>
+								<td>Java</td>
+								<td>disk, S3, shard, ...</td>
+								<td>local</td>
+							</tr>
+							<tr>
+								<td><img class="logo-small" src="images/logo-buildbarn.jpg"></td>
+								<td class="toolname"><a href="https://github.com/buildbarn">BuildBarn</a></td>
+								<td>Go</td>
+								<td>disk, S3, shard</td>
+								<td>local</td>
+							</tr>
+							<tr>
+								<td><img class="logo-small" src="images/logo-buildgrid.png"></td>
+								<td class="toolname"><a href="https://buildgrid.build/">BuildGrid</a></td>
+								<td>Python/C++</td>
+								<td>disk, Redis, S3, shard, ...</td>
+								<td>local, bwrap, OCI, ...</td>
+							</tr>
+							<tr>
+								<td><img class="logo-small" src="images/logo-please.png"></td>
+								<td class="toolname"><a href="https://github.com/twitter/scoot">Please-servers</a></td>
+								<td>Go</td>
+								<td>Google Cloud Services</td>
+								<td>local</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td class="toolname"><a href="https://github.com/twitter/scoot">Scoot</a></td>
+								<td>Go</td>
+								<td>-</td>
+								<td>local</td>
+							</tr>
+					</table>
+					<div class="smallesttext left">
+						<p class="left">
+						I recommend BuildBarn or BuildGrid for use with BuildStream
+						</p>
+					</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>Things to be aware of</h2>
+					<ul>
+						<li>Protobufs might make you sad
+							<ul class="smallesttext">
+								<li>Pin "known-good" versions to avoid segfaults
+								<li>Public code, private development
+							</ul>
+						<br>
+						<li>Infrastructure experts required
+							<ul class="smallesttext">
+								<li>BuildBarn, Buildfarm and BuildGrid all require some work to deploy
+							</ul>
+						<br>
+						<li>Cache expiry
+							<ul class="smallesttext">
+								<li>For best results, use the cache as a cache
+							</ul>
+					</ul>
+				</section>
+
+				<section class="smallertext">
+					<h2>REAPI wishlist</h2>
+						<p class="left"><b>Clients:</b>
+					<ul style="width: 100%;">
+						<li>More build tools supporting REAPI
+							<ul class="smallesttext">
+								<li>sccache (<a href="https://github.com/mozilla/sccache/issues/358">link</a>)
+								<li>Distro packaging tools
+							</ul>
+						</li>
+						<li>Improve BuildStream experience for developers
+							<ul class="smallesttext">
+								<li>Faster rebuilds, perhaps with Recc inside Bst
+							</ul>
+						</li>
+					</ul>
+					<p class="left">
+					<b>Infrastructure:</b>
+					<ul style="width: 100%;">
+						<li>Wider support
+							<ul class="smallesttext">
+								<li>Artifactory supporting REAPI caching (<a href="https://www.jfrog.com/jira/browse/RTFACT-15428">issue</a>)
+							</ul>
+						<li>Easier deployment and management
+						<li>Better documentation
+					</ul>
+					</p>
+					<div class="r-stretch"></div>
+					<b><p class="smallertest left">Find out more about the REAPI: <a class="smallertext" href="https://github.com/bazelbuild/remote-apis">https://github.com/bazelbuild/remote-apis</a></p></b>
+				</section>
+
+				<section>
+					<h2>BuildStream</h2>
+					<div class="smalltext">
+						<ul><li>Integration tool comparable to Buildroot or BitBake
+							<li>Open source, Apache Foundation project
+							<li>Designed around strong caching
+							<li>Control all inputs to build process and sandbox build process
+							<li>Version 2.0 (releasing this month) designed around REAPI
+						<ul>
+					</div>
+					<img class="r-stretch" src="images/buildstream-beaver.jpg">
+				</section>
+
+				<section>
+				<section class="smallesttext">
+					<h2 class="r-fit-text">BuildStream - example project</h2>
+						<div id="bst-example-elements">
+							<p class="left"><tt>elements/base.bst</tt></p>
+							<pre>
+							<code class="smallest3text"  data-line-numbers="1|7-13">kind: import
+description: |
+
+    Alpine Linux base runtime
+
+sources:
+- kind: tar
+
+  # This is a post doctored, trimmed down system image
+  # of the Alpine linux distribution.
+  #
+  url: alpine:integration-tests-base.v1.x86_64.tar.xz
+  ref: 3eb559250ba82b64a68d86d0636a6b127aa5f6d25d3601a79f79214dc9703639</code></pre>
+							<p class="left"><tt>elements/hello.bst</tt></p>
+							<pre>
+							<code class="smallest3text" data-line-numbers="1|15-18|20-21">kind: autotools
+description: |
+
+    Hello world example from automake
+
+variables:
+
+  # The hello world example lives in the doc/amhello folder.
+  #
+  # Set the %{command-subdir} variable to that location
+  # and just have the autotools element run its commands there.
+  #
+  command-subdir: doc/amhello
+
+sources:
+- kind: tar
+  url: gnu:automake-1.16.tar.gz
+  ref: 80da43bb5665596ee389e6d8b64b4f122ea4b92a685b1dbd813cd1f0e0c2d83f
+
+depends:
+- base.bst</code></pre>
+					<a class="smallest3text" href="https://github.com/apache/buildstream/tree/master/doc/examples/autotools">https://github.com/apache/buildstream/tree/master/doc/examples/autotools</a>
+				</section>
+				<section class="smallertext">
+					<h2 class="r-fit-text">BuildStream - example project</h2>
+						<div id="bst-example-project.conf">
+							<tt>project.conf</tt>
+							<pre>
+							<code class="smallest3text" data-line-numbers># Unique project name
+name: autotools
+
+# Minimum required BuildStream version
+min-version: 2.0
+
+# Subdirectory where elements are stored
+element-path: elements
+
+# Define some aliases for the tarballs we download
+aliases:
+  alpine: https://bst-integration-test-images.ams3.cdn.digitaloceanspaces.com/
+  gnu: http://ftpmirror.gnu.org/gnu/automake/
+
+plugins:
+- origin: pip
+  package-name: buildstream-plugins
+  elements:
+  - autotools
+						</code></pre>
+						<div class="r-stretch"></div>
+					<a class="smallest3text" href="https://github.com/apache/buildstream/tree/master/doc/examples/autotools">https://github.com/apache/buildstream/tree/master/doc/examples/autotools</a>
+				</section>
+				</section>
+
+				<!-- FDSDK section goals: -->
+
+				<section>
+					<h1>Case Study 1</h1>
+					<p>Freedesktop SDK and Runtime</p>
+					<div class="r-stretch">
+						<img src="images/flatpak-truck.png">
+					</div>
+					<img src="images/logo-fdsdk.png" style="height: 100px;">
+				</section>
+
+				<section>
+					<h2>Case study: Freedesktop SDK</h2>
+					<p class="smallesttext left">
+						<ul class="smallesttext" width="100%">
+							<li>Stable base runtime for most Flatpak apps.
+							<li>Integrates &gt; 600 open source components across 4 architectures with BuildStream.
+							<li>Largely volunteer-powered.
+							<li>Driven by Gitlab CI
+						</ul>
+					</p>
+					<img src="images/fdsdk-pipelines.png" class="r-stretch">
+				</section>
+				<section>
+					<h2>Case study: Freedesktop SDK</h2>
+					<p class="smallertext left">
+						Benefit from using BuildStream and REAPI:
+						<ul class="smallesttext" style="width: 100%">
+							<li><b>Shared cache server</b> provided by BuildBox (BuildGrid)
+							<li>CI pushes all built elements to shared cache
+							<li>"Full rebuild" is almost never necessary
+							<li>Component updates automated
+							<li>Downstream projects benefit from upstream cache
+						</ul>
+					</p>
+					<img src="images/fdsdk-pipeline-2.png" class="r-stretch">
+				</section>
+
+				<section>
+					<h1>Case Study 2</h1>
+					Building for safety with DCS
+					<div class="r-stretch">
+						<img src="images/robotarm.jpg">
+					</div>
+					<p class="smallest3text">Image: <a href="https://www.flickr.com/photos/shutupyourface/105779625/">Jason Armstrong</a>, used under CC BY-NC-SA license</p>
+				</section>
+
+				<section>
+					<h2>Case study: DCS</h2>
+					<p>DCS = "Deterministic Construction Service"<p>
+					<p class="smallertext left">
+					Qualified tool integration for building complex software (e.g. Linux-based operating systems) for safety-critical systems
+					</p>
+					<p class="smallertext left">A <u>design pattern</u> for safely building software.</p>
+					<div class="fragment">
+						<p class="smallertext left">
+						Repeatable builds are safe builds:
+						<ul class="smallesttext left" style="width: 100%;">
+							<li>Re-run of DCS process reproduces exactly the same binary fileset
+								<li>Reproducibility is shown to be independent of the specific instantiation of DCS
+						</ul>
+					</div>
+					<div class="fragment">
+						<p class="smallertext left">
+						Allows us to:
+						<ul class="smallesttext left" style="width: 100%;">
+							<li>Upgrade or modify tools used to construct
+								safety-critical software and verify that these
+								changes have no impact on the output binaries
+								<li>Perform fine-grained impact analysis on the constructed software
+									when updating source and dependencies 
+						</ul>
+					</div>
+					<p class="left fragment smallertext">Reference implementation uses BuildStream.</p>
+					</p>
+				</section>
+
+				<section>
+					<h2>Case study: DCS</h2>
+					<p class="left smallertext">Qualified using ISO 26262 safety standard.</p>
+					<div class="smallesttext left">
+					</div>
+					<img src="images/dcs-certificate.png" height="350em">
+					<div class="smallesttext left">
+						<p>More information about safe software:
+						<ul>
+							<li>see <u>Paul Albertella</u> speak on <b>Friday, 11.45</b> 
+							<li>get involved in <a href="https://www.elisa.tech/">ELISA</a>
+						</ul>
+					</div>
+				</section>
+
+				<section>
+					<h2 class="r-fit-text">Happy integrating</h2>
+
+					<div>
+						<p class="left">Please invest in your build + integration pipelines, and...</p>
+						<p class="left">Check out <b>BuildStream 2.0</b> at <a href="https://buildstream.build">https://buildstream.build</a></p>
+					</div>
+
+					<img class="r-stretch" src="images/buildstream-beaver.jpg">
+
+					<div>
+						<div class="flex-row-stretch">
+							<div class='flex-col left' style="flex: 1;">
+								<p class="left">Sam Thursfield</p>
+								<p class="left">OSSEU 2022</p>
+							</div>
+							<img class='right' src="images/codethink-logo.svg" style="flex: 1;">
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				//navigationMode: "linear",
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ],
+				// 16:9 aspect ratio https://en.wikipedia.org/wiki/16:9_aspect_ratio
+				width: 1280,
+				height: 720,
+
+				pdfMaxPagesPerSlide: 1,
+			});
+		</script>
+	</body>
+</html>
