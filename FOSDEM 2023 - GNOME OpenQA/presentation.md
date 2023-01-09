@@ -56,6 +56,11 @@ GNOME is older than:
 
 <!-- Photo of some Ikea furniture stress -->
 
+???
+
+Also - cruft
+Also - inconsistent investment around upstream testing, volunteers not super interested in testing
+
 ---
 
 # Why is GNOME hard to test?
@@ -124,21 +129,23 @@ Bugs introduced at integration time, reported upstream
 <!-- 4. 23 years of improvements -->
 
 ---
-# Time passes
+# Time passes, and build tools improve
 
-jhbuild
-Meson
-BuildStream
+ * jhbuild
+ * Meson
+ * BuildStream
 
-# Time passes
+---
 
-Git!
-Gitlab!
+# Time passes, and collaboration tools improve
+
+  * Git!
+  * Gitlab!
 
 CI is easy to setup for the first time.
 
 ---
-# Time passes
+# Time passes, and testing tools improve
 
 "Testable" initiative.
 
@@ -251,7 +258,166 @@ Components:
 
 Who is familiar with OpenQA in the audience?
 
+---
 
+# OpenQA: main page
+
+![openqa UI frontpage](images/openqa-ui-main.png)
+
+<!-- 8. Show and tell: viewing the tests -->
+
+# Gitlab: gnome-build-meta
+
+![gnome-build-meta repo screenshot](images/gitlab-gbm.png)
+
+???
+
+GNOME release team's integration repo
+
+"What repos and commits correspond to release X.Y of GNOME ?"
+
+Lots of work done in CI pipelines. Two beefy donated servers (x86_64, ARM) run builds.
+
+# Gitlab: gnome-build-meta wiki
+
+![gnome-build-meta wiki screenshot showing OpenQA docs](images/gitlab-gbm-wiki.png)
+
+# Gitlab: CI pipelines
+
+![gnome-build-meta 'master' CI pipelines](images/gitlab-pipelines-master.png)
+
+# Gitlab: s3-image
+
+![gnome-build-meta 's3-image' job](images/gitlab-pipelines-s3-image.png)
+
+???
+
+This job creates an installer ISO and uploads it to Amazon S3 file storage.
+
+# Gitlab: test-s3-image
+
+![gnome-build-meta 'test-s3-image' job](images/gitlab-pipelines-test-s3-image.png)
+
+???
+
+This job runs the OpenQA tests
+
+# Gitlab: test-s3-image
+
+![gnome-build-meta 'test-s3-image' job](images/gitlab-test-s3-image-log.png)
+
+???
+
+# Gitlab: test-s3-image
+
+This job:
+
+ * runs using the upstream 'openqa-worker' Docker image
+ * downloads the ISO from S3
+ * creates a temporary, unique 'machine' and connects it to OpenQA
+ * submits a test job to OpenQA, tagging it with the unique machine ID
+ * starts the 'run_worker' script in bg, and waits for the job
+ * polls job status report until its passed/failed
+ * job runs, against the locally downloaded ISO, and passes or fails
+ * removes the machine again and pipeline exists
+
+???
+
+The runner *is* the worker - not a dedicated machine. (less infra to maintain- we already have this beefy server set up as a Gitlab runner, with sufficient privs to do KVM inside Docker).
+
+<!-- 9. Show and tell: viewing the tests -->
+
+---
+
+# OpenQA: Test results
+
+![OpenQA test result - main](./images/openqa-ui-tests-top.png)
+
+???
+
+Each of these tests on the LHS corresponds to a Perl script in 'openqa_tests.git' repo.
+
+--
+
+# OpenQA: Test results
+
+![OpenQA test result - 2](./images/openqa-ui-tests-1.png)
+
+---
+
+# OpenQA: gnome\_install test
+
+![OpenQA 'gnome\_install' test](./images/openqa-ui-needle-install.png)
+
+???
+
+What you see in the web UI are the screenshot comparisons ('needles')
+
+Behind the scenes are test scripts written in Perl. We'll look at those later.
+
+Helper functions provided by OpenQA to:
+
+  * do screenshot ('needle') comparisons
+  * send keypresses and mouse click events to QEMU display (over VNC)
+  * needle can have 'click' areas to make this easier
+
+---
+
+# OpenQA: gnome\_welcome test
+
+![OpenQA test creating 'testuser' account](./images/openqa-ui-needle-testuser.png)
+
+???
+
+First time we can log in (no root password)
+
+---
+
+# OpenQA: gnome\_journal\_capture\_fix test
+
+![OpenQA running command over serial](./images/openqa-ui-serial.png)
+
+???
+
+Several ways to run commands - serial console is least extra work.
+
+---
+
+# OpenQA: gnome\_desktop test
+
+![OpenQA needle matching GNOME Shell](./images/openqa-ui-needle-gnome-desktop.png)
+
+???
+
+Exclusion match: ignore version number.
+
+Design changes: all needles with tag 'gnome_desktop_tour' are tried, and if any matches, test passes. So it tests against all old and new versions of the design. (You can remove old needles if you want).
+
+---
+
+# OpenQA: gnome\_system\_monitor test
+
+![OpenQA needle matching GNOME system monitor](./images/openqa-ui-needle-gnome-desktop.png)
+
+???
+
+Exclusion match: window body.
+
+<!-- 10. Show and tell - needle editor -->
+
+---
+
+# OpenQA: needle editor
+
+![OpenQA needle editor](./images/openqa-ui-needle-editor-1.png)
+
+---
+
+# OpenQA: needle editor 2
+
+![OpenQA needle editor](./images/openqa-ui-needle-editor-2.png)
+
+<!-- 11. Show and tell - openqa-needles and openqa-tests repos -->
 
 ---
 
