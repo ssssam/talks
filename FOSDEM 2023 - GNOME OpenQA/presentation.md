@@ -144,6 +144,12 @@ Bugs introduced at integration time, reported upstream
 
 CI is easy to setup for the first time.
 
+???
+
+https://about.gitlab.com/blog/2020/09/08/gnome-follow-up/
+
+"Another noticeable difference in the community is that, since moving to GitLab, there is more awareness around what CI/CD is and how important it is to the development process. CI/CD is being used extensively throughout the project."
+
 ---
 # Time passes, and testing tools improve
 
@@ -159,11 +165,16 @@ CI is easy to setup for the first time.
 
 Idea is [10 years old](https://blogs.gnome.org/aday/2012/08/07/gnome-os/)
 
-Aims:
+Goals:
 
-  * Provide a "known good" system
-  * Allow automated regression testing
+  * Provide a "known good" full system integration
   * Allow designers and developers to test in-progress changes in a real system
+  * Automated regression testing
+
+Non-goals:
+
+  * Reliability
+  * Security updates, hardware enablement, user support
 
 ???
 
@@ -210,6 +221,8 @@ Only a few people test GNOME OS today
 
 "Unstable" releases happen, but nobody tests those either.
 
+Integration into distos is hard and time-consuming to get right.
+
 User bug reports are nice, but:
 
   * if you're not a domain expert, it's hard to produce an actionable bug report
@@ -217,6 +230,12 @@ User bug reports are nice, but:
   * some distros add downstream patches with additional bugs
 
 ---
+
+???
+
+Typical bug report: https://discourse.gnome.org/t/gnome-global-search-doesnt-find-any-files-in-my-native-language/13061/9
+
+Result: fix compile flags for gnome-shell in Arch Linux
 
 <!-- 7. Meanwhile downstream... -->
 
@@ -421,157 +440,162 @@ Exclusion match: window body.
 
 ---
 
-# Scale of GNOME
+# OpenQA: openqa-needles Git repo
 
-Design team: 16 people (Gitlab) - https://gitlab.gnome.org/groups/Teams/Design/-/group_members
-
-Release team: 10 people (Gitlab) - https://gitlab.gnome.org/groups/Teams/Releng/-/group_members
-
-"Official" modules: https://gitlab.gnome.org/GNOME : 20\*18 = 360 (core modules are less)
-
-Gitlab - GNOME group = 290 developers who can commit.
-
-https://hpjansson.org/blag/2022/07/23/gnome-at-25-a-health-checkup/
-
- * <1,400 contributors in 2021
-
-Comparisons:
-  
-  * MS Windows: 227K MS employees (LinkedIn) - 1% on Windows = 2.7K contributors
-  * Apple: 174K (Wikipedia) - 1% on OSX = 1.74K contributors
-
----
-
-# GNOME development model
-
-Design team:
-
-  * new designs
-
-Users:
-
-  * issue reports
-  * wish requests
-  * ranting, etc.
-
-Module maintainers: 
-
-  * 6 months of work to implement those changes
-
-Release team:
-
-  * spin tarballs and upload to ftp.gnome.org
-
-Distributions:
-
-  * build tarballs and produce OS images
-
-Users:
-
-  * use the distro and find a bug
-
----
-
-# Testing in 1999
-
-If it builds, ship it!
-
-* Works on my machine
-
-`make test`
-
-`./configure --prefix=/usr; make; make install`
-
-Was f'in hard to do anything in that time... machines 100% slower, autotools, C'99 wasn't even invented
-
----
-
-# Testing in 2023
-
-https://about.gitlab.com/blog/2020/09/08/gnome-follow-up/
-
-"Another noticeable difference in the community is that, since moving to GitLab, there is more awareness around what CI/CD is and how important it is to the development process. CI/CD is being used extensively throughout the project."
-
- * Gitlab CI is great
-
-GNOME is designed as a whole, but built and shipped as a kit of parts.
+![openqa-needles.git repo](./images/openqa-needles.git.png)
 
 ???
 
-Typical bug report: https://discourse.gnome.org/t/gnome-global-search-doesnt-find-any-files-in-my-native-language/13061/9
+All in one repo
 
-Result: fix compile flags for gnome-shell in Arch Linux
+Multiple versions of the product with design differences:
 
+  * test everything against everything
+
+Repo gets very big... no solution really.
 
 ---
 
-# Testing in 2023
+# OpenQA: a needle
 
-Still:
+.left[```json
+{
+  "area": [
+    {
+      "xpos": 31,
+      "ypos": 78,
+      "width": 959,
+      "height": 599,
+      "type": "match"
+    }
+  ],
+  "properties": [],
+  "tags": [
+    "app_baobab_home"
+  ]
+}
+```]
 
-  * Module CI
-  * Release tarballs
-  * ship to distros
-  * Users test it and report bugs
+.right[![Baobab app screenshot](./images/app_baobab_home.png)]
+
+<!-- 11. Show and tell - openqa-tests and openqa-needles repos -->
+
+---
+
+# openqa-tests.git
+
+![openqa-tests.git repo](./images/openqa-tests.git.png)
 
 ???
 
-    
+Everything is Perl.
+
+Python is supported in theory, i didn't get it to work, and it involves a Perl->Python bridge so additional complexity that might be unhelpful.
 
 ---
 
-# GNOME OS
+# openqa-tests/main.pm
 
-What is GNOME OS?
-
-  * The product of a 10-year initiative to make GNOME "Testable"
-  * A bootable OS image built from "bleeding edge" GNOME components
-  * Insecure and full of bugs - that's the point!
-  * Defined in a single Git repository (gnome-build-meta)
-  * Image-based deployment with read-only /usr and rollback
-
-Nobody is volunteering to handle security issues, hardware enablement, user support.
+![main.pm](./images/tests-main.pm.png)
 
 ---
 
-# GNOME OS
+# openqa-tests/tests/gnome-install.pm
 
-Goals:
+![gnome-install.pm](./images/tests-gnome-install.pm.png)
 
-  * Allow designers and developers to test changes in real context
-  * Control the whole stack - bootloader, kernel, userspace, toolchain - to provide "known good" reference system
-  * ...
+---
+
+# openqa-tests/tests/gnome-welcome.pm
+
+![gnome-welcome.pm](./images/tests-gnome-welcome.pm.png)
+
+---
+
+<!-- 12. OpenQA tips and tricks -->
+
+# Tips and Tricks
+
+1. OpenQA is great!  ❤️  Use it!
+
+2. Explore the test library code:
+
+  * [testapi docs](http://open.qa/api/testapi/)
+  * [os-autoinst-distri-opensuse](https://os-autoinst.github.io/os-autoinst-distri-opensuse/)
+
+3. Keep tests simple.
+
+4. Always check the os-autoinst logs.
+
+  * Example: If needle bounds are invalid, you get a log message and a confusing "0% match" in web UI
+
+5. Learn how to run the testsuite locally.
+
+6. Take care with upstream containers - pin versions using container hash.
+
+<!-- 13. Next steps for GNOME -->
+
+---
+
+# Next steps for GNOME OpenQA
+
+1. Build a small team to maintain tests and infra.
+
+2. Reach "production ready" state.
+
+3. GNOME module teams maintaining & extending their own tests.
+
+4. Add example user content (text documents, multimedia, etc)
+
+<!-- 14. Credits -->
+
+---
+
+# Credits
+
+Top names from gnome-continuous and gnome-build-meta repos:
+
+ * Abderrahim Kitouni
+ * Carlos Garcia Campos
+ * Colin Walters
+ * Debarshi Ray
+ * Dor Askayo
+ * Emmmanuele Bassi
+ * Giovanni Campagna
+ * Iñigo Martinez
+ * Jasper St. Pierre
+ * Javier Jardón
+ * Jeremy Bicha
+ * Jordan Petridis
+ * Michael Catanzaro
+ * Owen Taylor
+ * Philip Chimento
+ * Tristan Van Berkom
+ * Vadim Rutkovsky
+ * Valentin David
+
+Special mentions:
+
+ * Allan Day (blogs, documentation)
+ * Andrea Veri (OpenID help)
+ * James Thomas (openQA tests & QEMU help)
 
 ???
-
-I'll go into the history of GNOME OS later
-
----
-
-# GNOME OS Build process
-
-Diagram here.
-
----
-
-# Adding OpenQA testing
-
-OpenQA workers are often bare metal
-
-We want low maintenance overhead - use a Gitlab runner.
-
-# 
-
-
-# How did we get here? (Credits)
 
 2012 - Colin Walters introduces OSTree, and GNOME Continuous
 
-
 https://blogs.gnome.org/aday/2012/08/07/gnome-os/
 
+<!-- 15. How to get involved / Q & A-->
 
+---
 
-class: impact
+# How to get involved
 
-# Any questions?
+I will provide training on infra maintenance and writing tests - just ask.
+
+  * Chat: Matrix [#gnome-os:gnome.org](https://app.element.io/#/room/#gnome-os:gnome.org) (Libera.chat #gnome-os)
+  * Email: sam at afuera.me.uk
+  * Forum: https://discourse.gnome.org/
+
+Also: [documentation](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers), [issue tracker](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers)
