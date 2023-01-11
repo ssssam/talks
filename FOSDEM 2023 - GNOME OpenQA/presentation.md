@@ -1,7 +1,3 @@
-title: Setting up OpenQA testing for GNOME
-class: animation-fade
-layout: true
-
 <!--
 OpenQA testing for GNOME
 FOSDEM 2023 - Testing and Automation Devroom - Sunday 5/Feb 11:00
@@ -9,13 +5,7 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
 25 minutes inc. questions and changeover.
 -->
 
-.bottom-bar[
-{{title}}
-]
-
----
-
-# {{title}}
+# Setting up OpenQA testing for GNOME
 
 ## Sam Thursfield <br /><tt>&lt;sam@afuera.me.uk&gt;</tt>
 
