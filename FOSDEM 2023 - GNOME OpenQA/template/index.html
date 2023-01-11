@@ -7,13 +7,92 @@
   <script src="remark.min.js"></script>  
   <script>
     function create() {
-      return remark.create({
+      let slideshow = remark.create({
         {{{source}}},
         ratio: '16:9',
         highlightLines: true,
         countIncrementalSlides: false,
         highlightStyle: 'github'
       });
+
+      slideshow.on('afterShowSlide', (slide) => {
+        // When slide appears, resolve any 'stretch' element.
+        let slideContent = getSlideContent(slide.getSlideIndex);
+        let width = slideContent.clientWidth;
+        let height = slideContent.clientHeight;
+        console.log(`afterShowSlide: ${slideContent}, ${width}, ${height}`);
+        layoutSlideContent(slideContent, width, height);
+      });
+    }
+
+    function getSlideContent(slideIndex) {
+      let slides = Array.from(document.querySelectorAll('.remark-slide-content'));
+      return slides[slideIndex()];
+    }
+
+    // Adapted from https://github.com/hakimel/reveal.js/blob/master/js/utils/util.js#L256
+    function getRemainingHeight( content, element, height = 0 ) {
+        if (element) {
+            let newHeight, oldHeight = element.style.height;
+
+            // Change the .stretch element height to 0 in order find the height of all
+            // the other elements
+            console.log(`Set ${element} height to 0px`);
+            element.style.height = '0px';
+
+            // In Overview mode, the parent (.slide) height is set of 700px.
+            // Restore it temporarily to its natural height.
+            console.log(`Set ${content} height to auto`);
+            content.style.height = 'auto';
+
+            newHeight = height - content.offsetHeight;
+            console.log(`New height: ${newHeight} = ${height} - ${content.offsetHeight}`);
+
+            // Restore the old height, just in case
+            element.style.height = oldHeight + 'px';
+            console.log(`element.style.height: ${oldHeight}`);
+
+            // Clear the parent (.slide) height. .removeProperty works in IE9+
+            content.style.removeProperty('height');
+            console.log(`Set ${content} property`);
+
+            return newHeight;
+        }
+
+        return height;
+    }
+
+    // Adapted from https://github.com/hakimel/reveal.js/blob/master/js/reveal.js#L961
+    function layoutSlideContent(content, width, height) {
+        let element = content.querySelector('.stretch');
+        console.log("Stretch " + element);
+
+        if (element) {
+            console.log("Stretch " + element + " " + height);
+            let remainingHeight = getRemainingHeight(content, element, height);
+
+            if (remainingHeight == 0) {
+              // Safeguard against brokenness
+              console.warn("Calculated height of 0!");
+              return;
+            }
+
+            // Consider the aspect ratio of media elements
+            if( /(img|video)/gi.test( element.nodeName ) ) {
+                const nw = element.naturalWidth || element.videoWidth,
+                      nh = element.naturalHeight || element.videoHeight;
+
+                const es = Math.min( width / nw, remainingHeight / nh );
+
+                element.style.width = ( nw * es ) + 'px';
+                element.style.height = ( nh * es ) + 'px';
+
+            }
+            else {
+                element.style.width = width + 'px';
+                element.style.height = remainingHeight + 'px';
+            }
+        };
     }
   </script>
 </head>

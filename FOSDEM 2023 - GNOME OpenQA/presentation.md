@@ -19,6 +19,8 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
 
 ## Sam Thursfield <br /><tt>&lt;sam@afuera.me.uk&gt;</tt>
 
+![Codethink logo](images/codethink-logo.svg)
+
 ---
 
 <!-- 1. About me / about GNOME -->
@@ -229,15 +231,16 @@ User bug reports are nice, but:
   * distro packages can be very old, few folk enjoy maintaining old versions of their module
   * some distros add downstream patches with additional bugs
 
----
-
 ???
 
 Typical bug report: https://discourse.gnome.org/t/gnome-global-search-doesnt-find-any-files-in-my-native-language/13061/9
 
 Result: fix compile flags for gnome-shell in Arch Linux
 
+
 <!-- 7. Meanwhile downstream... -->
+
+---
 
 # OpenSuSE Tumbleweed
 
@@ -281,7 +284,10 @@ Who is familiar with OpenQA in the audience?
 
 # OpenQA: main page
 
-![openqa UI frontpage](images/openqa-ui-main.png)
+<!--.stretch[![openqa UI frontpage](images/openqa-ui-main.png)] -->
+<img class="stretch" src="./images/openqa-ui-main.png">
+
+---
 
 <!-- 8. Show and tell: viewing the tests -->
 
@@ -579,6 +585,7 @@ Special mentions:
  * Allan Day (blogs, documentation)
  * Andrea Veri (OpenID help)
  * James Thomas (openQA tests & QEMU help)
+ * Will Thompson (Endless installer, OpenQA advice, ...)
 
 ???
 

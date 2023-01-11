@@ -167,7 +167,7 @@ blockquote {
 .space-right { padding-right: 1em; }
 
 // Images
-.responsive > img { width: 100%; height: auto; };
+.responsive > img { width: 100%; height: auto; object-fit: contain };
 .contain { background-size: contain; };
 .overlay { box-shadow: inset 0 0 0 9999px $overlay; }
 
