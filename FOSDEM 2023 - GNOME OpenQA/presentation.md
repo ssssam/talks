@@ -7,46 +7,75 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
 
 # Setting up OpenQA testing for GNOME
 
-## Sam Thursfield <br /><tt>&lt;sam@afuera.me.uk&gt;</tt>
+<div class="r-stretch"></div>
 
-![Codethink logo](images/codethink-logo.svg)
+<div>
+  <div class="flex-row-stretch">
+    <div class='flex-col left' style="flex: 1;">
+  	 <p class="left">Sam Thursfield</p>
+  	    <p class="left">OSSEU 2022</p>
+    </div>
+
+    <img class='right' src="./images/codethink-logo.svg" style="flex: 1;">
+  </div>
+</div>
 
 ---
 
 <!-- 1. About me / about GNOME -->
 
-# About me
+## About me
 
   * ~20 years involved in GNOME
   * ~10 years involved in Codethink
 
+<img class="r-stretch" src="./images/photo-2014.jpg" alt="Me playing trombone on a tram">
+
 ---
 
-# About GNOME
+## About GNOME
 
 GNOME is a graphical desktop environment with an open development model.
 
-GNOME is older than:
+<img alt="GNOME overview" src="images/gnome.png" class="r-stretch">
 
-  * FOSDEM (2000)
-  * Wikipedia (2001)
-  * Billie Eilish (2001)
+---
+
+## GNOME is older than ...
+
+<div class="flex-row-stretch">
+<div>
+<img alt="FOSDEM logo" src="images/fosdem-logo.png" style="height: 1em;"> (2000)<br>
+</div>
+<div>
+<img alt="Ubuntu logo" src="images/ubuntu-logo.png" style="height: 1em;"> (2004)<br>
+</div>
+<div>
+<img alt="Git logo" src="images/git-logo.svg" style="height: 1em;"> (2005)<br>
+</div>
+<div>
+<img alt="Android logo" src="images/android-logo.svg" style="height: 1em;"> (2005)<br>
+</div>
+</div>
+</div>
+
+<!--  * Billie Eilish (2001)
   * Greta Thunberg (2003)
-  * Facebook, Ubuntu (2004)
   * Git (2005)
   * Codethink (2008)
   * some of its contributors
+-->
 
 ---
 
 <!-- 2. Why is GNOME hard to test? -->
 
-# Why is GNOME hard to test?
+<h2 class="r-fit-text">Why is GNOME hard to test?</h2>
 
  * Designed as a whole
  * Released as a kit of parts (200+ modules)
 
-<!-- Photo of some Ikea furniture stress -->
+<img src="images/jigsaw.jpg">
 
 ???
 
@@ -55,28 +84,27 @@ Also - inconsistent investment around upstream testing, volunteers not super int
 
 ---
 
-# Why is GNOME hard to test?
+<h2 class="r-fit-text">Why is GNOME hard to test?</h2>
 
-No "BDFL".
+<blockquote class="fs-3">Each GNOME component (or "module") has one or more maintainers, and they generally have the final say over which changes are included in their components.</blockquote>
 
-https://wiki.gnome.org/Governance
-
-"Each GNOME component (or "module") has one or more maintainers, and they generally have the final say over which changes are included in their components."
+<p class="fs-5">
+<a href="https://wiki.gnome.org/Governance">"Governance", GNOME wiki</a>
+</p>
 
  * Unit tests are easy
  * Integration testing is harder - who is responsible when the tests fail?
 
 ???
 
+No "BDFL".
 Ref: conway's law
 
 Open (public) development: various corps. and volunteers collaborate in the open
 
 ---
 
-# Why is GNOME hard to test?
-
-Who is responsible for integration testing?
+<h2 class="r-fit-text">Who is responsible for integration testing?</h2>
 
 [![](https://mermaid.ink/img/pako:eNqtlF1vmzAUhv-K5d4CSmyTApMmbcp2tWpT290s5OIEDgGVr9lGaxblv88G2gwl7VqtRqDD4Xlfm8PBe5o0KdKIbiW0OflyHdfEjCWqYlvfIlSrISQ2XhPXHW6V674nV03alXgFRa3NiXK-GjLkmFr_hx17Wzv-tnZi5XmeMbCHNTkphpHfgtxAWVr5NZYICvtJxniY5byaPak-z_NX8uIZflD8lTqyfSWWhdKyYasPMsnJN0juYItSrV8mm5sSbwqoXy3kj_XuP9lgZsivN5b5rmz72ev6aYCdAmwC8H8B4hTgE8CfrLL3JK73sdsSiW0jteud-2-OtG_ozwi6k2gUPztUg-TYokPHWUVSglJLzEiKGXSlJllRltFF1g_Hru0OowvO-Ri7v4pU5xFr799N5K1sElTq5fKHRAoqBylhFxFB-NQU2nY0TAVmweb59ZBxUIdWKCsoUrMj7a1hTHWOFcY0MuH4ojGN64NBuzYFjZ_SQjeSRhmUCh0KnW5udnVCIy07fICWBZgNrnqkWqhptKf3NJpz3wuChc9mPPAvBWMO3dls6C38meALMZvzxSU7OPR30xiDmaF9Fgoe-qFgQRj6vduP_qGd8vAHlyjAVw?type=png)](https://mermaid.live/edit#pako:eNqtlF1vmzAUhv-K5d4CSmyTApMmbcp2tWpT290s5OIEDgGVr9lGaxblv88G2gwl7VqtRqDD4Xlfm8PBe5o0KdKIbiW0OflyHdfEjCWqYlvfIlSrISQ2XhPXHW6V674nV03alXgFRa3NiXK-GjLkmFr_hx17Wzv-tnZi5XmeMbCHNTkphpHfgtxAWVr5NZYICvtJxniY5byaPak-z_NX8uIZflD8lTqyfSWWhdKyYasPMsnJN0juYItSrV8mm5sSbwqoXy3kj_XuP9lgZsivN5b5rmz72ev6aYCdAmwC8H8B4hTgE8CfrLL3JK73sdsSiW0jteud-2-OtG_ozwi6k2gUPztUg-TYokPHWUVSglJLzEiKGXSlJllRltFF1g_Hru0OowvO-Ri7v4pU5xFr799N5K1sElTq5fKHRAoqBylhFxFB-NQU2nY0TAVmweb59ZBxUIdWKCsoUrMj7a1hTHWOFcY0MuH4ojGN64NBuzYFjZ_SQjeSRhmUCh0KnW5udnVCIy07fICWBZgNrnqkWqhptKf3NJpz3wuChc9mPPAvBWMO3dls6C38meALMZvzxSU7OPR30xiDmaF9Fgoe-qFgQRj6vduP_qGd8vAHlyjAVw)
 
@@ -90,7 +118,8 @@ e.g. a change in gnome-control-centre, which depends on a change in systemd... w
 
 <!-- 3. Integration testing 1999 -->
 
-# Testing GNOME releases - 1999 style
+
+<h2 class="r-fit-text">Testing GNOME releases - 1999 style</h2>
 
 Maintainer:
 
