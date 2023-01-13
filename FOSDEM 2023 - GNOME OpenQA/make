@@ -4,6 +4,7 @@
 
 from argparse import ArgumentParser, FileType
 from io import BytesIO
+from markdown import Markdown
 from pathlib import Path
 from typing import *
 from zipfile import ZipFile
@@ -74,14 +75,7 @@ def download_and_unpack_reveal_js(outdir: Path):
     unzip(stream, outdir, strip_components=1)
 
 
-def parse_input(text) -> List[str]:
-    # Replace '.cls[foo]' with '<span class="cls">foo</span>'
-    #
-    # Based on remark.js feature:
-    # https://github.com/gnab/remark/wiki/Markdown#content-classes
-    text, sub_count = re.subn(r'\.([-a-z0-9]+)\[(.*)\]', r'<span class="\1">\2</span>', text)
-    log.debug(f"Replaced {sub_count} content classes")
-
+def split_slides(text) -> List[str]:
     slides = []
     current_slide = []
     notes = False
@@ -110,23 +104,38 @@ SECTION_TEMPLATE = """
 </section>
 """
 
+
 def convert_slides(slides: List[str]) -> str:
+    # Markdown extensions:
+    #
+    #   * attr_list: https://python-markdown.github.io/extensions/attr_list/
+    #   * md_in_html: https://python-markdown.github.io/extensions/md_in_html/
+    #
+    markdown_parser = Markdown(
+        extensions=['attr_list', 'md_in_html'],
+        output_format='html5'
+    )
+
     result = []
     for slide_text in slides:
-        slide_html = SECTION_TEMPLATE.format(slide_text)
-        result.append(slide_html)
+        markdown_parser.reset()
+        slide_html = markdown_parser.convert(slide_text)
+        section_html = SECTION_TEMPLATE.format(slide_html)
+        result.append(section_html)
     return '\n'.join(result)
 
 
 def build(infile, template, outdir):
     text = infile.read_text()
-    slides = parse_input(text)
+    slides = split_slides(text)
 
     template_text = template.read_text()
-    output = template_text.replace('{{sections}}', convert_slides(slides))
+    sections_text = convert_slides(slides)
+    output = template_text.replace('{{sections}}', sections_text)
 
     index = outdir.joinpath('index.html')
     index.write_text(output)
+    log.info(f"Wrote {index}")
 
 
 def watch(infile, template, outdir):
