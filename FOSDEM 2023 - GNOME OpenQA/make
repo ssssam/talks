@@ -117,10 +117,11 @@ def convert_slides(slides: List[str]) -> str:
     # Markdown extensions:
     #
     #   * attr_list: https://python-markdown.github.io/extensions/attr_list/
+    #   * fenced_code: https://python-markdown.github.io/extensions/fenced_code_blocks/
     #   * md_in_html: https://python-markdown.github.io/extensions/md_in_html/
     #
     markdown_parser = Markdown(
-        extensions=['attr_list', 'md_in_html'],
+        extensions=['attr_list', 'fenced_code', 'md_in_html'],
         output_format='html5'
     )
 
