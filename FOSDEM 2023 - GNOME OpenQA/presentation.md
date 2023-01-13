@@ -29,7 +29,7 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
   * ~20 years involved in GNOME
   * ~10 years involved in Codethink
 
-<img class="r-stretch" src="./images/photo-2014.jpg" alt="Me playing trombone on a tram">
+![Me playing trombone on a tram](./images/photo-2014.jpg){:.r-stretch}
 
 ---
 
@@ -57,11 +57,10 @@ GNOME is a graphical desktop environment with an open development model.
 <img alt="Android logo" src="images/android-logo.svg" style="height: 1em;"> (2005)<br>
 </div>
 </div>
-</div>
 
 <!--  * Billie Eilish (2001)
+  * Myspace (2003)
   * Greta Thunberg (2003)
-  * Git (2005)
   * Codethink (2008)
   * some of its contributors
 -->
