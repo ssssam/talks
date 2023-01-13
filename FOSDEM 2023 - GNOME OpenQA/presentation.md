@@ -26,10 +26,12 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
 
 ## About me
 
+<div markdown=1 class="r-stretch">
   * ~20 years involved in GNOME
   * ~10 years involved in Codethink
 
-![Me playing trombone on a tram](./images/photo-2014.jpg){:.r-stretch}
+![Me playing trombone on a tram](./images/photo-2014.jpg)
+</div>
 
 ---
 
@@ -85,14 +87,14 @@ Also - inconsistent investment around upstream testing, volunteers not super int
 
 <h2 class="r-fit-text">Why is GNOME hard to test?</h2>
 
-<blockquote class="fs-3">Each GNOME component (or "module") has one or more maintainers, and they generally have the final say over which changes are included in their components.</blockquote>
+<blockquote class="fs-6">Each GNOME component (or "module") has one or more maintainers, and they generally have the final say over which changes are included in their components.</blockquote>
 
 <p class="fs-5">
 <a href="https://wiki.gnome.org/Governance">"Governance", GNOME wiki</a>
 </p>
 
  * Unit tests are easy
- * Integration testing is harder - who is responsible when the tests fail?
+ * Integration testing is harder: who is responsible when the tests fail?
 
 ???
 
@@ -118,38 +120,41 @@ e.g. a change in gnome-control-centre, which depends on a change in systemd... w
 <!-- 3. Integration testing 1999 -->
 
 
-<h2 class="r-fit-text">Testing GNOME releases - 1999 style</h2>
+## Testing GNOME releases - 1999 style {:.r-fit-text}
 
-Maintainer:
+<div class="left" markdown="1">
+*Maintainers*:
 
 ```bash
 make test
-
 sudo make install
 
 make dist
 ```
 
-Release team: "It builds... ship it!"
+*Release team*: "It builds... ship it!"
 
-Distros: "It's released - ship it!"
+*Distros*: "It's released - ship it!"
 
-Users: ...
+*Users*: Time to test if anything works...
+</div>
 
 ---
 
-# Issues with the 1999 model
+## Issues with the 1999 model {:.r-fit-text}
 
-Minimal integration testing.
-
-Bugs introduced at integration time, reported upstream
-
-  * "This only works if you pass `--enable-libfoo` at configure time..."
+<div class="left" markdown="1">
+* Minimal integration testing
+* Bugs introduced at integration time
+    * <p class="fs-5">"This feature only works if you pass `--enable-libfoo` at configure time..."</p>
+</div>
 
 <!-- 4. 23 years of improvements -->
 
 ---
-# Time passes, and build tools improve
+### Time passes
+
+Build tools improve...
 
  * jhbuild
  * Meson
@@ -157,10 +162,12 @@ Bugs introduced at integration time, reported upstream
 
 ---
 
-# Time passes, and collaboration tools improve
+### Time passes
 
-  * Git!
-  * Gitlab!
+Collaboration tools improve
+
+  * Git
+  * Gitlab
 
 CI is easy to setup for the first time.
 
@@ -171,9 +178,9 @@ https://about.gitlab.com/blog/2020/09/08/gnome-follow-up/
 "Another noticeable difference in the community is that, since moving to GitLab, there is more awareness around what CI/CD is and how important it is to the development process. CI/CD is being used extensively throughout the project."
 
 ---
-# Time passes, and testing tools improve
+# Time passes
 
-"Testable" initiative.
+"Testable" initiative starts around 2012...
 
   * OSTree
   * GNOME Continuous
@@ -182,21 +189,23 @@ https://about.gitlab.com/blog/2020/09/08/gnome-follow-up/
 
 ---
 # GNOME OS
+<div class="left fs-3" markdown="1">
 
-Idea is [10 years old](https://blogs.gnome.org/aday/2012/08/07/gnome-os/)
-
-Goals:
+**Goals**:
 
   * Provide a "known good" full system integration
   * Allow designers and developers to test in-progress changes in a real system
   * Automated regression testing
 
-Non-goals:
+**Non-goals**:
 
   * Reliability
   * Security updates, hardware enablement, user support
 
+</div>
 ???
+
+Idea is [10 years old](https://blogs.gnome.org/aday/2012/08/07/gnome-os/)
 
 "Known good" is very useful when debugging to see if the issue is in GNOME itself, or downstream.
 
@@ -204,29 +213,31 @@ Non-goals:
 
 <!-- 5. Integration testing 2022 -->
 
-# Testing GNOME releases - 2022 style
+## Testing GNOME releases - 2022 style {:.r-fit-text}
 
-Module contributors:
+<div class="left fs-4" markdown="1">
+*Maintainers*:
 
-  * Send MR's, run automated tests, merge to 'master'
+  * Review MR's, run automated tests, merge to 'master'
   * Update gnome-build-meta integration repo (usually)
   * Release tarballs
 
-Release team:
+*Release team*:
 
   * Check full builds in gnome-build-meta CI
   * Build GNOME OS images
   * Publish tarballs
 
-Distros:
+*Distros*:
 
   * Downstream regression testing (unit + integration tests)
   * Beta releases
 
-Users:
+*Users*:
 
   * Bug reports
   * Friendly messages thanking volunteers for their hard work
+</div>
 
 ---
 
@@ -234,6 +245,7 @@ Users:
 
 # Remaining issues
 
+<div class="left fs-4" markdown="1">
 Only a few people test GNOME OS today
 
   * Building GNOME OS images takes hours
@@ -248,6 +260,7 @@ User bug reports are nice, but:
   * if you're not a domain expert, it's hard to produce an actionable bug report
   * distro packages can be very old, few folk enjoy maintaining old versions of their module
   * some distros add downstream patches with additional bugs
+</div>
 
 ???
 
@@ -260,7 +273,7 @@ Result: fix compile flags for gnome-shell in Arch Linux
 
 ---
 
-# OpenSuSE Tumbleweed
+## OpenSuSE Tumbleweed {:.r-fit-text}
 
 The first "rolling release" distro ?
 
@@ -300,7 +313,7 @@ Who is familiar with OpenQA in the audience?
 
 ---
 
-# OpenQA: main page
+## OpenQA: main page
 
 <!--.stretch[![openqa UI frontpage](images/openqa-ui-main.png)] -->
 <img class="stretch" src="./images/openqa-ui-main.png">
@@ -309,9 +322,9 @@ Who is familiar with OpenQA in the audience?
 
 <!-- 8. Show and tell: viewing the tests -->
 
-# Gitlab: gnome-build-meta
+## Gitlab: gnome-build-meta
 
-![gnome-build-meta repo screenshot](images/gitlab-gbm.png)
+![gnome-build-meta repo screenshot](images/gitlab-gbm.png){:.r-stretch}
 
 ???
 
@@ -321,39 +334,39 @@ GNOME release team's integration repo
 
 Lots of work done in CI pipelines. Two beefy donated servers (x86_64, ARM) run builds.
 
-# Gitlab: gnome-build-meta wiki
+## Gitlab: gnome-build-meta wiki
 
-![gnome-build-meta wiki screenshot showing OpenQA docs](images/gitlab-gbm-wiki.png)
+![gnome-build-meta wiki screenshot showing OpenQA docs](images/gitlab-gbm-wiki.png){:.r-stretch}
 
-# Gitlab: CI pipelines
+## Gitlab: CI pipelines
 
-![gnome-build-meta 'master' CI pipelines](images/gitlab-pipelines-master.png)
+![gnome-build-meta 'master' CI pipelines](images/gitlab-pipelines-master.png){:.r-stretch}
 
-# Gitlab: s3-image
+## Gitlab: s3-image
 
-![gnome-build-meta 's3-image' job](images/gitlab-pipelines-s3-image.png)
+![gnome-build-meta 's3-image' job](images/gitlab-pipelines-s3-image.png){:.r-stretch}
 
 ???
 
 This job creates an installer ISO and uploads it to Amazon S3 file storage.
 
-# Gitlab: test-s3-image
+## Gitlab: test-s3-image
 
-![gnome-build-meta 'test-s3-image' job](images/gitlab-pipelines-test-s3-image.png)
+![gnome-build-meta 'test-s3-image' job](images/gitlab-pipelines-test-s3-image.png){:.r-stretch}
 
 ???
 
 This job runs the OpenQA tests
 
-# Gitlab: test-s3-image
+## Gitlab: test-s3-image
 
-![gnome-build-meta 'test-s3-image' job](images/gitlab-test-s3-image-log.png)
+![gnome-build-meta 'test-s3-image' job](images/gitlab-test-s3-image-log.png){:.r-stretch}
 
 ???
 
-# Gitlab: test-s3-image
+## Gitlab: test-s3-image
 
-This job:
+This job:{:.r-stretch}
 
  * runs using the upstream 'openqa-worker' Docker image
  * downloads the ISO from S3
@@ -372,9 +385,9 @@ The runner *is* the worker - not a dedicated machine. (less infra to maintain- w
 
 ---
 
-# OpenQA: Test results
+## OpenQA: Test results
 
-![OpenQA test result - main](./images/openqa-ui-tests-top.png)
+![OpenQA test result - main](./images/openqa-ui-tests-top.png){:.r-stretch}
 
 ???
 
@@ -382,15 +395,15 @@ Each of these tests on the LHS corresponds to a Perl script in 'openqa_tests.git
 
 --
 
-# OpenQA: Test results
+## OpenQA: Test results
 
-![OpenQA test result - 2](./images/openqa-ui-tests-1.png)
+![OpenQA test result - 2](./images/openqa-ui-tests-1.png){:.r-stretch}
 
 ---
 
-# OpenQA: gnome\_install test
+## OpenQA: gnome\_install test
 
-![OpenQA 'gnome\_install' test](./images/openqa-ui-needle-install.png)
+![OpenQA 'gnome\_install' test](./images/openqa-ui-needle-install.png){:.r-stretch}
 
 ???
 
@@ -406,9 +419,9 @@ Helper functions provided by OpenQA to:
 
 ---
 
-# OpenQA: gnome\_welcome test
+## OpenQA: gnome\_welcome test
 
-![OpenQA test creating 'testuser' account](./images/openqa-ui-needle-testuser.png)
+![OpenQA test creating 'testuser' account](./images/openqa-ui-needle-testuser.png){:.r-stretch}
 
 ???
 
@@ -416,9 +429,9 @@ First time we can log in (no root password)
 
 ---
 
-# OpenQA: gnome\_journal\_capture\_fix test
+## OpenQA: gnome\_journal\_capture\_fix test
 
-![OpenQA running command over serial](./images/openqa-ui-serial.png)
+![OpenQA running command over serial](./images/openqa-ui-serial.png){:.r-stretch}
 
 ???
 
@@ -426,9 +439,9 @@ Several ways to run commands - serial console is least extra work.
 
 ---
 
-# OpenQA: gnome\_desktop test
+## OpenQA: gnome\_desktop test
 
-![OpenQA needle matching GNOME Shell](./images/openqa-ui-needle-gnome-desktop.png)
+![OpenQA needle matching GNOME Shell](./images/openqa-ui-needle-gnome-desktop.png){:.r-stretch}
 
 ???
 
@@ -438,9 +451,9 @@ Design changes: all needles with tag 'gnome_desktop_tour' are tried, and if any 
 
 ---
 
-# OpenQA: gnome\_system\_monitor test
+## OpenQA: gnome\_system\_monitor test
 
-![OpenQA needle matching GNOME system monitor](./images/openqa-ui-needle-gnome-desktop.png)
+![OpenQA needle matching GNOME system monitor](./images/openqa-ui-needle-gnome-desktop.png){:.r-stretch}
 
 ???
 
@@ -450,23 +463,23 @@ Exclusion match: window body.
 
 ---
 
-# OpenQA: needle editor
+## OpenQA: needle editor
 
-![OpenQA needle editor](./images/openqa-ui-needle-editor-1.png)
+![OpenQA needle editor](./images/openqa-ui-needle-editor-1.png){:.r-stretch}
 
 ---
 
-# OpenQA: needle editor 2
+## OpenQA: needle editor 2
 
-![OpenQA needle editor](./images/openqa-ui-needle-editor-2.png)
+![OpenQA needle editor](./images/openqa-ui-needle-editor-2.png){:.r-stretch}
 
 <!-- 11. Show and tell - openqa-needles and openqa-tests repos -->
 
 ---
 
-# OpenQA: openqa-needles Git repo
+## OpenQA: openqa-needles Git repo
 
-![openqa-needles.git repo](./images/openqa-needles.git.png)
+![openqa-needles.git repo](./images/openqa-needles.git.png){:.r-stretch}
 
 ???
 
@@ -480,9 +493,11 @@ Repo gets very big... no solution really.
 
 ---
 
-# OpenQA: a needle
+## OpenQA: a needle
 
-.left[```json
+<div class="flex-row-stretch" display="flex:1;" markdown="1">
+<div markdown="1" style="width: 18em;">
+```json
 {
   "area": [
     {
@@ -498,17 +513,20 @@ Repo gets very big... no solution really.
     "app_baobab_home"
   ]
 }
-```]
-
-.right[![Baobab app screenshot](./images/app_baobab_home.png)]
+```
+</div>
+<div markdown="1">
+![Baobab app screenshot](./images/app_baobab_home.png){:width=75%}
+</div>
+</div>
 
 <!-- 11. Show and tell - openqa-tests and openqa-needles repos -->
 
 ---
 
-# openqa-tests.git
+## openqa-tests.git
 
-![openqa-tests.git repo](./images/openqa-tests.git.png)
+![openqa-tests.git repo](./images/openqa-tests.git.png){:.r-stretch}
 
 ???
 
@@ -518,50 +536,57 @@ Python is supported in theory, i didn't get it to work, and it involves a Perl->
 
 ---
 
-# openqa-tests/main.pm
+## openqa-tests/main.pm
 
-![main.pm](./images/tests-main.pm.png)
-
----
-
-# openqa-tests/tests/gnome-install.pm
-
-![gnome-install.pm](./images/tests-gnome-install.pm.png)
+![main.pm](./images/tests-main.pm.png){:.r-stretch}
 
 ---
 
-# openqa-tests/tests/gnome-welcome.pm
+## openqa-tests/tests/gnome-install.pm
 
-![gnome-welcome.pm](./images/tests-gnome-welcome.pm.png)
+![gnome-install.pm](./images/tests-gnome-install.pm.png){:.r-stretch}
+
+---
+
+## openqa-tests/tests/gnome-welcome.pm
+
+![gnome-welcome.pm](./images/tests-gnome-welcome.pm.png){:.r-stretch}
 
 ---
 
 <!-- 12. OpenQA tips and tricks -->
 
-# Tips and Tricks
+## Tips and Tricks
+
+<div markdown="1" class="fs-3">
 
 1. OpenQA is great!  ❤️  Use it!
 
 2. Explore the test library code:
 
-  * [testapi docs](http://open.qa/api/testapi/)
-  * [os-autoinst-distri-opensuse](https://os-autoinst.github.io/os-autoinst-distri-opensuse/)
+    * [testapi docs](http://open.qa/api/testapi/)
+    {: .fs-4 }
+    * [os-autoinst-distri-opensuse](https://os-autoinst.github.io/os-autoinst-distri-opensuse/)
+    {: .fs-4 }
 
 3. Keep tests simple.
 
 4. Always check the os-autoinst logs.
 
-  * Example: If needle bounds are invalid, you get a log message and a confusing "0% match" in web UI
+    * Example: If needle bounds are invalid, you get a log message and a confusing "0% match" in web UI
+    {: .fs-4 }
 
 5. Learn how to run the testsuite locally.
 
 6. Take care with upstream containers - pin versions using container hash.
 
+</div>
+
 <!-- 13. Next steps for GNOME -->
 
 ---
 
-# Next steps for GNOME OpenQA
+## Next steps for GNOME OpenQA
 
 1. Build a small team to maintain tests and infra.
 
@@ -577,6 +602,8 @@ Python is supported in theory, i didn't get it to work, and it involves a Perl->
 
 # Credits
 
+<div class="flex-row-stretch fs-6 left top" markdown="1">
+<div markdown="1" style="margin-right: 2em">
 Top names from gnome-continuous and gnome-build-meta repos:
 
  * Abderrahim Kitouni
@@ -591,6 +618,8 @@ Top names from gnome-continuous and gnome-build-meta repos:
  * Javier Jardón
  * Jeremy Bicha
  * Jordan Petridis
+ </div>
+<div markdown="1" style="margin: 2em">
  * Michael Catanzaro
  * Owen Taylor
  * Philip Chimento
@@ -604,7 +633,8 @@ Special mentions:
  * Andrea Veri (OpenID help)
  * James Thomas (openQA tests & QEMU help)
  * Will Thompson (Endless installer, OpenQA advice, ...)
-
+</div>
+</div>
 ???
 
 2012 - Colin Walters introduces OSTree, and GNOME Continuous
@@ -615,12 +645,19 @@ https://blogs.gnome.org/aday/2012/08/07/gnome-os/
 
 ---
 
-# How to get involved
+## How to get involved {:.r-fit-text}
 
-I will provide training on infra maintenance and writing tests - just ask.
+<div class="left" markdown="1">
+
+I will provide training on infra maintenance and writing tests - just ask!
 
   * Chat: Matrix [#gnome-os:gnome.org](https://app.element.io/#/room/#gnome-os:gnome.org) (Libera.chat #gnome-os)
-  * Email: sam at afuera.me.uk
-  * Forum: https://discourse.gnome.org/
+  {:.fs-3}
+  * Email: *sam@afuera.me.uk*
+  {:.fs-3}
+  * Forum: [https://discourse.gnome.org/](https://discourse.gnome.org/)
+  {:.fs-3}
 
 Also: [documentation](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers), [issue tracker](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers)
+{:.fs-3}
+</div>
