@@ -97,12 +97,20 @@ def split_slides(text) -> List[str]:
 
 
 SECTION_TEMPLATE = """
-<section data-markdown>
-  <textarea data-template>
-    {0}
-  </textarea>
+<section>
+  {0}
 </section>
 """
+
+
+def remove_paragraph_around_images(html) -> str:
+    # See
+    # https://stackoverflow.com/questions/24456010/in-markdown-is-there-a-way-to-stop-images-from-being-wrapped-with-p-tags
+    # etc.
+    #
+    # Whatever is "correct" i don't care, this shit breaks `r-stretch` attr.
+    html, _count = re.subn(r'<p>(<img[^>]*>)</p>', r'\1', html)
+    return html
 
 
 def convert_slides(slides: List[str]) -> str:
@@ -121,6 +129,9 @@ def convert_slides(slides: List[str]) -> str:
         markdown_parser.reset()
         slide_html = markdown_parser.convert(slide_text)
         section_html = SECTION_TEMPLATE.format(slide_html)
+
+        section_html = remove_paragraph_around_images(section_html)
+
         result.append(section_html)
     return '\n'.join(result)
 
