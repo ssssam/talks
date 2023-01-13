@@ -1,0 +1,188 @@
+#!/usr/bin/env python3
+
+"""Sam's reveal.js wrapper tool, version 100."""
+
+from argparse import ArgumentParser, FileType
+from io import BytesIO
+from pathlib import Path
+from typing import *
+from zipfile import ZipFile
+import logging
+import os
+import re
+import sys
+import time
+
+import requests
+
+
+log = logging.getLogger()
+
+
+REVEAL_JS_VERSION = '4.4.0'
+REVEAL_JS_URL = f"https://github.com/hakimel/reveal.js/archive/refs/tags/{REVEAL_JS_VERSION}.zip"
+
+
+def argument_parser():
+    parser = ArgumentParser(description="reveal.js wrapper tool")
+    parser.add_argument('--debug', dest='debug', action='store_true',
+                        help="Enable detailed logging to stderr")
+    parser.add_argument('--template', type=Path, default="template.html")
+    parser.add_argument(
+        '--watch', action='store_true', dest='watch',
+        help="Run continuously and rebuild when inputs change."
+    )
+    parser.add_argument(
+        '--no-watch', action='store_false', dest='watch',
+        help="Run continuously and rebuild when inputs change."
+    )
+    parser.add_argument('infile', type=Path, nargs="?", default="presentation.md")
+    parser.add_argument('outdir', type=Path, nargs="?", default="./output")
+    return parser
+
+
+def ensure_outdir(outdir):
+    outdir.mkdir(exist_ok=True, parents=True)
+    return outdir
+
+
+def unzip(stream: BytesIO, outdir: Path, strip_components: int=0):
+    """Extract a zipfile, allowing you to strip components from the path."""
+    with ZipFile(stream) as zipfile:
+        for zip_info in zipfile.infolist():
+            path_in_zip = Path(zip_info.filename)
+            if len(path_in_zip.parts) <= strip_components:
+                log.debug(f"Ignore {path_in_zip}")
+            else:
+                extracted_path = Path('')
+                extracted_path = extracted_path.joinpath(*path_in_zip.parts[strip_components:])
+                log.debug(f"Made {extracted_path} from {path_in_zip.parts[strip_components:]}")
+
+                # FIXME check its safe, the path might be malicious...
+                log.debug(f"Extract {path_in_zip} as {extracted_path}")
+                if zip_info.is_dir():
+                    outdir.joinpath(extracted_path).mkdir()
+                else:
+                    zip_info.filename = str(extracted_path)
+                    zipfile.extract(zip_info, outdir)
+
+
+def download_and_unpack_reveal_js(outdir: Path):
+    log.info(f"Fetch and extract ${REVEAL_JS_URL}")
+    response = requests.get(REVEAL_JS_URL);
+    stream = BytesIO(response.content)
+    unzip(stream, outdir, strip_components=1)
+
+
+def parse_input(text) -> List[str]:
+    # Replace '.cls[foo]' with '<span class="cls">foo</span>'
+    #
+    # Based on remark.js feature:
+    # https://github.com/gnab/remark/wiki/Markdown#content-classes
+    text, sub_count = re.subn(r'\.([-a-z0-9]+)\[(.*)\]', r'<span class="\1">\2</span>', text)
+    log.debug(f"Replaced {sub_count} content classes")
+
+    slides = []
+    current_slide = []
+    notes = False
+    for line in text.splitlines():
+        if line == '---':
+            slides.append('\n'.join(current_slide))
+            current_slide = []
+            notes = False
+        elif line == '???':
+            notes = True
+        else:
+            if notes:
+                pass
+            else:
+                current_slide.append(line)
+    slides.append('\n'.join(current_slide))
+
+    return slides
+
+
+SECTION_TEMPLATE = """
+<section data-markdown>
+  <textarea data-template>
+    {0}
+  </textarea>
+</section>
+"""
+
+def convert_slides(slides: List[str]) -> str:
+    result = []
+    for slide_text in slides:
+        slide_html = SECTION_TEMPLATE.format(slide_text)
+        result.append(slide_html)
+    return '\n'.join(result)
+
+
+def build(infile, template, outdir):
+    text = infile.read_text()
+    slides = parse_input(text)
+
+    template_text = template.read_text()
+    output = template_text.replace('{{sections}}', convert_slides(slides))
+
+    index = outdir.joinpath('index.html')
+    index.write_text(output)
+
+
+def watch(infile, template, outdir):
+    infile = Path(infile)
+    template = Path(template)
+
+    try:
+        from watchdog.observers import Observer
+        from watchdog.events import FileSystemEventHandler
+    except ImportError:
+        raise RuntimeError("The 'watchdog' PyPI package is needed for `--watch` mode")
+
+    class EventHandler(FileSystemEventHandler):
+        def on_modified(self, event):
+            log.debug(f"Event: {event}")
+            event_path = Path(event.src_path)
+            if event_path.samefile(infile) or event_path.samefile(template):
+                log.info(f"Change to {event_path}, rebuilding")
+                # FIXME: we get multiple events quickly and we should debounce
+                # these, but that requires an event loop or background thread.
+                build(infile, template, outdir)
+
+    observer = Observer()
+    paths = set([infile.parent, template.parent])
+    for path in paths:
+        observer.schedule(EventHandler(), path)
+
+    log.info(f"Watching locations for changes: {[str(p) for p in paths]}. Press CTRL+C to exit.")
+    observer.start()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
+
+
+def main():
+    args = argument_parser().parse_args()
+
+    if args.debug:
+        logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+    else:
+        logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+
+
+    outdir = ensure_outdir(args.outdir)
+    if not outdir.joinpath('js/reveal.js').exists():
+        download_and_unpack_reveal_js(outdir)
+
+    build(args.infile, args.template, outdir)
+    if args.watch:
+        watch(args.infile, args.template, outdir)
+
+try:
+    main()
+except RuntimeError as e:
+    sys.stderr.write("ERROR: {}\n".format(e))
+    sys.exit(1)
