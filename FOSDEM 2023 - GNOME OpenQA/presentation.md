@@ -13,7 +13,7 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
   <div class="flex-row-stretch">
     <div class='flex-col left' style="flex: 1;">
   	 <p class="left">Sam Thursfield</p>
-  	    <p class="left">OSSEU 2022</p>
+  	    <p class="left">FOSDEM 2023</p>
     </div>
 
     <img class='right' src="./images/codethink-logo.svg" style="flex: 1;">
@@ -71,7 +71,7 @@ GNOME is a graphical desktop environment with an open development model.
 
 <!-- 2. Why is GNOME hard to test? -->
 
-<h2 class="r-fit-text">Why is GNOME hard to test?</h2>
+<h2 class="r-fit-text">GNOME is hard to test</h2>
 
  * Designed as a whole
  * Released as a kit of parts (200+ modules)
@@ -87,31 +87,20 @@ Also - inconsistent investment around upstream testing, volunteers not super int
 
 <h2 class="r-fit-text">Why is GNOME hard to test?</h2>
 
-<blockquote class="fs-6">Each GNOME component (or "module") has one or more maintainers, and they generally have the final say over which changes are included in their components.</blockquote>
-
-<p class="fs-5">
-<a href="https://wiki.gnome.org/Governance">"Governance", GNOME wiki</a>
-</p>
-
- * Unit tests are easy
- * Integration testing is harder: who is responsible when the tests fail?
-
-???
-
-No "BDFL".
-Ref: conway's law
-
-Open (public) development: various corps. and volunteers collaborate in the open
-
----
-
-<h2 class="r-fit-text">Who is responsible for integration testing?</h2>
+Who is responsible for integration testing?
+{:.fs-3}
 
 [![](https://mermaid.ink/img/pako:eNqtlF1vmzAUhv-K5d4CSmyTApMmbcp2tWpT290s5OIEDgGVr9lGaxblv88G2gwl7VqtRqDD4Xlfm8PBe5o0KdKIbiW0OflyHdfEjCWqYlvfIlSrISQ2XhPXHW6V674nV03alXgFRa3NiXK-GjLkmFr_hx17Wzv-tnZi5XmeMbCHNTkphpHfgtxAWVr5NZYICvtJxniY5byaPak-z_NX8uIZflD8lTqyfSWWhdKyYasPMsnJN0juYItSrV8mm5sSbwqoXy3kj_XuP9lgZsivN5b5rmz72ev6aYCdAmwC8H8B4hTgE8CfrLL3JK73sdsSiW0jteud-2-OtG_ozwi6k2gUPztUg-TYokPHWUVSglJLzEiKGXSlJllRltFF1g_Hru0OowvO-Ri7v4pU5xFr799N5K1sElTq5fKHRAoqBylhFxFB-NQU2nY0TAVmweb59ZBxUIdWKCsoUrMj7a1hTHWOFcY0MuH4ojGN64NBuzYFjZ_SQjeSRhmUCh0KnW5udnVCIy07fICWBZgNrnqkWqhptKf3NJpz3wuChc9mPPAvBWMO3dls6C38meALMZvzxSU7OPR30xiDmaF9Fgoe-qFgQRj6vduP_qGd8vAHlyjAVw?type=png)](https://mermaid.live/edit#pako:eNqtlF1vmzAUhv-K5d4CSmyTApMmbcp2tWpT290s5OIEDgGVr9lGaxblv88G2gwl7VqtRqDD4Xlfm8PBe5o0KdKIbiW0OflyHdfEjCWqYlvfIlSrISQ2XhPXHW6V674nV03alXgFRa3NiXK-GjLkmFr_hx17Wzv-tnZi5XmeMbCHNTkphpHfgtxAWVr5NZYICvtJxniY5byaPak-z_NX8uIZflD8lTqyfSWWhdKyYasPMsnJN0juYItSrV8mm5sSbwqoXy3kj_XuP9lgZsivN5b5rmz72ev6aYCdAmwC8H8B4hTgE8CfrLL3JK73sdsSiW0jteud-2-OtG_ozwi6k2gUPztUg-TYokPHWUVSglJLzEiKGXSlJllRltFF1g_Hru0OowvO-Ri7v4pU5xFr799N5K1sElTq5fKHRAoqBylhFxFB-NQU2nY0TAVmweb59ZBxUIdWKCsoUrMj7a1hTHWOFcY0MuH4ojGN64NBuzYFjZ_SQjeSRhmUCh0KnW5udnVCIy07fICWBZgNrnqkWqhptKf3NJpz3wuChc9mPPAvBWMO3dls6C38meALMZvzxSU7OPR30xiDmaF9Fgoe-qFgQRj6vduP_qGd8vAHlyjAVw)
 
-(Note! Many important teams aren't listed)
 
 ???
+
+(Note! Many important teams aren't listed)
+No "BDFL".
+Ref: conway's law
+Unit tests are easy
+
+Open (public) development: various corps. and volunteers collaborate in the open
 
 e.g. a change in gnome-control-centre, which depends on a change in systemd... which is not even in gnome, nor on all target OSes
 
@@ -122,7 +111,7 @@ e.g. a change in gnome-control-centre, which depends on a change in systemd... w
 
 ## Testing GNOME releases - 1999 style {:.r-fit-text}
 
-<div class="left" markdown="1">
+<div class="left fs-3" markdown="1">
 *Maintainers*:
 
 ```bash
@@ -137,16 +126,12 @@ make dist
 *Distros*: "It's released - ship it!"
 
 *Users*: Time to test if anything works...
-</div>
 
----
+**Minimal integration testing, and many bugs introduced at integration time**.
 
-## Issues with the 1999 model {:.r-fit-text}
+> "This feature only works if you pass `--enable-ibus` at configure time..."
+{:.fs-5}
 
-<div class="left" markdown="1">
-* Minimal integration testing
-* Bugs introduced at integration time
-    * <p class="fs-5">"This feature only works if you pass `--enable-libfoo` at configure time..."</p>
 </div>
 
 <!-- 4. 23 years of improvements -->
@@ -178,9 +163,35 @@ https://about.gitlab.com/blog/2020/09/08/gnome-follow-up/
 "Another noticeable difference in the community is that, since moving to GitLab, there is more awareness around what CI/CD is and how important it is to the development process. CI/CD is being used extensively throughout the project."
 
 ---
-# Time passes
+## Testing GNOME releases - 2022 style {:.r-fit-text}
 
-"Testable" initiative starts around 2012...
+<div class="left fs-4" markdown="1">
+*Maintainers*:
+
+  * Review MR's, run automated tests, merge to 'master'
+  * Update gnome-build-meta integration repo (usually)
+  * Release tarballs
+
+*Release team*:
+
+  * Check full builds in gnome-build-meta CI
+  * Publish tarballs
+
+*Distros*:
+
+  * Downstream regression testing (unit + integration tests)
+  * Beta releases
+
+*Users*:
+
+  * Bug reports
+  * Friendly messages thanking volunteers for their hard work
+</div>
+
+---
+## The "Testable" initiative
+
+Started around 2012 and brought us...
 
   * OSTree
   * GNOME Continuous
@@ -213,33 +224,6 @@ Idea is [10 years old](https://blogs.gnome.org/aday/2012/08/07/gnome-os/)
 
 <!-- 5. Integration testing 2022 -->
 
-## Testing GNOME releases - 2022 style {:.r-fit-text}
-
-<div class="left fs-4" markdown="1">
-*Maintainers*:
-
-  * Review MR's, run automated tests, merge to 'master'
-  * Update gnome-build-meta integration repo (usually)
-  * Release tarballs
-
-*Release team*:
-
-  * Check full builds in gnome-build-meta CI
-  * Build GNOME OS images
-  * Publish tarballs
-
-*Distros*:
-
-  * Downstream regression testing (unit + integration tests)
-  * Beta releases
-
-*Users*:
-
-  * Bug reports
-  * Friendly messages thanking volunteers for their hard work
-</div>
-
----
 
 <!-- 6. Issues with this model -->
 
@@ -251,18 +235,13 @@ Only a few people test GNOME OS today
   * Building GNOME OS images takes hours
   * Easier to test "in-place" on development machine
 
-"Unstable" releases happen, but nobody tests those either.
+How can we get better at catching regressions before they reach users?
 
-Integration into distos is hard and time-consuming to get right.
-
-User bug reports are nice, but:
-
-  * if you're not a domain expert, it's hard to produce an actionable bug report
-  * distro packages can be very old, few folk enjoy maintaining old versions of their module
-  * some distros add downstream patches with additional bugs
 </div>
 
 ???
+
+User bug reports are nice but even with good intentions, its a lot of work to produce a useful ,actionable report.
 
 Typical bug report: https://discourse.gnome.org/t/gnome-global-search-doesnt-find-any-files-in-my-native-language/13061/9
 
@@ -660,4 +639,15 @@ I will provide training on infra maintenance and writing tests - just ask!
 
 Also: [documentation](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers), [issue tracker](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers)
 {:.fs-3}
+
+<div>
+  <div class="flex-row-stretch">
+    <div class='flex-col left' style="flex: 1;">
+  	 <p class="left">Sam Thursfield</p>
+  	  <p class="left">FOSDEM 2023</p>
+    </div>
+
+    <img class='right' src="./images/codethink-logo.svg" style="flex: 1;">
+  </div>
+</div>
 </div>
