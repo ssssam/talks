@@ -328,7 +328,7 @@ Ingredients:
   1. Listening history: `pylistenbrainz`
   2. Local music collection: `beets`
   3. Track selection: `simpleai`
-  4. Export to music player: `calliope-music`
+  4. Export to music player
 </div>
 
 ---
@@ -475,16 +475,107 @@ def available_content_resolvers() -> List[ContentResolver]:
 
 ---
 
+## 3. Track selection
 
-cpe select
+![Annealing](./images/annealing_1.jpg)
+
+Photo: gemeinfrei - Pixabay / CC0
+{:.fs-6}
+
+???
+
+Annealing: apply heat to a material, so internal structures (crystals) break down and reform (smaller)
+
+## 3. Track selection
+
+Simulated annealing: a type of *local search* algorithm.
+
+Implemented by Python [`simpleai`](https://pypi.org/project/simpleai/) module.
+
+Based on ["Artificial Intelligence: A Modern Approach"](http://aima.cs.berkeley.edu/), by Stuart Russell and Peter Norvig.
 
 ---
 
-cpe export
+## 3. Track selection
+
+![Screenshot of paper](./images/simulated_annealing_paper.png){:.r-stretch}
+
+Pauws, Steffen & Verhaegh, Wim & Vossen, Mark. (2008). [Music playlist generation by adapted simulated annealing](https://www.researchgate.net/publication/223327847_Music_playlist_generation_by_adapted_simulated_annealing). Information Sciences. 178. 647-662. 
+{:.fs-6}
+
+???
 
 ---
 
-<!-- 4. Ideas -->
+## 3. Track selection
+
+![Screenshot of paper](./images/simulated_annealing_paper_constraints.png){:.r-stretch}
+
+Each constraint defines a *function* to score a playlist from 0 to 1.
+
+`cpe select` searches for the playlist with the highest score given the constraints.
+
+???
+
+---
+
+## 4. Export to music player {:.r-fit-text}
+
+![Jellyfin music player showing playlist](images/jellyfin_special_mix.png){:.r-stretch}
+
+---
+
+## 4. Export to music player {:.r-fit-text}
+
+```
+> head 'Special mix 2023-01-20.m3u'
+#EXTM3U
+#PLAYLIST:Discoveries of 2020
+../../Music/Soccer96 - Tactics EP [2020]/01 I Was Gonna Fight Fascism.mp3
+../../Music/Tame Impala - The Slow Rush [2020]/03 Borderline.mp3
+../../Music/Vic Ruggiero - On the Ragtime [2009]/09 Don’t Gimme Your Love.mp3
+../../Music/Echte Übersee Records_ Finest Latino Ska and Punk From the Americas [2002]/12 Niño de fuego.mp3
+../../Music/KOKOROKO - KOKOROKO [2019]/02 Ti-de.mp3
+```
+
+<div class="fs-4" markdown="1">
+```
+> head 'Special mix 2023-01-20.m3u.log'
+DEBUG:calliope.config:Reading config from /home/pi/.config/calliope/calliope.conf
+INFO:root:Using history provider: 'listenbrainz_history'
+INFO:root:Using resolver: 'tracker'
+DEBUG:root:<class 'calliope_examples.special_mix.special_mix.DiscoveredInTimePeriod'>.setup()
+DEBUG:root:Choose one period from: ['2005-01-01 00:00:00', '2006-01-01 00:00:00', '2007-01-01 00:00:00', '2008-01-01 00:00:00', '2009-01-01 00:00:00', '2010-01-01 00:00:00', '2011-01-01 00:00:00', '2012-01-01 00:00:00', '2013-01-01 00:00:00', '2014-01-01 00:00:00', '2015-01-01 00:00:00', '2016-01-01 00:00:00', '2017-01-01 00:00:00', '2018-01-01 00:00:00', '2019-01-01 00:00:00', '2020-01-01 00:00:00', '2021-01-01 00:00:00', '2022-01-01 00:00:00']
+INFO:root:Query tracks for period 2020-01-01 00:00:00 -> 2021-01-01 00:00:00
+DEBUG:calliope.listenbrainz.listens:SQL: 
+              WITH
+                  listens_with_track_id AS (
+                      SELECT (artist_name || ',' || track_name) AS track_id, *
+```
+</div>
+
+
+---
+
+# Recap: Special Mix {:.r-fit-text}
+
+`python3 -m calliope_examples.special_mix`
+{:.fs-4}
+
+<div class="left fs-3" markdown="1">
+Ingredients:
+
+  1. Listening history: `pylistenbrainz`
+  2. Local music collection: `beets`
+  3. Track selection: `simpleai`
+  4. Export to music player
+</div>
+
+---
+
+# What's next?
+
+???
 
  * Use in teaching
  * Musicbrainz popup app
@@ -493,4 +584,22 @@ cpe export
 
 ---
 
-# Discussion
+# Discussion {:.r-fit-text}
+
+<div class="left" markdown="1">
+
+Code: <https://gitlab.com/samthursfield/calliope>
+
+Forums:
+
+  * Beets forum: ["Calliope - antisocial music recommendations"](https://discourse.beets.io/t/calliope-antisocial-music-recommendations/1532/29)
+  * Metabrainz forum: ["Commandline tool for working with Listenbrainz data"](https://community.metabrainz.org/t/commandline-tool-for-working-with-listenbrainz-data/572368)
+
+*Keep it simple!*
+</div>
+
+???
+
+Use the code if you like,
+
+but it's the ideas that are important.
