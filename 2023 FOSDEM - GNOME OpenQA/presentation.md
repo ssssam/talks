@@ -89,7 +89,10 @@ Also - inconsistent investment around upstream testing, volunteers not super int
 **Who is responsible for integration testing?**
 {:.fs-3}
 
+<!--
 [![](https://mermaid.ink/img/pako:eNqtlF1vmzAUhv-K5d4CSmyTApMmbcp2tWpT290s5OIEDgGVr9lGaxblv88G2gwl7VqtRqDD4Xlfm8PBe5o0KdKIbiW0OflyHdfEjCWqYlvfIlSrISQ2XhPXHW6V674nV03alXgFRa3NiXK-GjLkmFr_hx17Wzv-tnZi5XmeMbCHNTkphpHfgtxAWVr5NZYICvtJxniY5byaPak-z_NX8uIZflD8lTqyfSWWhdKyYasPMsnJN0juYItSrV8mm5sSbwqoXy3kj_XuP9lgZsivN5b5rmz72ev6aYCdAmwC8H8B4hTgE8CfrLL3JK73sdsSiW0jteud-2-OtG_ozwi6k2gUPztUg-TYokPHWUVSglJLzEiKGXSlJllRltFF1g_Hru0OowvO-Ri7v4pU5xFr799N5K1sElTq5fKHRAoqBylhFxFB-NQU2nY0TAVmweb59ZBxUIdWKCsoUrMj7a1hTHWOFcY0MuH4ojGN64NBuzYFjZ_SQjeSRhmUCh0KnW5udnVCIy07fICWBZgNrnqkWqhptKf3NJpz3wuChc9mPPAvBWMO3dls6C38meALMZvzxSU7OPR30xiDmaF9Fgoe-qFgQRj6vduP_qGd8vAHlyjAVw?type=png)](https://mermaid.live/edit#pako:eNqtlF1vmzAUhv-K5d4CSmyTApMmbcp2tWpT290s5OIEDgGVr9lGaxblv88G2gwl7VqtRqDD4Xlfm8PBe5o0KdKIbiW0OflyHdfEjCWqYlvfIlSrISQ2XhPXHW6V674nV03alXgFRa3NiXK-GjLkmFr_hx17Wzv-tnZi5XmeMbCHNTkphpHfgtxAWVr5NZYICvtJxniY5byaPak-z_NX8uIZflD8lTqyfSWWhdKyYasPMsnJN0juYItSrV8mm5sSbwqoXy3kj_XuP9lgZsivN5b5rmz72ev6aYCdAmwC8H8B4hTgE8CfrLL3JK73sdsSiW0jteud-2-OtG_ozwi6k2gUPztUg-TYokPHWUVSglJLzEiKGXSlJllRltFF1g_Hru0OowvO-Ri7v4pU5xFr799N5K1sElTq5fKHRAoqBylhFxFB-NQU2nY0TAVmweb59ZBxUIdWKCsoUrMj7a1hTHWOFcY0MuH4ojGN64NBuzYFjZ_SQjeSRhmUCh0KnW5udnVCIy07fICWBZgNrnqkWqhptKf3NJpz3wuChc9mPPAvBWMO3dls6C38meALMZvzxSU7OPR30xiDmaF9Fgoe-qFgQRj6vduP_qGd8vAHlyjAVw)
+-->
+![Diagram of designer -> maintainer -> release team -> packager flow](./images/mermaid1.png)
 
 ???
 
@@ -278,7 +281,7 @@ Who is familiar with OpenQA in the audience?
  * EuroLinux (CentOS derivative)
  * Codethink (<https://openqa.qa.codethink.co.uk/>)
  * Various Codethink clients in automotive industry
- * ...
+ * ...you?
 
 ???
 
@@ -288,18 +291,21 @@ OpenSUSE and SUSE Enterprise
 
 ----
 
-## OpenQA: main page
+**OpenQA: main page**
 
-<!--.stretch[![openqa UI frontpage](images/openqa-ui-main.png)] -->
-<img class="stretch" src="./images/openqa-ui-main.png">
+![openQA screenshot](./images/openqa-ui-main.png){:.r-stretch}
+
+<https://openqa.gnome.org>
 
 ----
 
 <!-- 8. Show and tell: viewing the tests -->
 
-## Gitlab: gnome-build-meta
+**Gitlab: gnome-build-meta repo**
 
 ![gnome-build-meta repo screenshot](images/gitlab-gbm.png){:.r-stretch}
+
+<https://gitlab.gnome.org/gnome/gnome-build-meta>
 
 ???
 
@@ -311,19 +317,19 @@ Lots of work done in CI pipelines. Two beefy donated servers (x86_64, ARM) run b
 
 ----
 
-## Gitlab: gnome-build-meta wiki
+**Gitlab: gnome-build-meta wiki**
 
 ![gnome-build-meta wiki screenshot showing OpenQA docs](images/gitlab-gbm-wiki.png){:.r-stretch}
 
 ----
 
-## Gitlab: CI pipelines
+**Gitlab: CI pipelines**
 
 ![gnome-build-meta 'master' CI pipelines](images/gitlab-pipelines-master.png){:.r-stretch}
 
 ----
 
-## Gitlab: s3-image
+**Gitlab: s3-image**
 
 ![gnome-build-meta 's3-image' job](images/gitlab-pipeline-s3-image.png){:.r-stretch}
 
@@ -333,7 +339,7 @@ This job creates an installer ISO and uploads it to Amazon S3 file storage.
 
 ----
 
-## Gitlab: test-s3-image
+**Gitlab: test-s3-image**
 
 ![gnome-build-meta 'test-s3-image' job](images/gitlab-pipeline-test-s3-image.png){:.r-stretch}
 
@@ -343,7 +349,7 @@ This job runs the OpenQA tests
 
 ----
 
-## Gitlab: test-s3-image
+**Gitlab: test-s3-image**
 
 <div class="r-stretch" markdown="1">
 This job:
@@ -368,7 +374,7 @@ The runner *is* the worker - not a dedicated machine. (less infra to maintain- w
 
 ----
 
-## OpenQA: Test results
+**OpenQA: Test results**
 
 ![OpenQA test result - main](./images/openqa-ui-tests-top.png){:.r-stretch}
 
@@ -378,13 +384,13 @@ Each of these tests on the LHS corresponds to a Perl script in 'openqa_tests.git
 
 ----
 
-## OpenQA: Test results
+**OpenQA: Test results**
 
 ![OpenQA test result - 2](./images/openqa-ui-tests-1.png){:.r-stretch}
 
 ----
 
-## OpenQA: gnome\_install test
+**OpenQA**: `gnome_install` test
 
 ![OpenQA 'gnome\_install' test](./images/openqa-ui-needle-install.png){:.r-stretch}
 
@@ -402,7 +408,7 @@ Helper functions provided by OpenQA to:
 
 ----
 
-## OpenQA: gnome\_welcome test
+**OpenQA**: `gnome_welcome` test
 
 ![OpenQA test creating 'testuser' account](./images/openqa-ui-needle-testuser.png){:.r-stretch}
 
@@ -412,7 +418,8 @@ First time we can log in (no root password)
 
 ----
 
-## OpenQA: gnome\_journal\_capture\_fix test
+**OpenQA**: `gnome_journal_capture_fix` test
+
 
 ![OpenQA running command over serial](./images/openqa-ui-serial.png){:.r-stretch}
 
@@ -422,7 +429,7 @@ Several ways to run commands - serial console is least extra work.
 
 ----
 
-## OpenQA: gnome\_desktop test
+**OpenQA**: `gnome_desktop` test
 
 ![OpenQA needle matching GNOME Shell](./images/openqa-ui-needle-gnome-desktop.png){:.r-stretch}
 
@@ -434,7 +441,7 @@ Design changes: all needles with tag 'gnome_desktop_tour' are tried, and if any 
 
 ----
 
-## OpenQA: gnome\_system\_monitor test
+**OpenQA**: `gnome_system_monitor` test
 
 ![OpenQA needle matching GNOME system monitor](./images/openqa-ui-needle-gnome-desktop.png){:.r-stretch}
 
@@ -447,13 +454,13 @@ Exclusion match: window body.
 ---
 ----
 
-## OpenQA: needle editor
+**OpenQA: needle editor**
 
 ![OpenQA needle editor](./images/openqa-ui-needle-editor-1.png){:.r-stretch}
 
 ----
 
-## OpenQA: needle editor 2
+**OpenQA: needle editor 2**
 
 ![OpenQA needle editor](./images/openqa-ui-needle-editor-2.png){:.r-stretch}
 
@@ -461,7 +468,7 @@ Exclusion match: window body.
 
 ----
 
-## OpenQA: openqa-needles Git repo
+**OpenQA: openqa-needles Git repo**
 
 ![openqa-needles.git repo](./images/openqa-needles.git.png){:.r-stretch}
 
@@ -477,7 +484,7 @@ Repo gets very big... no solution really.
 
 ----
 
-## OpenQA: a needle
+**OpenQA: a needle**
 
 <div class="flex-row-stretch" display="flex:1;" markdown="1">
 <div markdown="1" style="width: 18em;">
@@ -508,7 +515,7 @@ Repo gets very big... no solution really.
 
 ----
 
-## openqa-tests.git
+**openqa-tests.git**
 
 ![openqa-tests.git repo](./images/openqa-tests.git.png){:.r-stretch}
 
@@ -520,21 +527,73 @@ Python is supported in theory, i didn't get it to work, and it involves a Perl->
 
 ----
 
-## openqa-tests/main.pm
+**openqa-tests/main.pm**
 
-![main.pm](./images/tests-main.pm.png){:.r-stretch}
+```
+my $distri = testapi::get_required_var('CASEDIR') . '/lib/gnomeosdistribution.pm';
+require $distri;
+testapi::set_distribution(gnomeosdistribution->new);
+
+$testapi::username = 'testuser';
+$testapi::password = 'testingtesting123';
+
+autotest::loadtest("tests/gnome_install.pm");
+autotest::loadtest("tests/gnome_welcome.pm");
+autotest::loadtest("tests/gnome_journal_capture_fix.pm");
+autotest::loadtest("tests/gnome_disable_update_notification.pm");
+...
+```
+<!-- ![main.pm](./images/tests-main.pm.png){:.r-stretch} -->
 
 ----
 
-## openqa-tests/tests/gnome-install.pm
+**openqa-tests/tests/gnome-install.pm**
 
-![gnome-install.pm](./images/tests-gnome-install.pm.png){:.r-stretch}
+```
+use base 'basetest';
+use strict;
+use testapi;
+use bootloader;
+
+sub run {
+    my $self = shift;
+
+    bootloader_add_kernel_args(' console=ttyS0 systemd.journald.forward_to_console=1');
+
+    assert_and_click('gnome_install_1', timeout => 120, button => 'left');
+    assert_and_click('gnome_install_disk', timeout => 10, button => 'left');
+    assert_and_click('gnome_install_disk2', timeout => 10, button => 'left');
+    assert_screen('gnome_install_reformatting1', timeout => 120);
+    assert_screen('gnome_install_complete', timeout => 180);
+    eject_cd;
+    power('reset');
+}
+
+sub test_flags {
+    return { fatal => 1 };
+}
+
+1;
+```
+<!-- ![gnome-install.pm](./images/tests-gnome-install.pm.png){:.r-stretch} -->
 
 ----
 
-## openqa-tests/tests/gnome-welcome.pm
+**openqa-tests/tests/gnome-welcome.pm**
 
-![gnome-welcome.pm](./images/tests-gnome-welcome.pm.png){:.r-stretch}
+```
+sub run {
+    my $self = shift;
+
+    assert_and_click('gnome_firstboot_welcome', timeout => 600, button => 'left');
+    assert_and_click('gnome_firstboot_language', timeout => 10, button => 'left');
+    assert_and_click('gnome_firstboot_privacy', timeout => 10, button => 'left');
+    assert_screen('gnome_firstboot_timezone_1', 30);
+    send_key('tab');
+    type_string('London, East', wait_screen_change => 6, max_interval => SLOW_TYPING_SPEED);
+    ...
+```
+<!-- ![gnome-welcome.pm](./images/tests-gnome-welcome.pm.png){:.r-stretch} -->
 
 ---
 
@@ -557,7 +616,7 @@ Python is supported in theory, i didn't get it to work, and it involves a Perl->
 
 4. Always check the os-autoinst logs.
 
-    * Example: If needle bounds are invalid, you get a log message and a confusing "0% match" in web UI
+    * Example: If needle bounds are invalid, you get a log message and a "0% match" in web UI
     {: .fs-4 }
 
 5. Learn how to run the testsuite locally.
@@ -584,7 +643,7 @@ Python is supported in theory, i didn't get it to work, and it involves a Perl->
 
 ---
 
-# Credits
+## Credits
 
 <div class="flex-row-stretch fs-6 left top" markdown="1">
 <div markdown="1" style="margin-right: 2em">
@@ -629,12 +688,12 @@ https://blogs.gnome.org/aday/2012/08/07/gnome-os/
 
 ---
 
-## Next steps for Codethink + OpenQA
+## Codethink plans for 2023 {:.r-fit-text}
 
 <div class="left" markdown="1">
-  * Continue Linux mainline testing
+  * Continue Linux mainline testing (OpenQA + LAVA)
   * **QAD**: open source tool to control hardware from OpenQA tests
-  * Hardware **USB switcher**
+  * Hardware **USB switcher** device
 
 Follow us for details:
 
