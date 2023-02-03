@@ -14,6 +14,7 @@ import re
 import sys
 import time
 
+from requests.exceptions import ConnectionError
 import requests
 
 
@@ -69,10 +70,16 @@ def unzip(stream: BytesIO, outdir: Path, strip_components: int=0):
 
 
 def download_and_unpack_reveal_js(outdir: Path):
-    log.info(f"Fetch and extract ${REVEAL_JS_URL}")
-    response = requests.get(REVEAL_JS_URL);
-    stream = BytesIO(response.content)
-    unzip(stream, outdir, strip_components=1)
+    log.info(f"Fetch and extract {REVEAL_JS_URL}")
+    try:
+        response = requests.get(REVEAL_JS_URL);
+        stream = BytesIO(response.content)
+        unzip(stream, outdir, strip_components=1)
+    except ConnectionError as e:
+        raise RuntimeError(
+            f"Unable to fetch reveal.js.\n"
+            f"URL: {REVEAL_JS_URL}\n"
+            f"Error: {e}")
 
 
 def split_slides(text) -> List[str]:
