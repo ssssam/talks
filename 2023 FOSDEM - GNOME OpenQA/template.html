@@ -17,25 +17,32 @@
 			:root {
 				--r-main-font: Raleway;
 				--r-main-font-size: 40px;
+				/* This is an extension to reveal.js theme. The colour is Codethink green */
+				--r-highlight-color: #64a800;
 			}
 
 			/* Horizontal alignment for <p> and friends */
 			.left {
 				text-align: left;
-				width: 100%;
 			}
 			.right {
 				text-align: right;
-				width: 100%;
 			}
+			.center {
+			    text-align: center;
+			}
+            .top { vertical-align: top; }
             .bottom { vertical-align: bottom; }
 
-            // Font size
+            /* Font size */
 			.fs-2 { font-size: 35px; }
 			.fs-3 { font-size: 32px; }
 			.fs-4 { font-size: 20px; }
 			.fs-5 { font-size: 15px; }
 			.fs-6 { font-size: 12px; }
+
+			/* Colours */
+			.highlight { color: var(--r-highlight-color); }
 
 			/* Horizontal flexbox that stretches its contents vertically to fill space. */
 			.flex-row-stretch {

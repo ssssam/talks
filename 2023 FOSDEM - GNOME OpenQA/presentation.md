@@ -24,12 +24,10 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
 
 ## About me
 
-<div markdown=1 class="r-stretch">
   * ~20 years involved in GNOME
   * ~10 years involved in Codethink
 
-![Me playing trombone on a tram](./images/photo-2014.jpg)
-</div>
+![Me playing trombone on a tram](./images/photo-2014.jpg){:height="500px"}
 
 ---
 
@@ -62,6 +60,7 @@ GNOME is a graphical desktop environment with an open development model.
   * Myspace (2003)
   * Greta Thunberg (2003)
   * Codethink (2008)
+  * Golang, Rust
   * some of its contributors
 -->
 
@@ -83,13 +82,10 @@ Also - inconsistent investment around upstream testing, volunteers not super int
 
 ---
 
-<h2 class="r-fit-text">Why is GNOME hard to test?</h2>
-
-Who is responsible for integration testing?
+**Who is responsible for integration testing?**
 {:.fs-3}
 
 [![](https://mermaid.ink/img/pako:eNqtlF1vmzAUhv-K5d4CSmyTApMmbcp2tWpT290s5OIEDgGVr9lGaxblv88G2gwl7VqtRqDD4Xlfm8PBe5o0KdKIbiW0OflyHdfEjCWqYlvfIlSrISQ2XhPXHW6V674nV03alXgFRa3NiXK-GjLkmFr_hx17Wzv-tnZi5XmeMbCHNTkphpHfgtxAWVr5NZYICvtJxniY5byaPak-z_NX8uIZflD8lTqyfSWWhdKyYasPMsnJN0juYItSrV8mm5sSbwqoXy3kj_XuP9lgZsivN5b5rmz72ev6aYCdAmwC8H8B4hTgE8CfrLL3JK73sdsSiW0jteud-2-OtG_ozwi6k2gUPztUg-TYokPHWUVSglJLzEiKGXSlJllRltFF1g_Hru0OowvO-Ri7v4pU5xFr799N5K1sElTq5fKHRAoqBylhFxFB-NQU2nY0TAVmweb59ZBxUIdWKCsoUrMj7a1hTHWOFcY0MuH4ojGN64NBuzYFjZ_SQjeSRhmUCh0KnW5udnVCIy07fICWBZgNrnqkWqhptKf3NJpz3wuChc9mPPAvBWMO3dls6C38meALMZvzxSU7OPR30xiDmaF9Fgoe-qFgQRj6vduP_qGd8vAHlyjAVw?type=png)](https://mermaid.live/edit#pako:eNqtlF1vmzAUhv-K5d4CSmyTApMmbcp2tWpT290s5OIEDgGVr9lGaxblv88G2gwl7VqtRqDD4Xlfm8PBe5o0KdKIbiW0OflyHdfEjCWqYlvfIlSrISQ2XhPXHW6V674nV03alXgFRa3NiXK-GjLkmFr_hx17Wzv-tnZi5XmeMbCHNTkphpHfgtxAWVr5NZYICvtJxniY5byaPak-z_NX8uIZflD8lTqyfSWWhdKyYasPMsnJN0juYItSrV8mm5sSbwqoXy3kj_XuP9lgZsivN5b5rmz72ev6aYCdAmwC8H8B4hTgE8CfrLL3JK73sdsSiW0jteud-2-OtG_ozwi6k2gUPztUg-TYokPHWUVSglJLzEiKGXSlJllRltFF1g_Hru0OowvO-Ri7v4pU5xFr799N5K1sElTq5fKHRAoqBylhFxFB-NQU2nY0TAVmweb59ZBxUIdWKCsoUrMj7a1hTHWOFcY0MuH4ojGN64NBuzYFjZ_SQjeSRhmUCh0KnW5udnVCIy07fICWBZgNrnqkWqhptKf3NJpz3wuChc9mPPAvBWMO3dls6C38meALMZvzxSU7OPR30xiDmaF9Fgoe-qFgQRj6vduP_qGd8vAHlyjAVw)
-
 
 ???
 
@@ -107,25 +103,25 @@ e.g. a change in gnome-control-centre, which depends on a change in systemd... w
 <!-- 3. Integration testing 1999 -->
 
 
-## Testing GNOME releases - 1999 style {:.r-fit-text}
+**Release process, 1999**{:.r-fit-text}
 
 <div class="left fs-3" markdown="1">
-*Maintainers*:
+👷 <span class="highlight">**Maintainer**</span>: *"It works on my machine!"*
 
-```bash
-make test
-sudo make install
+👩 <span class="highlight">**Release team**</span>: *"It builds... ship it!"*
 
-make dist
-```
+🧔 <span class="highlight">**Distributions**</span>: *"A new upstream release - ship it!"*
 
-*Release team*: "It builds... ship it!"
+👼<span class="highlight">**Users**</span>: Time to test if anything works...
 
-*Distros*: "It's released - ship it!"
+[!["Works on my machine" certificate](images/works_on_my_machine.jpg){:width=150px height=150px}](https://blog.codinghorror.com/the-works-on-my-machine-certification-program/)
+{:.center}
 
-*Users*: Time to test if anything works...
+Many "bugs" appear at integration time.
 
-**Minimal integration testing, and many bugs introduced at integration time**.
+???
+
+Minimal integration testing, downstream integration is very hard to get right.
 
 > "This feature only works if you pass `--enable-ibus` at configure time..."
 {:.fs-5}
@@ -135,83 +131,83 @@ make dist
 <!-- 4. 23 years of improvements -->
 
 ---
-### Time passes
+# Time passes
 
-Build tools improve...
+* New **build tools** (*jhbuild*, *Meson*, *BuildStream*, ...)
+* New **collaboration tools** (*Git*, *Gitlab*, ...)
+* **CI** becomes practical
 
- * jhbuild
- * Meson
- * BuildStream
-
----
-
-### Time passes
-
-Collaboration tools improve
-
-  * Git
-  * Gitlab
-
-CI is easy to setup for the first time.
+🕘
+{:style="font-size: 120px"}
 
 ???
+
+24 years!
+
+empires grow and crumble, everyone gets a smartphone, 5 versions of MS Windows, AI takes all our jobs and we no longer have to work...
 
 https://about.gitlab.com/blog/2020/09/08/gnome-follow-up/
 
 "Another noticeable difference in the community is that, since moving to GitLab, there is more awareness around what CI/CD is and how important it is to the development process. CI/CD is being used extensively throughout the project."
 
 ---
-## Testing GNOME releases - 2022 style {:.r-fit-text}
+**Release process, 2023**{:.r-fit-text}
 
-<div class="left fs-4" markdown="1">
-*Maintainers*:
+<div class="left fs-3" markdown="1">
+👷 <span class="left highlight">**Maintainer**</span>: Review merge requests, check tests
 
-  * Review MR's, run automated tests, merge to 'master'
-  * Update gnome-build-meta integration repo (usually)
-  * Release tarballs
+👵 <span class="highlight">**Release team**</span>: Update and check integration repo ([gnome-build-meta](https://gitlab.gnome.org/gnome/gnome-build-meta))
+{:.r-fit-text}
 
-*Release team*:
+👴 <span class="highlight">**Distributions**</span>: Downstream regression testing
 
-  * Check full builds in gnome-build-meta CI
-  * Publish tarballs
-
-*Distros*:
-
-  * Downstream regression testing (unit + integration tests)
-  * Beta releases
-
-*Users*:
-
-  * Bug reports
-  * Friendly messages thanking volunteers for their hard work
+👩👱<span class="highlight">**Users**</span>: Friendly messages thanking volunteers for their hard work
+{:.r-fit-text}
 </div>
 
+There's still a large gap between 'main' branch and distro releases.
+
+???
+
+Most components are unit-tested (not all.. volunteers don't work on getting 100% test coverage)
+Some distros do whole-system testing (some still pass on regressions straight to users :-), OpenSUSE Tumbleweed a pioneer.
+
+ * Distros test tarball releases, alpha tarball could have months of new development
+ * Distro developers aren't domain experts, so they don't always provide the best bug reports.
+
+OpenSuSE Tumbleweed: The first "rolling release" distro ?
+
+Born [in 2010](http://www.h-online.com/open/news/item/openSUSE-Rolling-release-project-Tumbleweed-proposed-1146308.html), reworked heavily [in 2014](https://www.linux-magazine.com/Issues/2016/183/OpenSUSE-Tumbleweed).
+
+Incoming packages from "Factory" put through regression testing using [OpenQA](https://open.qa/), then promoted.
+
+Rolling release distro was a new idea in 2010, nobody did that.
+
 ---
-## The "Testable" initiative
 
-Started around 2012 and brought us...
+What if GNOME had its own distro built from 'main' branches?
 
-  * OSTree
-  * GNOME Continuous
-  * gnome-build-meta
-  * GNOME OS
 
 ---
 # GNOME OS
-<div class="left fs-3" markdown="1">
+
+<div class="fs-3 left" markdown="1">
+Part of the ["Testable" initiative](https://blogs.gnome.org/aday/2012/08/07/gnome-os/) (*OSTree*, *GNOME Continuous*, *gnome-build-meta*, ...)
+{:.r-fit-text}
 
 **Goals**:
 
   * Provide a "known good" full system integration
-  * Allow designers and developers to test in-progress changes in a real system
+  * Allow designers and developers to test in-progress changes
   * Automated regression testing
 
 **Non-goals**:
 
   * Reliability
   * Security updates, hardware enablement, user support
-
 </div>
+
+
 ???
 
 Idea is [10 years old](https://blogs.gnome.org/aday/2012/08/07/gnome-os/)
@@ -220,47 +216,36 @@ Idea is [10 years old](https://blogs.gnome.org/aday/2012/08/07/gnome-os/)
 
 ---
 
-<!-- 5. Integration testing 2022 -->
-
-
 <!-- 6. Issues with this model -->
 
-# Remaining issues
+# GNOME OS
 
-<div class="left fs-4" markdown="1">
-Only a few people test GNOME OS today
+<https://os.gnome.org>
 
-  * Building GNOME OS images takes hours
-  * Easier to test "in-place" on development machine
+<div class="left fs-2" markdown="1">
+Only a few people test GNOME OS today.
 
-How can we get better at catching regressions before they reach users?
+<div class="center" markdown="1">
+🚲
+{:style="font-size: 120px;"}
+</div>
+
+Building an OS image takes **several hours**.
+
+How can we catching regressions *before* releasing tarballs?
 
 </div>
 
 ???
 
-User bug reports are nice but even with good intentions, its a lot of work to produce a useful ,actionable report.
+Developers still test "in-place" on development machine as they need a faster cycle time.
 
-Typical bug report: https://discourse.gnome.org/t/gnome-global-search-doesnt-find-any-files-in-my-native-language/13061/9
-
-Result: fix compile flags for gnome-shell in Arch Linux
 
 
 <!-- 7. Meanwhile downstream... -->
 
 ---
 
-## OpenSuSE Tumbleweed {:.r-fit-text}
-
-The first "rolling release" distro ?
-
-Born [in 2010](http://www.h-online.com/open/news/item/openSUSE-Rolling-release-project-Tumbleweed-proposed-1146308.html), reworked heavily [in 2014](https://www.linux-magazine.com/Issues/2016/183/OpenSUSE-Tumbleweed).
-
-Incoming packages from "Factory" put through regression testing using [OpenQA](https://open.qa/), then promoted.
-
-???
-
-Rolling release distro was a new idea in 2010, nobody did that.
 
 # OpenQA
 
