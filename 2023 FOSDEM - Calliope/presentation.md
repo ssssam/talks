@@ -587,8 +587,11 @@ Ingredients:
 # Discussion {:.r-fit-text}
 
 <div class="left" markdown="1">
+Project:
 
-Code: <https://gitlab.com/samthursfield/calliope>
+  * Code: <https://gitlab.com/samthursfield/calliope>
+  * Package: `pip install calliope-music`
+  * Documentation: <https://calliope-music.readthedocs.io>
 
 Forums:
 
