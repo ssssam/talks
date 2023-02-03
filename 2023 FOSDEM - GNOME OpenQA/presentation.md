@@ -9,15 +9,13 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
 
 <div class="r-stretch"></div>
 
-<div>
-  <div class="flex-row-stretch">
-    <div class='flex-col left' style="flex: 1;">
-  	 <p class="left">Sam Thursfield</p>
-  	    <p class="left">FOSDEM 2023</p>
-    </div>
+<div class="flex-row-stretch" markdown="1">
+  <p class="left" style="flex: 1;">
+  Sam Thursfield<br>
+  FOSDEM 2023
+  </p>
 
-    <img class='right' src="./images/codethink-logo.svg" style="flex: 1;">
-  </div>
+  ![Codethink logo](./images/codethink-logo.svg){:.right style="flex: 1;"}
 </div>
 
 ---
