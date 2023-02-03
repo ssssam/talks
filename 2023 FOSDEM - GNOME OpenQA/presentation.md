@@ -29,6 +29,10 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
 
 ![Me playing trombone on a tram](./images/photo-2014.jpg){:height="500px"}
 
+???
+
+Codethink are a consultancy, work in automotive helping to improve automotive testing pipelines - hence OpenQA interest.
+
 ---
 
 ## About GNOME
@@ -216,11 +220,15 @@ Idea is [10 years old](https://blogs.gnome.org/aday/2012/08/07/gnome-os/)
 
 ---
 
+![Screenshot of os.gnome.org](images/gnome_os.png){:.r-stretch}
+
+<https://os.gnome.org>
+
+---
+
 <!-- 6. Issues with this model -->
 
 # GNOME OS
-
-<https://os.gnome.org>
 
 <div class="left fs-2" markdown="1">
 Only a few people test GNOME OS today.
@@ -232,7 +240,7 @@ Only a few people test GNOME OS today.
 
 Building an OS image takes **several hours**.
 
-How can we catching regressions *before* releasing tarballs?
+How can we catching complex regressions *before* releasing tarballs?
 
 </div>
 
@@ -240,38 +248,41 @@ How can we catching regressions *before* releasing tarballs?
 
 Developers still test "in-place" on development machine as they need a faster cycle time.
 
-
-
 <!-- 7. Meanwhile downstream... -->
 
 ---
 
+**OpenQA**
+{:.r-fit-text}
 
-# OpenQA
-
+<div class="left" markdown="1">
 Initial commit in 2010.
 
 Components:
 
-  * Web interface (OpenQA)
-  * Test driver (os-autoinst)
-  * Test library (os-autoinst-distri-opensuse)
-
----
-
-# OpenQA is used by...
-
- * OpenSUSE (?? tests)
- * SUSE
- * Fedora (?? tests)
- * EuroLinux (CentOS derivative)
- * Codethink (testing Linux)
- * Automotive industry (look out for QED)
- * ...
+  * **Web interface** ([OpenQA](https://github.com/os-autoinst/openQA))
+  * **Test driver** ([os-autoinst](https://github.com/os-autoinst/os-autoinst))
+  * **Test library** ([os-autoinst-distri-opensuse](https://github.com/os-autoinst/os-autoinst-distri-opensuse))
+</div>
 
 ???
 
 Who is familiar with OpenQA in the audience?
+
+---
+
+# Who uses OpenQA?
+
+ * OpenSUSE (<https://openqa.opensuse.org/>)
+ * Fedora (<https://openqa.fedoraproject.org/>)
+ * EuroLinux (CentOS derivative)
+ * Codethink (<https://openqa.qa.codethink.co.uk/>)
+ * Various Codethink clients in automotive industry
+ * ...
+
+???
+
+OpenSUSE and SUSE Enterprise
 
 ---
 
