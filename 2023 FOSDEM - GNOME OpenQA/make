@@ -3,6 +3,7 @@
 """Sam's reveal.js wrapper tool, version 100."""
 
 from argparse import ArgumentParser, FileType
+from dataclasses import dataclass, field
 from io import BytesIO
 from markdown import Markdown
 from pathlib import Path
@@ -23,6 +24,19 @@ log = logging.getLogger()
 
 REVEAL_JS_VERSION = '4.4.0'
 REVEAL_JS_URL = f"https://github.com/hakimel/reveal.js/archive/refs/tags/{REVEAL_JS_VERSION}.zip"
+
+
+SEPARATOR_SLIDE = "---"
+SEPARATOR_NESTED_SLIDE = "----"
+SEPARATOR_NOTES = "???"
+
+
+SECTION_TEMPLATE = """
+<section>
+  {content}
+  {nested_slides}
+</section>
+"""
 
 
 def argument_parser():
@@ -82,74 +96,113 @@ def download_and_unpack_reveal_js(outdir: Path):
             f"Error: {e}")
 
 
-def split_slides(text) -> List[str]:
-    slides = []
-    current_slide = []
-    notes = False
-    for line in text.splitlines():
-        if line == '---':
-            slides.append('\n'.join(current_slide))
-            current_slide = []
-            notes = False
-        elif line == '???':
-            notes = True
-        else:
-            if notes:
-                pass
+@dataclass
+class Slide:
+    index: str
+    markdown: str = field(default_factory=list)
+    notes: Optional[str] = field(default_factory=list)
+    nested_slides: List[object] = field(default_factory=list)
+
+
+class SlideshowParser:
+    def __init__(self):
+        self._slides = []
+
+        # Markdown extensions:
+        #
+        #   * attr_list: https://python-markdown.github.io/extensions/attr_list/
+        #   * fenced_code: https://python-markdown.github.io/extensions/fenced_code_blocks/
+        #   * md_in_html: https://python-markdown.github.io/extensions/md_in_html/
+        #
+        self._markdown_parser = Markdown(
+            extensions=['attr_list', 'fenced_code', 'md_in_html'],
+            output_format='html5'
+        )
+
+    def load_document(self, document: str):
+        """Parse input document into the individual slides."""
+        current_parent_slide = None
+        notes = False
+
+        log.debug(f"New slide {1}")
+        current_slide = Slide(index="1")
+        for line in document.splitlines():
+            if line == SEPARATOR_SLIDE:
+                if current_parent_slide:
+                    current_parent_slide.nested_slides.append(current_slide)
+                    log.debug(f"Slide {current_parent_slide.index} now has {len(current_parent_slide.nested_slides)} children")
+                    self._slides.append(current_parent_slide)
+                    current_parent_slide = None
+                else:
+                    self._slides.append(current_slide)
+                current_slide = Slide(index=f"{len(self._slides)+1}")
+                notes = False
+                log.debug(f"New slide {current_slide.index}")
+            elif line == SEPARATOR_NESTED_SLIDE:
+                if current_parent_slide is None:
+                    current_parent_slide = current_slide
+                else:
+                    current_parent_slide.nested_slides.append(current_slide)
+                index = f"{current_parent_slide.index}.{len(current_parent_slide.nested_slides)+1}"
+                current_slide = Slide(index=index)
+                notes = False
+                log.debug(f"New nested slide {index}")
+            elif line == SEPARATOR_NOTES:
+                log.debug(f"Notes for slide {current_slide.index}")
+                notes = True
             else:
-                current_slide.append(line)
-    slides.append('\n'.join(current_slide))
+                if notes:
+                    current_slide.notes.append(line)
+                else:
+                    current_slide.markdown.append(line)
+        self._slides.append(current_slide)
 
-    return slides
+    def _remove_paragraph_around_images(self, html) -> str:
+        # See
+        # https://stackoverflow.com/questions/24456010/in-markdown-is-there-a-way-to-stop-images-from-being-wrapped-with-p-tags
+        # etc.
+        #
+        # Whatever is "correct" i don't care, this shit breaks `r-stretch` attr.
+        html, _count = re.subn(r'<p>(<img[^>]*>)</p>', r'\1', html)
+        return html
 
+    def _convert_slides_to_html(self, slides: List[Slide]) -> str:
+        # Convert a set of slides to HTML.
+        result = []
+        for slide in slides:
+            log.debug(f"Convert slide {slide.index} to HTML")
+            self._markdown_parser.reset()
 
-SECTION_TEMPLATE = """
-<section>
-  {0}
-</section>
-"""
+            slide_markdown = '\n'.join(slide.markdown)
+            slide_html = self._markdown_parser.convert(slide_markdown)
 
+            nested_slides_html = ""
+            if slide.nested_slides:
+                nested_slides_html = self._convert_slides_to_html(slide.nested_slides)
 
-def remove_paragraph_around_images(html) -> str:
-    # See
-    # https://stackoverflow.com/questions/24456010/in-markdown-is-there-a-way-to-stop-images-from-being-wrapped-with-p-tags
-    # etc.
-    #
-    # Whatever is "correct" i don't care, this shit breaks `r-stretch` attr.
-    html, _count = re.subn(r'<p>(<img[^>]*>)</p>', r'\1', html)
-    return html
+            section_html = SECTION_TEMPLATE.format(
+                content=slide_html,
+                nested_slides=nested_slides_html,
+            )
 
+            section_html = self._remove_paragraph_around_images(section_html)
 
-def convert_slides(slides: List[str]) -> str:
-    # Markdown extensions:
-    #
-    #   * attr_list: https://python-markdown.github.io/extensions/attr_list/
-    #   * fenced_code: https://python-markdown.github.io/extensions/fenced_code_blocks/
-    #   * md_in_html: https://python-markdown.github.io/extensions/md_in_html/
-    #
-    markdown_parser = Markdown(
-        extensions=['attr_list', 'fenced_code', 'md_in_html'],
-        output_format='html5'
-    )
+            result.append(section_html)
+        return '\n'.join(result)
 
-    result = []
-    for slide_text in slides:
-        markdown_parser.reset()
-        slide_html = markdown_parser.convert(slide_text)
-        section_html = SECTION_TEMPLATE.format(slide_html)
-
-        section_html = remove_paragraph_around_images(section_html)
-
-        result.append(section_html)
-    return '\n'.join(result)
+    def to_html(self) -> str:
+        return self._convert_slides_to_html(self._slides)
 
 
 def build(infile, template, outdir):
-    text = infile.read_text()
-    slides = split_slides(text)
+    document = infile.read_text()
+
+    slideshow_parser = SlideshowParser()
+    slideshow_parser.load_document(document)
+
+    sections_text = slideshow_parser.to_html()
 
     template_text = template.read_text()
-    sections_text = convert_slides(slides)
     output = template_text.replace('{{sections}}', sections_text)
 
     index = outdir.joinpath('index.html')
@@ -209,8 +262,8 @@ def main():
     if args.watch:
         watch(args.infile, args.template, outdir)
 
-try:
-    main()
-except RuntimeError as e:
-    sys.stderr.write("ERROR: {}\n".format(e))
-    sys.exit(1)
+#try:
+main()
+#except RuntimeError as e:
+#    sys.stderr.write("ERROR: {}\n".format(e))
+#    sys.exit(1)
