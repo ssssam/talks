@@ -10,9 +10,9 @@ https://fosdem.org/2023/schedule/event/openqa_for_gnome/
 <div class="r-stretch"></div>
 
 <div class="flex-row-stretch" markdown="1">
-  <p class="left" style="flex: 1;">
-  Sam Thursfield<br>
-  FOSDEM 2023
+  <p class="left" style="flex: 1;" markdown="1">
+  **Sam Thursfield**<br>
+  **FOSDEM 2023**
   </p>
 
   ![Codethink logo](./images/codethink-logo.svg){:.right style="flex: 1;"}
@@ -286,12 +286,14 @@ OpenSUSE and SUSE Enterprise
 
 ---
 
+----
+
 ## OpenQA: main page
 
 <!--.stretch[![openqa UI frontpage](images/openqa-ui-main.png)] -->
 <img class="stretch" src="./images/openqa-ui-main.png">
 
----
+----
 
 <!-- 8. Show and tell: viewing the tests -->
 
@@ -307,39 +309,44 @@ GNOME release team's integration repo
 
 Lots of work done in CI pipelines. Two beefy donated servers (x86_64, ARM) run builds.
 
+----
+
 ## Gitlab: gnome-build-meta wiki
 
 ![gnome-build-meta wiki screenshot showing OpenQA docs](images/gitlab-gbm-wiki.png){:.r-stretch}
+
+----
 
 ## Gitlab: CI pipelines
 
 ![gnome-build-meta 'master' CI pipelines](images/gitlab-pipelines-master.png){:.r-stretch}
 
+----
+
 ## Gitlab: s3-image
 
-![gnome-build-meta 's3-image' job](images/gitlab-pipelines-s3-image.png){:.r-stretch}
+![gnome-build-meta 's3-image' job](images/gitlab-pipeline-s3-image.png){:.r-stretch}
 
 ???
 
 This job creates an installer ISO and uploads it to Amazon S3 file storage.
 
+----
+
 ## Gitlab: test-s3-image
 
-![gnome-build-meta 'test-s3-image' job](images/gitlab-pipelines-test-s3-image.png){:.r-stretch}
+![gnome-build-meta 'test-s3-image' job](images/gitlab-pipeline-test-s3-image.png){:.r-stretch}
 
 ???
 
 This job runs the OpenQA tests
 
-## Gitlab: test-s3-image
-
-![gnome-build-meta 'test-s3-image' job](images/gitlab-test-s3-image-log.png){:.r-stretch}
-
-???
+----
 
 ## Gitlab: test-s3-image
 
-This job:{:.r-stretch}
+<div class="r-stretch" markdown="1">
+This job:
 
  * runs using the upstream 'openqa-worker' Docker image
  * downloads the ISO from S3
@@ -349,6 +356,7 @@ This job:{:.r-stretch}
  * polls job status report until its passed/failed
  * job runs, against the locally downloaded ISO, and passes or fails
  * removes the machine again and pipeline exists
+</div>
 
 ???
 
@@ -356,7 +364,7 @@ The runner *is* the worker - not a dedicated machine. (less infra to maintain- w
 
 <!-- 9. Show and tell: viewing the tests -->
 
----
+----
 
 ## OpenQA: Test results
 
@@ -366,13 +374,13 @@ The runner *is* the worker - not a dedicated machine. (less infra to maintain- w
 
 Each of these tests on the LHS corresponds to a Perl script in 'openqa_tests.git' repo.
 
---
+----
 
 ## OpenQA: Test results
 
 ![OpenQA test result - 2](./images/openqa-ui-tests-1.png){:.r-stretch}
 
----
+----
 
 ## OpenQA: gnome\_install test
 
@@ -390,7 +398,7 @@ Helper functions provided by OpenQA to:
   * send keypresses and mouse click events to QEMU display (over VNC)
   * needle can have 'click' areas to make this easier
 
----
+----
 
 ## OpenQA: gnome\_welcome test
 
@@ -400,7 +408,7 @@ Helper functions provided by OpenQA to:
 
 First time we can log in (no root password)
 
----
+----
 
 ## OpenQA: gnome\_journal\_capture\_fix test
 
@@ -410,7 +418,7 @@ First time we can log in (no root password)
 
 Several ways to run commands - serial console is least extra work.
 
----
+----
 
 ## OpenQA: gnome\_desktop test
 
@@ -422,7 +430,7 @@ Exclusion match: ignore version number.
 
 Design changes: all needles with tag 'gnome_desktop_tour' are tried, and if any matches, test passes. So it tests against all old and new versions of the design. (You can remove old needles if you want).
 
----
+----
 
 ## OpenQA: gnome\_system\_monitor test
 
@@ -434,13 +442,13 @@ Exclusion match: window body.
 
 <!-- 10. Show and tell - needle editor -->
 
----
+----
 
 ## OpenQA: needle editor
 
 ![OpenQA needle editor](./images/openqa-ui-needle-editor-1.png){:.r-stretch}
 
----
+----
 
 ## OpenQA: needle editor 2
 
@@ -448,7 +456,7 @@ Exclusion match: window body.
 
 <!-- 11. Show and tell - openqa-needles and openqa-tests repos -->
 
----
+----
 
 ## OpenQA: openqa-needles Git repo
 
@@ -464,7 +472,7 @@ Multiple versions of the product with design differences:
 
 Repo gets very big... no solution really.
 
----
+----
 
 ## OpenQA: a needle
 
@@ -495,7 +503,7 @@ Repo gets very big... no solution really.
 
 <!-- 11. Show and tell - openqa-tests and openqa-needles repos -->
 
----
+----
 
 ## openqa-tests.git
 
@@ -507,19 +515,19 @@ Everything is Perl.
 
 Python is supported in theory, i didn't get it to work, and it involves a Perl->Python bridge so additional complexity that might be unhelpful.
 
----
+----
 
 ## openqa-tests/main.pm
 
 ![main.pm](./images/tests-main.pm.png){:.r-stretch}
 
----
+----
 
 ## openqa-tests/tests/gnome-install.pm
 
 ![gnome-install.pm](./images/tests-gnome-install.pm.png){:.r-stretch}
 
----
+----
 
 ## openqa-tests/tests/gnome-welcome.pm
 
@@ -618,6 +626,21 @@ https://blogs.gnome.org/aday/2012/08/07/gnome-os/
 
 ---
 
+## Next steps for Codethink + OpenQA
+
+<div class="left" markdown="1">
+  * Continue Linux mainline testing
+  * **QAD**: open source tool to control hardware from OpenQA tests
+  * Hardware **USB switcher**
+
+Follow us for details:
+
+  * [@codethink@social.codethink.co.uk](https://social.codethink.co.uk/codethink) (Fediverse)
+  * [@codethink](https://www.twitter.com/codethink) (Twitter)
+  * [https://www.codethink.co.uk/](https://www.codethink.co.uk)
+
+---
+
 ## How to get involved {:.r-fit-text}
 
 <div class="left" markdown="1">
@@ -634,14 +657,11 @@ I will provide training on infra maintenance and writing tests - just ask!
 Also: [documentation](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers), [issue tracker](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers)
 {:.fs-3}
 
-<div>
-  <div class="flex-row-stretch">
-    <div class='flex-col left' style="flex: 1;">
-  	 <p class="left">Sam Thursfield</p>
-  	  <p class="left">FOSDEM 2023</p>
-    </div>
+<div class="flex-row-stretch" markdown="1">
+  <p class="left" style="flex: 1;" markdown="1">
+  **Sam Thursfield**<br>
+  **FOSDEM 2023**
+  </p>
 
-    <img class='right' src="./images/codethink-logo.svg" style="flex: 1;">
-  </div>
-</div>
+  ![Codethink logo](./images/codethink-logo.svg){:.right style="flex: 1;"}
 </div>
