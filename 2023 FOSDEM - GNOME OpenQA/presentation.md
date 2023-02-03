@@ -364,6 +364,8 @@ The runner *is* the worker - not a dedicated machine. (less infra to maintain- w
 
 <!-- 9. Show and tell: viewing the tests -->
 
+---
+
 ----
 
 ## OpenQA: Test results
@@ -442,6 +444,7 @@ Exclusion match: window body.
 
 <!-- 10. Show and tell - needle editor -->
 
+---
 ----
 
 ## OpenQA: needle editor
