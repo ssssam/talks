@@ -26,7 +26,7 @@ This talk is about:
 ## About me
 
 <div markdown=1 class="r-stretch">
-* Systems software developer @ Codethink
+* Systems software developer @ [Codethink](https://www.codethink.co.uk/)
 
 * Musician and music fan
 
@@ -71,7 +71,13 @@ xmms, rhythmbox
 
 ## Playlists (2010s)
 
-![A Spotify playlist](images/spotify.png){:.r-stretch}
+![A Spotify playlist](images/spotify2.png){:.r-stretch}
+
+---
+
+## Playlists (2010s)
+
+![A Spotify playlist](images/spotify2.png){:.r-stretch}
 
   ✅ Easy to make
 
@@ -86,7 +92,7 @@ xmms, rhythmbox
 # Spotify philosophy {:.r-fit-text}
 
   * Grow as big as possible ("blitzscaling")
-  * Pay artists as little as possible
+  * Pay artists [as little as possible](https://www.youtube.com/watch?v=MXudOLStaXA&t=11s)
   * Optimize for passive listener engagement
   * Apply user surveillance and machine-learning to every problem
   * All hail the Algorithm
@@ -96,6 +102,7 @@ xmms, rhythmbox
 References:
 
   * BJ videos
+  * https://thetrichordist.com/2015/09/03/spotify-per-stream-rates-continue-to-drop-00408-more-free-users-less-money-per-stream/
   * Algorithm searches
   * ...
 
@@ -117,19 +124,22 @@ Musicbrainz, Listenbrainz
 
 ---
 
+Let's get experimenting!
+{:.r-fit-text}
+
+![science dog meme](images/science+dog.jpg){:.r-stretch}
+
+---
+
 <!-- 2. Fundamentals - open playlists -->
 
 What can we learn from ... **Dynamicland** ?
 
-![Screenshot of Dynamicland website](images/dynamicland.png){:.r-stretch}
+<video src="images/dynamicland.mov" autoplay="true" muted="true"></video>
 
----
-
-What can we learn from ... **Dynamicland** ?
-
-<div markdown="1" class="r-stretch">
+<div markdown="1" class="fs-3">
 <div markdown="1" style="display:inline; vertical-align: middle;">
-  * Simple, open algorithms (< 1000 lines of Python)
+  * Code that fits on a sheet of A4 paper
   * Learn and participate in the process
 </div>
 </div>
@@ -148,30 +158,32 @@ Git: an incredible DIY project
 
 ## Git's core ideas were implemented in a month {:.r-fit-text}
 
-  * Well-defined data model: blobs, trees, commits, refs.
-  {:.fs-3}
-  * Multi-call binary: small programs that work together
-  {:.fs-3}
-  * "Porcelain" and "Plumbing" layers
-  {:.fs-3}
+<div class="left" markdown="1">
+  1. Well-defined data model: blobs, trees, commits, refs.
+{:.fs-3}
+  2. Multi-call binary: small programs that work together
+{:.fs-3}
+  3. "Porcelain" and "Plumbing" layers
+{:.fs-3}
 
-???
-
-https://marc.info/?l=git&m=117254154130732
-
----
-
-## Git's design allows... {:.r-fit-text}
+Git's design allows...
 
   * a "polyglot" codebase
+{:.fs-3}
   * easy extensions
+{:.fs-3}
   * popular websites built around it
+{:.fs-3}
+</div>
 
 ???
 
 C, Shell, Perl, TCL
 Git LFS
 Gitlab, Github
+???
+
+https://marc.info/?l=git&m=117254154130732
 
 ---
 
@@ -179,11 +191,9 @@ Gitlab, Github
 
   * Data model: everything is a playlist
   {:.fs-3}
-  * Multi-call binary `cpe`
+  * Multi-call binary `cpe` (also has a Python API)
   {:.fs-3}
   * Build recommendation pipelines as shell pipelines
-  {:.fs-3}
-  * Python API for more complex work.
   {:.fs-3}
   * Optimized for ease of maintenance over ease of use.
   {:.fs-3}
@@ -196,13 +206,6 @@ Gitlab, Github
 There is code, but the IDEAS are what i care about ...
 
 i.e this package won't solve all your problems
-
----
-
-Focus on the commandline, and you can
-integrate with any programming tool.
-
-???
 
 Can language-specific tools e.g. jupyter
 
@@ -237,12 +240,17 @@ This is [JSON Lines](https://jsonlines.org/) data so it can be processed one lin
 
 ![XSPF website](images/xspf.png){:.r-stretch}
 
+Calliope's playlist format [is documented here.](https://calliope-music.readthedocs.io/en/latest/format.html)
+{:.fs-4}
+
 ???
 
 Use XSPF except:
 
  * one item per line, to allow stream-based processing for long playlists
  * JSON instead of XML
+
+
 
 ---
 
@@ -269,14 +277,11 @@ Use XSPF except:
 
 ## Content resolution {:.top}
 
-XPSF is *portable*.
-{:.left}
-
-> XSPF is an intermediate format. We expected a new kind of software called a content resolver to do the job of converting XSPF to a plain old list of files or URIs.
-{:.fs-4 .left .r-stretch}
+> XSPF is an intermediate format. We expected a new kind of software called a **content resolver** to do the job of converting XSPF to a plain old list of files or URIs.
+{:.fs-3 .left .r-stretch}
 >
 > -- [XSPF spec](https://xspf.org/spec#34-content-resolver)
-{:.fs-4 .left .r-stretch}
+{:.fs-3 .left .r-stretch}
 
 ---
 
@@ -308,7 +313,7 @@ We haven't recommended anything yet.
 
 # Recommendations {:.r-fit-text}
 
-big playlist ⟶ process ⟶ small playlist
+big playlist ⟶ algorithm ⟶ small playlist
 
 ---
 
@@ -325,10 +330,9 @@ big playlist ⟶ process ⟶ small playlist
 <div class="left fs-3" markdown="1">
 Ingredients:
 
-  1. Listening history: `pylistenbrainz`
-  2. Local music collection: `beets`
-  3. Track selection: `simpleai`
-  4. Export to music player
+  1. Listening history: [`pylistenbrainz`](https://pypi.org/project/pylistenbrainz/)
+  2. Content resolution: [`beets`](https://beets.io/)
+  3. Track selection: [`simpleai`](https://simpleai.readthedocs.io/en/latest/)
 </div>
 
 ---
@@ -397,22 +401,23 @@ Syncing the data takes a while
 ╰───┴─────────────────────┴───────╯
 ```
 
-The `listenbrainz.listens` module is: 799 lines of Python.
+...choose a year, select by `first_listen_date`: now we have a **playlist**
 {:.r-fit-text}
 
 ???
 
 ---
 
-## 2. Local music collection {:.r-fit-text}
+## 2. Content resolution {:.r-fit-text}
 
 ![a Raspberry Pi on top of an external HD](./images/quickball.jpg){:.r-stretch}
 
 ---
 
-## 2. Local music collection {:.r-fit-text}
+## 2. Content resolution {:.r-fit-text}
 
-**Beets** is the media library management system for obsessive music geeks.
+<a href="https://www.beets.io">**Beets**</a> is the media library management system for obsessive music geeks.
+{:.r-fit-text}
 
 <div class="r-stretch">
 <div style="font-family: Arial; font-size: 14px;"><pre>&gt; <b>beet</b>&nbsp;<font color="#0AAEB3">import</font>&nbsp;<font color="#0AAEB3"><u style="text-decoration-style:single">CD</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">Recopilatorio/</u></font>&nbsp;<font color="#0AAEB3"><u style="text-decoration-style:single">The</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">Autonomads</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">-</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">2009</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">-</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">No</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">Mans</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">Land/</u></font>&nbsp;<font color="#0AAEB3"><u style="text-decoration-style:single">the</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">autonomads</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">+</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">black</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">star</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">dub</u></font><font color="#FED06E"><u style="text-decoration-style:single"><b>\ </b></u></font><font color="#0AAEB3"><u style="text-decoration-style:single">collective/</u></font>
@@ -432,22 +437,14 @@ URL:
 </pre><br></div>
 </div>
 
-<https://beets.io/>
-{:.fs-4}
+(I resolve content with `cpe tracker` due to [issue 107](https://gitlab.com/samthursfield/calliope/-/issues/107))
+{:.fs-6}
 
-There could be a beets content resolver... ([issue 107](https://gitlab.com/samthursfield/calliope/-/issues/107))
+Content resolvers are pluggable and Special Mix can use any...
+{:.fs-3}
 
-???
-
-Pure Python, imports music you buy and download and organizes tags etc. - great.
-
----
-
-## 2. Local music collection {:.r-fit-text}
-
-... but for now I use `cpe tracker resolve-content`.
-
-Special Mix can use any content resolver, in theory.
+...now we have a playlist **with track URLs and durations**.
+{:.fs-3}
 
 ???
 
@@ -477,23 +474,17 @@ def available_content_resolvers() -> List[ContentResolver]:
 
 ## 3. Track selection
 
-![Annealing](./images/annealing_1.jpg)
+<div class="fs-3 left" markdown="1">
+The `cpe select` module wraps the Python `simpleai` package.
 
-Photo: gemeinfrei - Pixabay / CC0
-{:.fs-6}
+You define **constraints** for the playlist, then run a **local search**
+algorithm to try and find a suitable combination of tracks.
+</div>
 
-???
+![dumb robot](images/dumb_robot.svg){:.r-stretch}
 
-Annealing: apply heat to a material, so internal structures (crystals) break down and reform (smaller)
-
-## 3. Track selection
-
-Simulated annealing: a type of *local search* algorithm.
-
-Implemented by Python [`simpleai`](https://pypi.org/project/simpleai/) module.
-
-Based on ["Artificial Intelligence: A Modern Approach"](http://aima.cs.berkeley.edu/), by Stuart Russell and Peter Norvig.
-
+No neural network required.
+{:.fs-3}
 ---
 
 ## 3. Track selection
@@ -511,21 +502,61 @@ Pauws, Steffen & Verhaegh, Wim & Vossen, Mark. (2008). [Music playlist generatio
 
 ![Screenshot of paper](./images/simulated_annealing_paper_constraints.png){:.r-stretch}
 
+<div class="fs-3" markdown="1">
 Each constraint defines a *function* to score a playlist from 0 to 1.
 
 `cpe select` searches for the playlist with the highest score given the constraints.
+</div>
 
 ???
 
 ---
 
-## 4. Export to music player {:.r-fit-text}
+Using **local search** to find a solution
 
-![Jellyfin music player showing playlist](images/jellyfin_special_mix.png){:.r-stretch}
+<div class="fs-3 left" markdown="1">
+Example:
+
+  * All songs must be 2 to 4 minutes long.
+  * The playlist must be 10 minutes long.
+  </div>
+
+
 
 ---
 
-## 4. Export to music player {:.r-fit-text}
+<pre class="code-wrapper">
+<code class="python r-stretch fs-5">from simpleai.search.viewers import ConsoleViewer, WebViewer
+from calliope.playlist import Playlist, PlaylistItem
+from calliope.select import ItemDurationConstraint, PlaylistDurationConstraint
+import calliope.playlist, calliope.select, calliope.shuffle
+import sys
+MINUTES = 60
+
+constraints = [
+    ItemDurationConstraint(vmin=2 * MINUTES,vmax=4 * MINUTES),
+    PlaylistDurationConstraint(vmin=10 * MINUTES,vmax=10 * MINUTES),
+]
+
+corpus = Playlist([
+    PlaylistItem({"calliope.id": "👸", "title": "Amazing Tune", "duration": 2 * MINUTES}),
+    PlaylistItem({"calliope.id": "🎸", "title": "Punk Classic", "duration": 1 * MINUTES}),
+    PlaylistItem({"calliope.id": "♬", "title": "Lengthy Opus", "duration": 12 * MINUTES}),
+    PlaylistItem({"calliope.id": "🌄", "title": "Ambient Noise", "duration": 7 * MINUTES}),
+])
+
+viewer = WebViewer()
+input_playlist = calliope.shuffle.shuffle(corpus)
+output_playlist = calliope.select.select(input_playlist, constraints, viewer=viewer)
+
+calliope.playlist.write(output_playlist, sys.stdout)
+sys.stderr.write(f"Total duration: {sum(item['duration'] for item in output_playlist)}\n")
+</code>
+</pre>
+
+---
+
+## Export to music player {:.r-fit-text}
 
 ```
 > head 'Special mix 2023-01-20.m3u'
@@ -557,6 +588,12 @@ DEBUG:calliope.listenbrainz.listens:SQL:
 
 ---
 
+## Export to music player {:.r-fit-text}
+
+![Jellyfin music player showing playlist](images/jellyfin_special_mix.png){:.r-stretch}
+
+---
+
 # Recap: Special Mix {:.r-fit-text}
 
 `python3 -m calliope_examples.special_mix`
@@ -568,7 +605,6 @@ Ingredients:
   1. Listening history: `pylistenbrainz`
   2. Local music collection: `beets`
   3. Track selection: `simpleai`
-  4. Export to music player
 </div>
 
 ---
@@ -586,7 +622,7 @@ Ingredients:
 
 # Discussion {:.r-fit-text}
 
-<div class="left" markdown="1">
+<div class="left fs-3" markdown="1">
 Project:
 
   * Code: <https://gitlab.com/samthursfield/calliope>
