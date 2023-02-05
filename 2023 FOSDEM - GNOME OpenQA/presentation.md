@@ -296,6 +296,7 @@ OpenSUSE and SUSE Enterprise
 ![openQA screenshot](./images/openqa-ui-main.png){:.r-stretch}
 
 <https://openqa.gnome.org>
+{:.fs-6}
 
 ----
 
@@ -306,6 +307,7 @@ OpenSUSE and SUSE Enterprise
 ![gnome-build-meta repo screenshot](images/gitlab-gbm.png){:.r-stretch}
 
 <https://gitlab.gnome.org/gnome/gnome-build-meta>
+{:.fs-6}
 
 ???
 
@@ -314,12 +316,6 @@ GNOME release team's integration repo
 "What repos and commits correspond to release X.Y of GNOME ?"
 
 Lots of work done in CI pipelines. Two beefy donated servers (x86_64, ARM) run builds.
-
-----
-
-**Gitlab: gnome-build-meta wiki**
-
-![gnome-build-meta wiki screenshot showing OpenQA docs](images/gitlab-gbm-wiki.png){:.r-stretch}
 
 ----
 
@@ -351,7 +347,7 @@ This job runs the OpenQA tests
 
 **Gitlab: test-s3-image**
 
-<div class="r-stretch" markdown="1">
+<div class="left fs-3" markdown="1">
 This job:
 
  * runs using the upstream 'openqa-worker' Docker image
@@ -603,25 +599,37 @@ sub run {
 
 <div markdown="1" class="fs-3">
 
-1. OpenQA is great!  ❤️  Use it!
+<div class="left fragment" markdown="1">
+① OpenQA is great!  ❤️  Use it!
+</div>
 
-2. Explore the test library code:
+<div class="left fragment" markdown="1">
+② Keep tests simple.
+</div>
 
-    * [testapi docs](http://open.qa/api/testapi/)
-    {: .fs-4 }
-    * [os-autoinst-distri-opensuse](https://os-autoinst.github.io/os-autoinst-distri-opensuse/)
-    {: .fs-4 }
+<div class="left fragment" markdown="1">
+③ Explore the test library code:
 
-3. Keep tests simple.
+  * [testapi docs](http://open.qa/api/testapi/)
+  {: .fs-4 }
+  * [os-autoinst-distri-opensuse](https://os-autoinst.github.io/os-autoinst-distri-opensuse/)
+  {: .fs-4 }
+</div>
 
-4. Always check the os-autoinst logs.
+<div class="left fragment" markdown="1">
+⑤ Learn how to run the testsuite locally ([example](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers))
+</div>
 
-    * Example: If needle bounds are invalid, you get a log message and a "0% match" in web UI
-    {: .fs-4 }
+<div class="left fragment" markdown="1">
+④ Always check the `os-autoinst` logs.
 
-5. Learn how to run the testsuite locally.
+  * Example: If needle bounds are invalid, you get a log message and a "0% match" in web UI
+  {: .fs-4 }
+</div>
 
-6. Take care with upstream containers - pin versions using container hash.
+<div class="left fragment" markdown="1">
+⑥ Pin upstream containers using image hash.
+</div>
 
 </div>
 
@@ -645,8 +653,8 @@ sub run {
 
 ## Credits
 
-<div class="flex-row-stretch fs-6 left top" markdown="1">
-<div markdown="1" style="margin-right: 2em">
+<div class="flex-row-stretch fs-5 left top" markdown="1">
+<div markdown="1" style="margin: 2em">
 Top names from gnome-continuous and gnome-build-meta repos:
 
  * Abderrahim Kitouni
@@ -690,16 +698,21 @@ https://blogs.gnome.org/aday/2012/08/07/gnome-os/
 
 ## Codethink plans for 2023 {:.r-fit-text}
 
-<div class="left" markdown="1">
+<div class="left fs-3" markdown="1">
   * Continue Linux mainline testing (OpenQA + LAVA)
   * **QAD**: open source tool to control hardware from OpenQA tests
   * Hardware **USB switcher** device
+</div>
 
+![USB switcher render](images/usb-switcher.png){:.r-stretch}
+
+<div class="left fs-4" markdown="1">
 Follow us for details:
 
-  * [@codethink@social.codethink.co.uk](https://social.codethink.co.uk/codethink) (Fediverse)
-  * [@codethink](https://www.twitter.com/codethink) (Twitter)
+  * [@codethink@social.codethink.co.uk](https://social.codethink.co.uk/@codethink) (Fediverse)
+  * [@codethink](https://twitter.com/codethink) (Twitter)
   * [https://www.codethink.co.uk/](https://www.codethink.co.uk)
+</div>
 
 ---
 
@@ -709,11 +722,11 @@ Follow us for details:
 
 I will provide training on infra maintenance and writing tests - just ask!
 
-  * Chat: Matrix [#gnome-os:gnome.org](https://app.element.io/#/room/#gnome-os:gnome.org) (Libera.chat #gnome-os)
-  {:.fs-3}
-  * Email: *sam@afuera.me.uk*
+  * Chat: Matrix [#gnome-os:gnome.org](https://app.element.io/#/room/#gnome-os:gnome.org)
   {:.fs-3}
   * Forum: [https://discourse.gnome.org/](https://discourse.gnome.org/)
+  {:.fs-3}
+  * Email: *sam@afuera.me.uk*
   {:.fs-3}
 
 Also: [documentation](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers), [issue tracker](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers)
@@ -726,4 +739,5 @@ Also: [documentation](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/op
   </p>
 
   ![Codethink logo](./images/codethink-logo.svg){:.right style="flex: 1;"}
+</div>
 </div>
