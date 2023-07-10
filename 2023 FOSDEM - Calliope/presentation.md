@@ -7,9 +7,13 @@ https://www.fosdem.org/2023/schedule/event/python_music_recommendation/
 
 ## Simple, Open, Music Recommendations with Python
 
+<div class="r-stretch"></div>
+
 Sam Thursfield
+{:.highlight}
 
 FOSDEM 2023
+{:.highlight}
 
 ???
 
@@ -112,7 +116,7 @@ References:
 
 ---
 
-  * Not for profit / DIY
+  * Not for profit / <span class="highlight">DIY</span>
   * Encourage building a local music collection
   * Link to artist-controlled websites
   * Work with open data
@@ -159,11 +163,11 @@ Git: an incredible DIY project
 ## Git's core ideas were implemented in a month {:.r-fit-text}
 
 <div class="left" markdown="1">
-  1. Well-defined data model: blobs, trees, commits, refs.
+  1. Well-defined data model: <span class="highlight">blobs, trees, commits, refs</span>.
 {:.fs-3}
-  2. Multi-call binary: small programs that work together
+  2. <span class="highlight">Multi-call binary</span>: small programs that work together
 {:.fs-3}
-  3. "Porcelain" and "Plumbing" layers
+  3. <span class="highlight">"Porcelain"</span> and <span class="highlight">"Plumbing"</span> layers
 {:.fs-3}
 
 Git's design allows...
@@ -189,13 +193,13 @@ https://marc.info/?l=git&m=117254154130732
 
 **Calliope**: the same principle for playlists.
 
-  * Data model: everything is a playlist
+  * Data model: <span class="highlight">everything is a playlist</span>
   {:.fs-3}
   * Multi-call binary `cpe` (also has a Python API)
   {:.fs-3}
-  * Build recommendation pipelines as shell pipelines
+  * Build playlists as <span class="highlight">shell pipelines</span>
   {:.fs-3}
-  * Optimized for ease of maintenance over ease of use.
+  * Optimize for <span class="highlight">ease of maintenance</span> over ease of use.
   {:.fs-3}
 
 ```pip3 install calliope-music```
@@ -313,7 +317,7 @@ We haven't recommended anything yet.
 
 # Recommendations {:.r-fit-text}
 
-big playlist ⟶ algorithm ⟶ small playlist
+big playlist ⟶ <span class="highlight">algorithm</span> ⟶ small playlist
 
 ---
 
@@ -401,7 +405,7 @@ Syncing the data takes a while
 ╰───┴─────────────────────┴───────╯
 ```
 
-...choose a year, select by `first_listen_date`: now we have a **playlist**
+...choose a year, select by `first_listen_date`: now we have a **playlist**{:.highlight}
 {:.r-fit-text}
 
 ???
@@ -443,7 +447,7 @@ URL:
 Content resolvers are pluggable and Special Mix can use any...
 {:.fs-3}
 
-...now we have a playlist **with track URLs and durations**.
+...now we have a playlist **with track URLs and durations**{:.highlight}.
 {:.fs-3}
 
 ???
@@ -477,7 +481,7 @@ def available_content_resolvers() -> List[ContentResolver]:
 <div class="fs-3 left" markdown="1">
 The `cpe select` module wraps the Python `simpleai` package.
 
-You define **constraints** for the playlist, then run a **local search**
+You define **constraints**{:.highlight} for the playlist, then run a **local search**{:.highlight}
 algorithm to try and find a suitable combination of tracks.
 </div>
 
@@ -517,8 +521,8 @@ Using **local search** to find a solution
 <div class="fs-3 left" markdown="1">
 Example:
 
-  * All songs must be 2 to 4 minutes long.
-  * The playlist must be 10 minutes long.
+  * All songs must be <span class="highlight">2 to 4 minutes long</span>.
+  * The playlist must be <span class="highlight">10 minutes long</span>.
   </div>
 
 
@@ -602,9 +606,9 @@ DEBUG:calliope.listenbrainz.listens:SQL:
 <div class="left fs-3" markdown="1">
 Ingredients:
 
-  1. Listening history: `pylistenbrainz`
-  2. Local music collection: `beets`
-  3. Track selection: `simpleai`
+  1. Listening history: [`pylistenbrainz`](https://pypi.org/project/pylistenbrainz/)
+  2. Content resolution: [`beets`](https://beets.io/)
+  3. Track selection: [`simpleai`](https://simpleai.readthedocs.io/en/latest/)
 </div>
 
 ---
