@@ -89,22 +89,19 @@ Look at:
   2. gnome_apps test
 
 ---
+class: left
 
 # End to end testing of GNOME {:.r-fit-text}
-
-<div class="left" markdown="1">
 
 **openQA** runs a test script on a device and takes screenshots.
 {.highlight}
 
 <div class="gray-2 fs-2" markdown="1">
   * Each testsuite runs in a new virtual machine
-  * Tests run [GNOME OS](https://os.gnome.org/):
+  * Tests run against [GNOME OS](https://os.gnome.org/):
      * Latest commit of every GNOME module
      * [Freedesktop SDK](https://gitlab.com/freedesktop-sdk/freedesktop-sdk/-/tree/master/elements) base OS
   * Working since Sept. 2022, in "open beta" status
-</div>
-
 </div>
 
 ???
@@ -151,17 +148,53 @@ Are they any open source alternatives ?
 
 ---
 
+## Components of GNOME openQA testing {:.r-fit-text}
 
+1. openQA Web UI -- optional
+2. Gitlab `gnome-build-meta` repo -- builds GNOME OS image, & runs openQA tests
+2. isotovideo -- test runner (you can run this on your laptop)
+3. Testsuites (Perl scripts which use [test API](http://open.qa/api/testapi/))
+4. Needles (screenshots)
+
+---
+class: left
+
+## How your test controls the VM {:.r-fit-text}
+
+1) Trigger an action:
+
+<div class="fs-3 gray-2" markdown="1">
+  * Type on keyboard - [`send_key`](http://open.qa/api/testapi/#_send_key), [`type_string`](http://open.qa/api/testapi/#_type_string)
+  * Click with mouse - [`mouse_set`](http://open.qa/api/testapi/#_mouse_click),[`assert_and_click`](http://open.qa/api/testapi/#_click_lastmatch)
+  * Run command on serial console - [`assert_script_run`](http://open.qa/api/testapi/#_assert_script_run)
+  * Other stuff: [`power`](http://open.qa/api/testapi/#_power), [`switch_network`](http://open.qa/api/testapi/#_switch_network), ...
+</div>
+
+2) Assert that the correct thing happened
+
+<div class="fs-3 gray-2" markdown="1">
+  * Await needle (screenshot) match - [`assert_screen`](http://open.qa/api/testapi/#_assert_screen)
+  * Other stuff - [`upload_asset`](http://open.qa/api/testapi/#_upload_asset), [`assert_recorded_sound`](http://open.qa/api/testapi/#_assert_recorded_sound), ...
+</div>
+
+???
+
+You can run the tests on your laptop
+
+You are not limited to screenshot testing.
+
+Tests are Perl programs & can run arbitrary code. openQA is not only for screenshot tests.
+
+But it has special helpers for screenshot testing. We'll go more into how that works.
 
 ---
 
-# openQA in more detail
+ * How to:
 
-
-
----
-
-Open a testsuite and look at some tests.
+     * Look at screenshots and see "latest GNOME"
+     * Diagnose & report regressions in a component
+     * Fix a test failure
+     * Develop new test cases
 
 ???
 
@@ -169,19 +202,6 @@ Show some screenshots, explain "Needles".
 
 ---
 
-# openQA testing philosophy
-
-  * Tests are Perl programs with full access to the VM
-  * Test runner is separate from the web UI (you can run the testsuite on your laptop)
-  * Strong support for screenshot testing (via "Needles")
-
-???
-
-You are not limited to screenshot testing.
-
-Tests are Perl programs & can run arbitrary code. openQA is not only for screenshot tests.
-
-But it has special helpers for screenshot testing. We'll go more into how that works.
 
 ---
 
@@ -252,6 +272,44 @@ I'll leave you with this problem...
 
 ---
 
+## Questions
+
+"How much effort is it to maintain?"
+
+"How expensive is it to run?"
+
+"Can distros do this for us?"
+
+"How many 'real' bugs has it caught so far?"
+
+"What's next?"
+
+---
+
+## How much effort is it to maintain? {:.r-fit-text}
+
+![Graph of hours spent against date](images/Hours spent on openQA maintenance.svg){:.r-stretch}
+
+Source: <https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/9>
+{:.fs-4}
+
+---
+
+## What's next?
+
+It's up to you!
+
+  * Core app developers: extend tests for your app/component
+     * Can we move tests into module repos?
+  * Organisations that can host hardware: devices for hardware testing
+  * Infra experts: help maintain web UI 
+  * Everyone:
+     * Subscribe to gnome-build-meta pipeline failures
+     * Add tests for accessibility features
+     * Add tests for other locales (e.g. Turkish)
+     * Contribute to example-test-content
+
+---
 
 
 ## How to get involved {:.r-fit-text}
