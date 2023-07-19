@@ -4,7 +4,10 @@ GUADEC 2023 - ...
 ... minutes
 -->
 
-# The best testing tools we've ever had
+### The best testing tools we've ever had {:.r-fit-text}
+
+An introduction to
+## openQA for GNOME {:.r-fit-text}
 
 <div class="r-stretch"></div>
 
@@ -19,13 +22,48 @@ GUADEC 2023 - ...
 
 ---
 
-<!-- 1. Where we are -->
+# My story
 
-Open this URL in your laptop...
+ * GNOME (2003-)
+ * Codethink (2011-)
+ * Desktop search (Tracker) (2011-)
 
-https://openqa.gnome.org/
+???
 
-<!-- FIXME: QR code?! -->
+I don't always do "about me", but it is relevant here to see why I've been pushing this recently...
+
+Using GNOME since 2003 ([2.8](https://help.gnome.org/misc/release-notes/2.8/))
+
+Codethink - somehow still work here - consultancy, mostly financial & automotive work now
+
+Early projects: MeeGo - Tracker - critical bugs e.g. 100% CPU when you connect a USB stick.
+
+No paid work on Tracker since 2012, but remained as a volunteer maintainer. Ported to Meson, set up initial Gitlab CI, in-tree "functional tests" testsuite.
+
+---
+
+## Dreams of end to end testing
+
+ * GUADEC 2012 in A Coruña:
+     * GNOME Continuous; "Testable" iniative
+ * GNOME OS:
+     * BuildStream, Freedesktop SDK)
+ * openQA at SUSE: 2009
+     * Now used by Fedora, Debian, and more
+ * Codethink: openQA testing in automotive
+
+???
+
+We've been working towards "integration testing of GNOME as it happens" for over a decade.
+
+---
+
+Open this URL in your laptop:
+
+<https://openqa.gnome.org/>
+{:.r-fit-text}
+
+![QR code](./images/qr-code.png){:.r-stretch}
 
 ???
 
@@ -45,20 +83,81 @@ Do this in browser ! Show:
 
 ---
 
-# Integration testing of GNOME OS
+Look at:
 
-  * openqa.gnome.org is about ~1 year old and in "open beta" status
-  * Tests run against GNOME OS: latest commit of every GNOME module + [Freedesktop SDK](https://gitlab.com/freedesktop-sdk/freedesktop-sdk/-/tree/master/elements) base OS
-  * Each testsuite runs in new, temporary virtual machine
+  1. gnome_install test
+  2. gnome_apps test
+
+---
+
+# End to end testing of GNOME {:.r-fit-text}
+
+<div class="left" markdown="1">
+
+**openQA** runs a test script on a device and takes screenshots.
+{.highlight}
+
+<div class="gray-2 fs-2" markdown="1">
+  * Each testsuite runs in a new virtual machine
+  * Tests run [GNOME OS](https://os.gnome.org/):
+     * Latest commit of every GNOME module
+     * [Freedesktop SDK](https://gitlab.com/freedesktop-sdk/freedesktop-sdk/-/tree/master/elements) base OS
+  * Working since Sept. 2022, in "open beta" status
+</div>
+
+</div>
 
 ???
 
 Notes:
 
+  * openQA manages VM (using QEMU); hardware testing can come soon
   * distro independent - distros are doing their own integration testing (many also using openQA), but testing already-released versions of GNOME
-  * good coverage of stuff which is difficult with project-specific tests: hardware support, initial setup, session management, font rendering ...
-  * not a replacement for unit tests (errors are quite broad)
-  * get bug reports as soon as you break something
+  * using Freedesktop SDK beta OS (~modern base, & we can control version of every component)
+  * max ~1hr a week to maintain, infra (only me), tests (me + Jordan)
+    * you're invited to join in!
+
+---
+
+## Types of testing
+
+![](images/test-pyramid.webp)
+
+???
+
+Mike Cohn's "test pyramid" ("Succeeding with Agile").
+
+  * Unit tests - easy to write; hard to test real usecases (everything outside the unit is "mocked", e.g. connect a USB stick)
+  * Integration tests: everything else goes here.
+      * "Functional tests", "UI tests", "service tests",...
+  * I prefer "end to end testing" over "OS testing"
+     * You control every aspect! Via mouse, keyboard, connect a real USB stick...
+     * Good coverage of stuff which is difficult with project-specific tests: hardware support, initial setup, session management, font rendering ...
+  * Test itself is fast & cheap; but *cycle time* is slow with openQA tests
+
+---
+
+## Types of testing
+
+*openQA goes here*
+
+  ⇓
+
+![](images/test-pyramid.webp) 
+
+???
+
+Are they any open source alternatives ?
+
+---
+
+
+
+---
+
+# openQA in more detail
+
+
 
 ---
 
@@ -131,24 +230,6 @@ But first... some notes on how we got here.
 
 ---
 
-My story
-
- * Codethink (2011-)
- * Tracker (2011-)
-
-???
-
-I don't always do "about me", but it is relevant here to see why I've been pushing this recently...
-
-Using GNOME since 2003 ([2.8](https://help.gnome.org/misc/release-notes/2.8/))
-
-Codethink - somehow still work here - consultancy, mostly financial & automotive work now
-
-Early projects: MeeGo - Tracker - critical bugs e.g. 100% CPU when you connect a USB stick.
-
-
-No paid work on Tracker since 2012, but remained as a volunteer maintainer. Ported to Meson, set up initial Gitlab CI, in-tree "functional tests" testsuite.
-
 ---
 
 # How do you write integration tests for a search engine?
@@ -171,50 +252,6 @@ I'll leave you with this problem...
 
 ---
 
-My story
-
- * Codethink (2011-)
- * Tracker (2011-)
- * GUADEC (2011-)
-
-???
-
-Desktop summit (2011), GUADEC in A Coruña (2012)
-
----
-
-# GUADEC 2012
-
-  * Colin Walters introduces OSTree and GNOME Continuous
-  * First "GNOME OS" BOF
-  * "Testable" initiative
-
-???
-
-We've been working towards "integration testing of GNOME as it happens" for over a decade.
-
----
-
-Screenshot of GNOME Continuous
-
-???
-
-Reference also: GNOME OS, BuildStream, Freedesktop SDK
-
-Meanwhile SUSE were working on openQA.
-
----
-
-# openQA testing at Codethink
-
-Began using it for automotive clients.
-
-Also set up testing for open source projects:
-
-  * Linux kernel (Sudip M.)
-  * GNOME OS (James Thomas, Javier Jardón, me)
-
----
 
 
 ## How to get involved {:.r-fit-text}
