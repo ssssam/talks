@@ -1,7 +1,9 @@
 <!--
 The best testing tools we've ever had
-GUADEC 2023 - ...
-... minutes
+GUADEC 2023 - Thu 27th July
+40 minutes incl questions
+
+Submit slides b4 talk!!
 -->
 
 ### The best testing tools we've ever had {:.r-fit-text}
@@ -42,15 +44,19 @@ No paid work on Tracker since 2012, but remained as a volunteer maintainer. Port
 
 ---
 
+In 2011, GNOME had no automated testing *at all*
+
+---
+
 ## Dreams of end to end testing
 
- * GUADEC 2012 in A Coruña:
-     * GNOME Continuous; "Testable" iniative
- * GNOME OS:
-     * BuildStream, Freedesktop SDK)
- * openQA at SUSE: 2009
+ * <span class="highlight">GUADEC 2012</span> in A Coruña:
+     * GNOME Continuous; "Testable" initiative
+ * <span class="highlight">GNOME OS</span> project:
+     * BuildStream, Freedesktop SDK
+ * openQA at <span class="highlight">SUSE</span>: since 2009
      * Now used by Fedora, Debian, and more
- * Codethink: openQA testing in automotive
+ * <span class="highlight">Codethink</span>: openQA testing in automotive
 
 ???
 
@@ -81,7 +87,7 @@ Do this in browser ! Show:
   --   it uses the preinstalled disk image
   -->
 
----
+???
 
 Look at:
 
@@ -91,10 +97,7 @@ Look at:
 ---
 class: left
 
-# End to end testing of GNOME {:.r-fit-text}
-
-**openQA** runs a test script on a device and takes screenshots.
-{.highlight}
+# <span class="highlight">End to end testing</span> for GNOME {:.r-fit-text}
 
 <div class="gray-2 fs-2" markdown="1">
   * Each testsuite runs in a new virtual machine
@@ -148,13 +151,159 @@ Are they any open source alternatives ?
 
 ---
 
+## Use cases
+
+  1. <span class="highlight">See "latest GNOME" 🧔</span>
+  2. Update needles 🧑‍🦰
+  3. Diagnose & report regressions 👷
+  4. Develop new tests 👩‍🦱
+
+---
+
 ## Components of GNOME openQA testing {:.r-fit-text}
 
-1. openQA Web UI -- optional
-2. Gitlab `gnome-build-meta` repo -- builds GNOME OS image, & runs openQA tests
-2. isotovideo -- test runner (you can run this on your laptop)
-3. Testsuites (Perl scripts which use [test API](http://open.qa/api/testapi/))
-4. Needles (screenshots)
+1. <b>[openqa.gnome.org](http://openqa.gnome.org)</b>: frontend
+2. <b>`gnome-build-meta`</b> Gitlab project:
+      * builds GNOME OS image
+      * runs openQA tests
+2. <b>isotovideo</b>: test runner <span class="fs-4">(you can run this on your laptop!)</span>
+3. <b>openqa-tests</b> Gitlab project:
+      * Defines test suites <span class="fs-4">(using Perl + [openQA test API](http://open.qa/api/testapi/))</span>
+4. <b>openqa-needles</b> Gitlab project:
+      * Defines screenshots
+
+---
+
+## How to: See "latest GNOME" 🧔 {.r-fit-text}
+
+Documentation: [Checking test results](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers#checking-test-results)
+
+???
+
+Don't go to openqa.gnome.org
+
+Go to gnome-build-meta pipelines:
+
+  * filter for 'master'
+  * open test-s3-image
+  * go to the link & see exactly the test
+  * there's a corresponding link in the openQA vars directory.
+
+Another trick:
+
+  * you can look at stable branches too
+  * look in Needles repo.
+
+---
+
+## How to: Update a Needle 🧑‍🦰 {.r-fit-text}
+
+Documentation: [How to update a needle](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers#how-to-update-a-needle)
+
+---
+
+## An example needle {.r-fit-text}
+
+<div class="flex-row-stretch" display="flex:1;" style="align-items: top;" markdown="1">
+<div markdown="1">
+![Baobab app screenshot](./images/app_baobab_home.png){:width=75%}
+</div>
+<div markdown="1" style="width: 18em;" class="fs-3">
+```json
+{
+  "area": [
+    {
+      "xpos": 31,
+      "ypos": 78,
+      "width": 959,
+      "height": 599,
+      "type": "match",
+      "match": 96,
+    }
+  ],
+  "properties": [],
+  "tags": [
+    "app_baobab_home"
+  ]
+}
+```
+</div>
+</div>
+
+See this needle in action [here](https://openqa.gnome.org/tests/1228#step/app_baobab/2).
+
+See also: [openQA starter guide - Basic Concepts](http://open.qa/docs/#_needles).
+{:.fs-3}
+
+---
+
+Question: *"How many false positives do you get?"*
+{:.r-fit-text .highlight}
+
+Look at how often the needles are updated...
+
+???
+
+Default background
+Adwaita header bar changes
+Font rendering
+
+---
+
+Screenshot tests will always have false positives.
+
+openQA mitigations:
+
+  1. Search within the screen
+  2. Similarity threshold (90-100%)
+  3. Exclude zones
+  4. Web UI for needle updates.
+
+---
+
+How to: Diagnose & report regressions 👷
+{.r-fit-text}
+
+Documentation: [When tests fail](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers#when-tests-fail)
+
+???
+
+What can you do? "It's broken" ... not very useful
+
+  * Mention in #gnome-os and/or project channel
+  * Check open issues (see 'Integration test failure' label)
+
+Steps:
+
+  * OpenQA test number
+  * Gitlab pipeline number
+     * You can download exactly that version of GNOME OS and reproduce the issue in GNOME Boxes
+  * gnome-build-meta commit
+     * Use pipeline-report script
+  * Logs from serial port.
+
+It's important not be annoying
+
+Example: real test failures!
+
+---
+
+Question: *"how many real bugs has openQA caught?"*
+{:.r-fit-text .highlight}
+
+Let's see Gitlab label: [9. End-to-end test failure](https://gitlab.gnome.org/groups/GNOME/-/issues/?sort=created_date&state=opened&label_name%5B%5D=9.%20End-to-end%20test%20failure&first_page_size=20)
+
+???
+
+It's very hard to be sure, but some examples:
+
+  ...
+
+---
+
+## How to: Develop new tests 👩‍🦱 {:.r-fit-text}
+
+Documentation: [Adding more tests](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers#adding-more-tests)
 
 ---
 class: left
@@ -177,6 +326,16 @@ class: left
   * Other stuff - [`upload_asset`](http://open.qa/api/testapi/#_upload_asset), [`assert_recorded_sound`](http://open.qa/api/testapi/#_assert_recorded_sound), ...
 </div>
 
+Example: [app_nautilus.pm](https://gitlab.gnome.org/GNOME/openqa-tests/-/blob/master/tests/app_nautilus.pm)
+
+---
+
+## Running tests locally
+
+Documentation: [Running the test suite locally](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers#running-the-test-suite-locally)
+
+Helper tool: [ssam_openqa](https://gitlab.gnome.org/sthursfield/ssam_openqa/)
+
 ???
 
 You can run the tests on your laptop
@@ -187,106 +346,11 @@ Tests are Perl programs & can run arbitrary code. openQA is not only for screens
 
 But it has special helpers for screenshot testing. We'll go more into how that works.
 
----
-
- * How to:
-
-     * Look at screenshots and see "latest GNOME"
-     * Diagnose & report regressions in a component
-     * Fix a test failure
-     * Develop new test cases
-
-???
-
-Show some screenshots, explain "Needles".
 
 ---
 
-
----
-
-Check the "Logs & Assets" tab
-
-???
-
-If you're a developer you're thinking, what do I do if this fails?
-
-Obvious option: run the same OS image in gnome-boxes and reproduce the issue there
-
-Quickest option: Look at the journal.
-
-Show the serial0.txt log
-
-Show link to Gitlab
-
----
-
-# How it works
-
-  * Gitlab pipeline for gnome-build-meta.git has a "test-s3-image" job
-  * The runner registers as a temporary openQA worker
-  * The test job is submitted to the web UI
-
-???
-
-This is a "non-standard" approach, which saves us from maintaining a fleet of physical runners.
-
----
-
-# Here's what we can do today
-
-  * Curate and browse screenshots of the next GNOME release
-  * Run ~nightly tests as we develop new features
-
-???
-
-More ?
-
-We can do integration testing of your latest GNOME modules from Git.
-
-Let's write some tests!
-
-But first... some notes on how we got here.
-
----
-
----
-
-# How do you write integration tests for a search engine?
-
-Golden rule: if it's not tested, it doesn't work.
-
-Actual bug reports:
-
-  * Performance issues on corporate deployment with NFS home directory
-  * GStreamer enters 100% CPU usage when typefinding files in a video game mod due to trying to decode them as MP3
-  * ...
-
-Input: an entire hard disk of random data.
-
-Actual tests: https://gitlab.gnome.org/GNOME/tracker-miners/-/blob/master/tests/functional-tests/test_fts_basic.py
-
-???
-
-I'll leave you with this problem...
-
----
-
-## Questions
-
-"How much effort is it to maintain?"
-
-"How expensive is it to run?"
-
-"Can distros do this for us?"
-
-"How many 'real' bugs has it caught so far?"
-
-"What's next?"
-
----
-
-## How much effort is it to maintain? {:.r-fit-text}
+Question: *How much effort is it to maintain?*
+{:.r-fit-text .highlight}
 
 ![Graph of hours spent against date](images/Hours spent on openQA maintenance.svg){:.r-stretch}
 
@@ -297,26 +361,25 @@ Source: <https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/9>
 
 ## What's next?
 
-It's up to you!
+<div class="left fs-2" markdown="1">
+**It's up to you!** Any of these things may or may not happen...
 
-  * Core app developers: extend tests for your app/component
-     * Can we move tests into module repos?
-  * Organisations that can host hardware: devices for hardware testing
-  * Infra experts: help maintain web UI 
-  * Everyone:
-     * Subscribe to gnome-build-meta pipeline failures
-     * Add tests for accessibility features
-     * Add tests for other locales (e.g. Turkish)
-     * Contribute to example-test-content
+  * Tests for core app features, [Shell](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/34), [locales](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/22), [accessibility](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/23), [search + content apps](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/8)
+  * [Pre-merge testing](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/issues/601) for gnome-build-meta
+  * Tests on real hardware and performance measurement
+  * Tests for [specific GNOME releases](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/21)
+  * [Testing beyond gnome-build-meta](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/38) (e.g. 3rd party apps)
+  * A culture of end-to-end testing and higher quality releases.
+</div>
 
 ---
-
-
+class: left
 ## How to get involved {:.r-fit-text}
+<div class="fs-3" markdown="1">
+Help welcome from GNOME maintainers and **everyone else**!
 
-<div class="left" markdown="1">
-
-I will provide training on infra maintenance and writing tests - just ask!
+I will provide training on infra maintenance and writing tests - just ask.
+{:.highlight .r-fit-text}
 
   * Chat: Matrix [#gnome-os:gnome.org](https://app.element.io/#/room/#gnome-os:gnome.org)
   {:.fs-3}
@@ -327,13 +390,13 @@ I will provide training on infra maintenance and writing tests - just ask!
 
 Also: [documentation](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers), [issue tracker](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers)
 {:.fs-3}
+</div>
 
 <div class="flex-row-stretch" markdown="1">
   <p class="left" style="flex: 1;" markdown="1">
   **Sam Thursfield**<br>
-  **FOSDEM 2023**
+  **GUADEC 2023**
   </p>
 
   ![Codethink logo](./images/codethink-logo.svg){:.right style="flex: 1;"}
-</div>
 </div>
