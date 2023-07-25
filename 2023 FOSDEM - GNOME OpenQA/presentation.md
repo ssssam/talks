@@ -323,6 +323,7 @@ Lots of work done in CI pipelines. Two beefy donated servers (x86_64, ARM) run b
 
 ![gnome-build-meta 'master' CI pipelines](images/gitlab-pipelines-master.png){:.r-stretch}
 
+{:.fs-6}
 ----
 
 **Gitlab: s3-image**

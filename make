@@ -1,6 +1,23 @@
 #!/usr/bin/env python3
 
-"""Sam's reveal.js wrapper tool, version 99."""
+"""Sam's reveal.js wrapper tool, version 98.
+
+Supported Markdown extensions:
+
+  * `---` to separate slides
+  * `----` to separate nested slides
+  * `???` to separate notes from slide content
+  * Attribute lists (https://python-markdown.github.io/extensions/attr_list/)
+     * Set CSS class inline, e.g. `{:.r-fit-text}`
+     * For inline elements this goes at line end, for block elements this goes on a new line.
+  * Fenced code blocks (https://python-markdown.github.io/extensions/fenced_code_blocks/)
+     * Use three backticks: ```
+  * Markdown in HTML (https://python-markdown.github.io/extensions/md_in_html/):
+     * Set `markdown="1"` in a HTML element and its contents will be parsed as Markdown
+  * Slide properties (inspired by [Remark](https://github.com/gnab/remark/wiki/Markdown#slide-properties)):
+     * `class`: set CSS classes for the slide
+
+"""
 
 from argparse import ArgumentParser, FileType
 from dataclasses import dataclass, field
@@ -32,7 +49,7 @@ SEPARATOR_NOTES = "???"
 
 
 SECTION_TEMPLATE = """
-<section>
+<section {section_attributes}>
   {content}
   {nested_slides}
 </section>
@@ -113,9 +130,10 @@ class SlideshowParser:
         #   * attr_list: https://python-markdown.github.io/extensions/attr_list/
         #   * fenced_code: https://python-markdown.github.io/extensions/fenced_code_blocks/
         #   * md_in_html: https://python-markdown.github.io/extensions/md_in_html/
+        #   * meta: https://python-markdown.github.io/extensions/meta_data/
         #
         self._markdown_parser = Markdown(
-            extensions=['attr_list', 'fenced_code', 'md_in_html'],
+            extensions=['attr_list', 'fenced_code', 'md_in_html', 'meta'],
             output_format='html5'
         )
 
@@ -175,13 +193,19 @@ class SlideshowParser:
 
             slide_markdown = '\n'.join(slide.markdown)
             slide_html = self._markdown_parser.convert(slide_markdown)
+            slide_meta = self._markdown_parser.Meta
 
             nested_slides_html = ""
             if slide.nested_slides:
                 nested_slides_html = self._convert_slides_to_html(slide.nested_slides)
 
+            section_attributes = " ".join(
+                f'class="{css_class}"' for css_class in slide_meta.get("class", [])
+            )
+
             section_html = SECTION_TEMPLATE.format(
                 content=slide_html,
+                section_attributes=section_attributes,
                 nested_slides=nested_slides_html,
             )
 
