@@ -137,40 +137,12 @@ Mike Cohn's "test pyramid" ("Succeeding with Agile").
 
 ---
 
-## Types of testing
-
-*openQA goes here*
-
-  ⇓
-
-![](images/test-pyramid.webp) 
-
-???
-
-Are they any open source alternatives ?
-
----
-
 ## Use cases
 
   1. <span class="highlight">See "latest GNOME" 🧔</span>
-  2. Update needles 🧑‍🦰
-  3. Diagnose & report regressions 👷
-  4. Develop new tests 👩‍🦱
-
----
-
-## Components of GNOME openQA testing {:.r-fit-text}
-
-1. <b>[openqa.gnome.org](http://openqa.gnome.org)</b>: frontend
-2. <b>`gnome-build-meta`</b> Gitlab project:
-      * builds GNOME OS image
-      * runs openQA tests
-2. <b>isotovideo</b>: test runner <span class="fs-4">(you can run this on your laptop!)</span>
-3. <b>openqa-tests</b> Gitlab project:
-      * Defines test suites <span class="fs-4">(using Perl + [openQA test API](http://open.qa/api/testapi/))</span>
-4. <b>openqa-needles</b> Gitlab project:
-      * Defines screenshots
+  2. Update needles 🧑🏽‍🦰
+  3. Diagnose & report regressions 👨🏿‍⚕️
+  4. Develop new tests: 👩🏻‍🏭
 
 ---
 
@@ -196,7 +168,28 @@ Another trick:
 
 ---
 
-## How to: Update a Needle 🧑‍🦰 {.r-fit-text}
+## Components of GNOME openQA testing {:.r-fit-text}
+
+1. <span class="highlight">openQA</span>: optional web frontend <span class="fs-4">([openqa.gnome.org](http://openqa.gnome.org))</span>
+2. <span class="highlight">isotovideo</span>: openQA test runner <span class="fs-4">(you can run this on your laptop!)</span>
+3. <span class="highlight">[gnome-build-meta](https://gitlab.gnome.org/GNOME/gnome-build-meta/)</span>: integration repo
+      * project CI builds GNOME OS and runs openQA tests
+      {:.fs-3}
+4. <span class="highlight">[openqa-tests](https://gitlab.gnome.org/GNOME/openqa-tests)</span>: tests repo
+      * Defines test suites <span class="fs-4">(using Perl + [openQA test API](http://open.qa/api/testapi/))</span>
+      {:.fs-3}
+5. <span class="highlight">[openqa-needles](https://gitlab.gnome.org/GNOME/openqa-needles)</span>: screenshots repo
+
+---
+## Use cases
+
+  1. See "latest GNOME" 🧔
+  2. <span class="highlight">Update needles 🧑🏽‍🦰</span>
+  3. Diagnose & report regressions 👨🏿‍⚕️
+  4. Develop new tests: 👩🏻‍🏭
+---
+
+## How to: Update a Needle 🧑🏽‍🦰 {.r-fit-text}
 
 Documentation: [How to update a needle](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers#how-to-update-a-needle)
 
@@ -242,6 +235,8 @@ Question: *"How many false positives do you get?"*
 
 Look at how often the needles are updated...
 
+![Plot of needles changed against date](images/Needles changed vs Date.svg)
+
 ???
 
 Default background
@@ -249,10 +244,10 @@ Adwaita header bar changes
 Font rendering
 
 ---
-
 Screenshot tests will always have false positives.
+{:.highlight}
 
-openQA mitigations:
+openQA deals with this in 4 ways:
 
   1. Search within the screen
   2. Similarity threshold (90-100%)
@@ -260,9 +255,15 @@ openQA mitigations:
   4. Web UI for needle updates.
 
 ---
+## Use cases
 
-How to: Diagnose & report regressions 👷
-{.r-fit-text}
+  1. See "latest GNOME" 🧔
+  2. Update needles 🧑🏽‍🦰
+  3. <span class="highlight">Diagnose & report regressions 👨🏿‍⚕️</span>
+  4. Develop new tests: 👩🏻‍🏭
+---
+
+## How to: Diagnose & report regressions 👨🏿‍⚕️ {.r-fit-text}
 
 Documentation: [When tests fail](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers#when-tests-fail)
 
@@ -300,8 +301,15 @@ It's very hard to be sure, but some examples:
   ...
 
 ---
+## Use cases
 
-## How to: Develop new tests 👩‍🦱 {:.r-fit-text}
+  1. See "latest GNOME" 🧔
+  2. Update needles 🧑🏽‍🦰
+  3. Diagnose & report regressions 👨🏿‍⚕️
+  4. <span class="highlight">Develop new tests: 👩🏻‍🏭</span>
+---
+
+## How to: Develop new tests 👩🏻‍🏭 {:.r-fit-text}
 
 Documentation: [Adding more tests](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/wikis/openqa/OpenQA-for-GNOME-developers#adding-more-tests)
 
