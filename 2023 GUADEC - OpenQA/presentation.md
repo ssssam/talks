@@ -43,6 +43,7 @@ Early projects: MeeGo - Tracker - critical bugs e.g. 100% CPU when you connect a
 No paid work on Tracker since 2012, but remained as a volunteer maintainer. Ported to Meson, set up initial Gitlab CI, in-tree "functional tests" testsuite.
 
 ---
+class: invert
 
 In 2011, GNOME had no automated testing *at all*
 
