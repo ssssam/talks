@@ -56,7 +56,7 @@ In 2011, GNOME had no automated testing *at all*
  * <span class="highlight">GNOME OS</span> project:
      * BuildStream, Freedesktop SDK
  * openQA at <span class="highlight">SUSE</span>: since 2009
-     * Now used by Fedora, Debian, and more
+     * Now used by Fedora, Debian, <strike>Endless</strike> and more
  * <span class="highlight">Codethink</span>: openQA testing in automotive
 
 ???
@@ -230,6 +230,17 @@ See also: [openQA starter guide - Basic Concepts](http://open.qa/docs/#_needles)
 {:.fs-3}
 
 ---
+Screenshot tests will always have false positives.
+{:.highlight}
+
+openQA deals with this in 4 ways:
+
+  1. Search within the screen
+  2. Similarity threshold (90-100%)
+  3. Exclude zones
+  4. Web UI for needle updates.
+
+---
 
 Question: *"How many false positives do you get?"*
 {:.r-fit-text .highlight}
@@ -240,20 +251,11 @@ Look at how often the needles are updated...
 
 ???
 
-Default background
-Adwaita header bar changes
-Font rendering
+TODO : update all needles
 
 ---
-Screenshot tests will always have false positives.
-{:.highlight}
 
-openQA deals with this in 4 ways:
-
-  1. Search within the screen
-  2. Similarity threshold (90-100%)
-  3. Exclude zones
-  4. Web UI for needle updates.
+![this is fine](./images/fine.jpg)
 
 ---
 ## Use cases
@@ -287,6 +289,13 @@ Steps:
 It's important not be annoying
 
 Example: real test failures!
+
+
+---
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nLk_govDdxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<https://www.youtube.com/watch?v=nLk_govDdxA>{:.fs-5}
 
 ---
 
@@ -358,6 +367,11 @@ But it has special helpers for screenshot testing. We'll go more into how that w
 
 ---
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PyQ2v1iaCBk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<https://www.youtube.com/watch?v=PyQ2v1iaCBk>{:.fs-5}
+---
+
 Question: *How much effort is it to maintain?*
 {:.r-fit-text .highlight}
 
@@ -373,12 +387,12 @@ Source: <https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/9>
 <div class="left fs-2" markdown="1">
 **It's up to you!** Any of these things may or may not happen...
 
-  * Tests for core app features, [Shell](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/34), [locales](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/22), [accessibility](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/23), [search + content apps](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/8)
+  * <span class="highlight">More tests!</span> Core apps, [Shell](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/34), [locales](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/22), [accessibility](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/23), [search + content apps](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/8), [mobile UIs](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/issues/626)
   * [Pre-merge testing](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/issues/601) for gnome-build-meta
-  * Tests on real hardware and performance measurement
-  * Tests for [specific GNOME releases](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/21)
-  * [Testing beyond gnome-build-meta](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/38) (e.g. 3rd party apps)
-  * A culture of end-to-end testing and higher quality releases.
+  * Tests on <span class="highlight">real hardware</span> and performance measurement
+  * [openQA tests in your project repo](https://gitlab.gnome.org/GNOME/openqa-tests/-/issues/38)
+  * An easy way to <span class="highlight">update all needles</span>.
+  * A culture of end-to-end testing and high quality releases.
 </div>
 
 ---
