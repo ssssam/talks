@@ -1,11 +1,12 @@
 Talks by Sam Thursfield
 =======================
 
-Here is a list of conference talks I've given, grouped by topic.
+Here is a list of conference talks I've given, grouped by topic. Slides can be found in this repo as well.
 
 Build, integration & testing of operating systems
 -------------------------------------------------
 
+  * [Setting up OpenQA testing for GNOME](https://fosdem.org/2023/schedule/event/openqa_for_gnome/) at [FOSDEM 2023](https://fosdem.org/2023/).
   * [Integrating Software Stacks with BuildStream 2.0 and the Remote Execution API](https://www.youtube.com/watch?v=Mvi6pylo-8o) at [OSSEU 2022](https://osseu2022.sched.com/).
   * [Generating different base systems from the same inputs in Freedesktop SDK](https://www.youtube.com/watch?v=76Uw8QCBgGk)
     at [PackagingCon](https://packaging-con.org/) 2021
@@ -28,6 +29,7 @@ Desktop search
 Music
 -----
 
+  * [Simple, open, music recommendations with Python](https://www.fosdem.org/2023/schedule/event/python_music_recommendation/) at [FOSDEM 2023](https://www.fosdem.org/2023/)
   * [Simple. open music recommendations](https://www.youtube.com/watch?v=7APk4GqIlD0) at [EuroPython 2021](https://ep2021.europython.eu/).
 
 [Carlos Garnacho]: https://blogs.gnome.org/carlosg/
