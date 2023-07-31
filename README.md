@@ -6,6 +6,7 @@ Here is a list of conference talks I've given, grouped by topic. Slides can be f
 Build, integration & testing of operating systems
 -------------------------------------------------
 
+  * [The best testing tools we’ve ever had: an introduction to OpenQA for GNOME](https://www.youtube.com/watch?v=jIDk0frev7M&t=3h56m39s) at [GUADEC 2023](https://events.gnome.org/event/101/).
   * [Setting up OpenQA testing for GNOME](https://fosdem.org/2023/schedule/event/openqa_for_gnome/) at [FOSDEM 2023](https://fosdem.org/2023/).
   * [Integrating Software Stacks with BuildStream 2.0 and the Remote Execution API](https://www.youtube.com/watch?v=Mvi6pylo-8o) at [OSSEU 2022](https://osseu2022.sched.com/).
   * [Generating different base systems from the same inputs in Freedesktop SDK](https://www.youtube.com/watch?v=76Uw8QCBgGk)
