@@ -190,7 +190,8 @@ class SlideshowParser:
             if key == "class":
                 attributes += [f'class="{css_class}"' for css_class in value]
             elif key == "transition":
-                attributes += [f'data-transition="{transition}"' for transition in value]
+                transitions = " ".join(value)
+                attributes += [f'data-transition="{transitions}"']
             else:
                 print(f"Warning: unhandled slide attribute: {key}")
         return " ".join(attributes)
