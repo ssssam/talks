@@ -184,6 +184,18 @@ class SlideshowParser:
         html, _count = re.subn(r'<p>(<img[^>]*>)</p>', r'\1', html)
         return html
 
+    def _parse_slide_metadata(self, meta) -> str:
+        attributes = []
+        for key, value in meta.items():
+            if key == "class":
+                attributes += [f'class="{css_class}"' for css_class in value]
+            elif key == "transition":
+                attributes += [f'data-transition="{transition}"' for transition in value]
+            else:
+                print(f"Warning: unhandled slide attribute: {key}")
+        return " ".join(attributes)
+
+
     def _convert_slides_to_html(self, slides: List[Slide]) -> str:
         # Convert a set of slides to HTML.
         result = []
@@ -199,9 +211,7 @@ class SlideshowParser:
             if slide.nested_slides:
                 nested_slides_html = self._convert_slides_to_html(slide.nested_slides)
 
-            section_attributes = " ".join(
-                f'class="{css_class}"' for css_class in slide_meta.get("class", [])
-            )
+            section_attributes = self._parse_slide_metadata(slide_meta)
 
             section_html = SECTION_TEMPLATE.format(
                 content=slide_html,
