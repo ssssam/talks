@@ -73,6 +73,7 @@ Automated end-to-end testing of...
  * Open source (GPL-2.0-or-later)
  * Community-driven development
  * Paid maintainer team (funded by SUSE)
+ * "Continous release" model (no "stable" version)
 
 ---
 class: fs-3
@@ -84,6 +85,46 @@ class: fs-3
      * Graphical UI for updating screenshots
  * Multiple **backends** for virtual and physical hardware
  * Hackable Perl codebase!
+
+---
+
+## Example: GNOME OS tests
+
+Let's try and run them locally...
+
+    rm -r ./out; env ssam_openqa run --tests-path . \
+        --hdd-path ./gnome_os_disk.latest.20230831.img \
+        --iso-path ./gnome_os_installer_525758.iso \
+        -o ./out
+
+---
+class: fs-3
+
+## Running isotovideo container  {:.fs-4}
+
+`ssam_openqa` is a CLI helper tool.
+{:.left}
+
+It wraps long Podman commands:
+{:.left}
+
+    podman run --name ssam_openqa_gnome_apps \
+        --privileged --detach \
+        --volume=$(pwd)/gnome_os_disk.latest.20230831.img:/disk.img \
+        --volume=$(pwd):/tests \
+        --volume=$(pwd)/out/gnome_apps:/shared \
+        --entrypoint isotovideo \
+        --publish 5990 \
+        --publish 20013 \
+        -- \
+        registry.opensuse.org/devel/openqa/containers15.4/openqa_worker:latest \
+        --workdir=/shared ARCH=x86_64 \
+        ASSETDIR=/var/lib/openqa/share/factory/ \
+        BACKEND=qemu \
+        ...
+
+os-autoinst is also packaged in distros - but beware "rolling release" versioning.
+{:.left .fs-4}
 
 ---
 transition: slide-in none-out
@@ -107,25 +148,26 @@ transition: none-in slide-out
 ![](images/openQA(4).svg)
 ---
 
-## Example: GNOME OS tests
+## Integrating into CI
 
-Let's try and run them locally...
+Two options:
+{:.left}
 
----
+  * Permanent workers, managed by **openQA server**
+  * Transient workers, e.g. on a **Gitlab CI runner**
+{:.left}
 
-## How this runs in CI
+openSUSE use openQA to manage workers.
+{:.left}
 
-Let's see this online!
-
-GNOME uses Gitlab CI to manage test workers.
+GNOME uses transient runners on [Gitlab CI](https://gitlab.gnome.org/GNOME/gnome-build-meta/-/pipelines?page=1&scope=all&ref=master).
+{:.left}
 
 ---
 
 ## The openQA web UI
 
 Let's see this online!
-
-openSUSE use openQA's scheduler to manage test workers.
 
 ---
 
@@ -140,28 +182,18 @@ openQA deals with this in 4 ways:
   4. Web UI for needle updates.
 
 ---
-class: invert
-## Integrating with hardware
+class: invert fs-2
+## Beyond QEMU: testing on hardware {:.r-fit-text}
 
-Testing in QEMU is handy, but how "end-to-end" is it?
+![](images/tiab_mess.png){:.r-stretch}
 
-Two options:
-
-  1. Flash & boot device, then call openQA
-  2. Use openQA "generic machine" backend to flash & boot
+"Permenant worker" and "transient worker" approaches are possible.
+{:.r-fit-text}
 
 ---
-## Example of LAVA + openQA
-
-See: <http://openqa.qa.codethink.co.uk/>
-
----
-
-## Example of LAVA + openQA
+## Kernel testing at Codethink
 
 ![](images/kernel_test_pipeline.png)
-
-LAVA script 
 
 ???
 
@@ -172,16 +204,19 @@ This contacts openQA server over HTTP to run test and wait for completion.
 openQA uses VNC to control device.
 
 ---
+## Example of LAVA + openQA
+
+See: <http://openqa.qa.codethink.co.uk/>
+
+---
+class: invert fs-2
 **Testing on automotive hardware**
 
-Cars don't ship VNC.
+How do you remote control a car IVI system?
 
-Software tools developed at Codethink:
-
-  * Q.A.D.: lightweight "remote control" (alternative to VNC):
-    <https://gitlab.com/CodethinkLabs/qad/>
-  * QAnvas: needle editing UI
-    <https://gitlab.com/CodethinkLabs/qad/>
+  * <strike>virtio devices</strike>
+  * <strike>VNC</strike>
+  * <a href="https://gitlab.com/CodethinkLabs/qad/">Q.A.D.</a>: lightweight "remote control" daemon
 
 ---
 class: invert
@@ -189,11 +224,12 @@ class: invert
 
 **USB-C switcher** with computer control
 
-![](images/usbswitch.png)
+![](images/usbswitch.png){:.r-stretch}
 
-Used for tests involving phones & removable media
+For tests involving phones & USB media
 
 **Open hardware**, see: <https://gitlab.com/CodethinkLabs/usb-switch>
+{:.r-fit-text}
 
 ???
 
@@ -203,47 +239,42 @@ We also send patches up to openQA
 class: invert
 ## Hardware tools
 
-![](images/tiab-mess.png)
+![](images/tiab_mess.png){:.r-stretch}
 
 What to do about the mess??
 
 ---
-class: invert
 ## Hardware tools
 
 **Testing in a Box**
 
-![](images/tiab.png)
+![](images/tiab.png){:.r-stretch}
 
-Hardware: Host PC, serial, CAN emulator, USB Switch + Hub, Bluetooth/WiFi, HID emulation, ...
+<div class="left" markdown="1">
+Hardware: *Host PC, serial, CAN emulator, USB Switch + Hub, Bluetooth/WiFi, HID emulation, ...*
+{:.fs-3}
 
-Software: Gitlab + Gitlab CI, openQA worker, ...
+Software: *Gitlab + Gitlab CI, openQA worker, ...*
+{:.fs-3}
 
 **Open hardware**, see: <https://gitlab.com/CodethinkLabs/testing-in-a-box>
+{:.fs-3 .r-fit-text}
+</div>
 
 ---
 class: left
-## How to get involved {:.r-fit-text}
-<div class="fs-3" markdown="1">
-openQA:
+## Codethink is hiring {:.r-fit-text}
+<div class="r-stretch fs-3" markdown="1">
+openQA: [https://openqa.qa/](https://open.qa/)
 
-  * Code: <https://github.com/os-autoinst/>
-  {:.fs-3}
-  * Chat: Matrix [#openqa:opensuse.org](https://matrix.to/#/#openqa:opensuse.org)
-  {:.fs-3}
-
-GNOME openQA tests:
-
-  * Chat: Matrix [#gnome-os:gnome.org](https://app.element.io/#/room/#gnome-os:gnome.org)
-  {:.fs-3}
+GNOME tests: [https://gitlab.gnome.org/gnome/openqa-tests/](https://gitlab.gnome.org/gnome/openqa-tests)
 
 Codethink projects:
 
-  * Code: <https://gitlab.com/CodethinkLabs/>
+  * Code: [https://gitlab.com/CodethinkLabs/](https://gitlab.com/CodethinkLabs/)
   {:.fs-3}
-  * Chat: Matrix [#codethinklabs:matrix.org](https://matrix.to/#/#codethinklabs:matrix.org)
+  * Chat: [#codethinklabs:matrix.org](https://matrix.to/#/#codethinklabs:matrix.org)
   {:.fs-3}
-
 </div>
 
 <div class="flex-row-stretch" markdown="1">
