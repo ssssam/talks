@@ -1,0 +1,117 @@
+Tagcloud GUADEC talk ... 25 minutes
+
+
+Title:
+  - Tagcloud: Beyond files and folders
+  - Organize your stuff using tags
+
+Abstract:
+  Many websites allow users to organize content using user-defined text labels,
+  commonly known as "tags".  Tags could be useful for organizing desktop
+  content too but there is not much support for this among desktop apps, and
+  that is the reason the files on my computer are still in a huge mess. In this
+  talk I will show that tags are, in fact, really cool and will demonstrate a
+  app I sketched out named "Tagcloud" to prove the point.
+
+
+Rough overview:
+
+ - Tags:
+    delicious/pinboard, last.fm/soundcloud/bandcamp, flickr, ...
+
+    principles:
+        - arbitrary content can be tagged
+        - an item can have any number of tags
+        - meaning of a tag is entirely user-defined
+            -> more strongly defined properties have various
+               advantages; tags are really an extension point
+               for things that don't already have standardised
+               ways to describe the or where the standardized
+               way doesn't work satisfactorarily. E.G. location of a photo:
+               could tag all your scotland photos with "scotland",
+               but should you have to ?
+
+ - In GNOME:
+    Tracker 
+      - supports storing tags on all types of content
+    Nautilus
+      - rejected proposal to add support for tag editing, based on
+        solid argument that two competing organizational paradigms in
+        one app would get messy.
+
+ - tagcloud
+    goals: list all content, without regard to file and folder
+    allow filtering by tags, and modifying
+    also show useful content-specific data, e.g. thumbnail and location
+    for photos, artist and title for music, etc.
+
+ - initial use cases:
+        - photo organization
+            (gnome-photos might be better in some cases, although it
+             won't handle case of "photos and documents tagged with X")
+        - music organization & playlist generation
+
+ - challenges & non-challenges:
+        - Tracker:
+            - various tweaks needed; embedding with Meson build rules as Meson
+              subproject makes for a much nicer testing workflow
+            - 'app domains' helper allows using bundled tracker, using a separate
+              DB to the system one, writing tests that use all real Tracker code but
+              with a throwaway database, even modifying config from the app
+              so we aren't beholden on arbitrary user configuration for
+              important functionality
+        - Meson: life much easier, subprojects are great, being fast is great
+        - Gtk+: generally cool as ever; inspector is great; multiple ways
+            to achieve same thing a problem (e.g. actions vs. menumodel)
+        - D-feet also very handy
+        - introspection: annotation issues in Gtk and GLib meant depending
+          on unreleased versions and installing them into a prefix, very
+          painful and long waits for fixes to get into master. On the other
+          hand fairly swift reviews by all teams involved.
+        - hard to debug Gtk crash due to calling stuff from the wrong thread
+        - async code in Python isn't ideal; pygobject integration with asyncio
+          would be AMAZING .... if anyone wants a long summer project :)
+          (pygobject is otherwise amazing)
+
+ - more ambitious goal: integrate with online services
+    bookmarks and tags from pinboard.in
+    tags for music from last.fm
+
+ - automatically ignoring certain directories
+    e.g. git repos, Audacity / Ardour projects, ...
+     -> .trackerignore exists
+     -> would be nice if apps would mark projects automatically to be ignored
+        by indexers
+     -> probably a long xdg standardization proposal would be enough.
+
+
+----------
+
+Key points about app:
+
+ * Python 3, G-I, generally minimal
+
+ * View of "all content found by content indexer"
+
+    -> We can improve this a lot, but starting from what we have...
+    ... a way to configure index locations from the app
+    ... live updates from on-disk changes and changes from other apps / CLI
+    ... status messages from Tracker, i.e feedback on how indexing is going
+    ... option to use private or session-wide Tracker DB
+
+ * Slow on huge datasets
+    - partly tracker/sqlite, but biggest issue right now is pygobject
+      overhead handling graphupdated signals
+
+ * tracker-app-domain
+
+* Tracker graph-updated signal very slow to process with PyGObject due to
+  large ptrarray as one of the parameters.
+
+* Import and export a concern; scripts to produce a json-ld dump of the tags,
+  and doing writeback to/from xattrs from Tracker would be really nice.
+
+* Session vs. app use of Tracker
+    - sharing data
+    - sharing configuration
+    - removable devices
