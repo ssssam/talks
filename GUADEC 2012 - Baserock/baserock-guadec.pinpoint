@@ -1,0 +1,534 @@
+### 40 minutes incl. questions
+### 20-30 minutes talking
+### So, ye need to be shorter!
+### demo - ? can show system in VM, how long for? show branching/workflow at all?
+
+### tell stories & ask questions!
+[strata-flickr-alasdairthompson-2566931533.jpg]
+
+#### should I mention Trebuchet?? useful
+# to compare to OSTree
+
+### Maybe you should get more technical ???
+
+---
+
+Baserock
+
+# Who we are
+# What we are going to say
+#  - What is Baserock & why - it's
+#    "opinionated software"
+#  - Not core devs - Lars - perhaps saw
+#    at Montreal discussing ideas or
+#    FOSDEM keynote
+#  - We started building GnomeOS ... 
+#    not very far yet!
+#  - Key OSTree difference: bottom-up
+#    instead of top-down. We have a
+#    base system capable of bootstrapping
+#    itself (rebel-mountain release)
+#    they have VCS revisioning but simple build script
+
+---
+
+A way of making our lives
+easier as embedded systems
+developers and consultants
+
+# ?
+
+# Minimum high-end consumer router
+
+# Dreamed up on a late night working on a
+# Meego project
+# * super long develop-deploy-test-run-
+#   merge cycle
+# * 800MB images, slooow build
+# * random RPM's floating around
+# * OBS
+# * various systems of version numbering
+#   which may or may not be adhered to
+# * no consistency between git repo /
+#   packaging / executable names
+# * tarballs checked into git
+# * super stale versions of lots of
+#   components and a huge effort to
+#   upgrade
+# * no automated testing or CI
+
+# Worst of all: no concept among the
+# developers on how to contribute
+# upstream ... and no easy way to show
+# them.
+
+---
+
+A way of making our lives
+easier as desktop developers
+and users
+
+# This is a desktop conference, but:
+# - should my desktop OS be 8GB ?
+# - > 2000 packages?
+
+---
+
+Not a distribution
+
+"A set of tools for managing
+and building systems"
+
+# ? How often do you build something
+#   manually / from jhbuild because
+#   packaged version is too old? 
+# ? How often do you opt to update /
+#   create packaging for your distro vs.
+#   being lazy and just using your
+#   built version (and there are probably
+#   a lot of distro people at Guadec!)
+
+# No packages. Packaging goes out of
+# date so fast. Meego: it's scraped from
+# all over; often Fedora from 4 years
+# ago. And it's largely duplicated
+# effort!
+
+---
+
+# A good way to learn about geology
+
+• Strata
+• Chunks
+• Erratics
+• Systems
+• Morphologies
+
+---
+
+Stratum:
+
+<i>n.</i> A horizontal layer of material, especially one of several parallel layers arranged one on top of another.
+<i>n.</i> Geology A bed or layer of sedimentary rock having approximately the same composition throughout.
+
+--- [strata.jpeg]
+
+--- [chunks.jpeg]
+
+---
+
+Erratic:
+
+<i>n.</i> Specifically In <i>geology</i>,
+a boulder or block which has been conveyed
+from its original site, probably by ice,
+and deposited at a distance; an erratic
+block.
+# Erratics are not technically specced out at
+# this point. 
+
+--- [erratics.jpeg]
+
+# Erratics depend on certain strata, but
+# separate upgrade path
+# Not clear how it will be done yet ;)
+
+## 15 minutes MAX
+
+---
+
+Morph & morphologies
+
+<i>n.</i> the branch of geology that studies
+the characteristics and configuration and
+evolution of rocks and land forms
+
+## Some examples
+
+---
+
+Key points
+
+• Starting from scratch, from the ground up
+# Hence "Baserock" - a foundation for
+# building real-world systems on top.
+#'foundation': linux, systemd, busybox,
+# dbus, glib, libstdc++ .. but you can
+# always strip more stuff out if you
+# want ... (Lar's minimum so far: 11MB)
+
+• Minimalist
+# "Why not Yocto" - reason #1
+# From scratch helps for disk space, boot
+# speed etc.
+
+• Easy to get started
+# I've been working on the project 2
+# weeks, personally.
+# Easy for embedded developers outside
+# open source community!!!
+
+• Everything is in git
+# It's cool these days.
+# Also, for stubborn people - just learn
+# this *one* workflow in *one* VCS!
+# (shit log messages, object files)
+# Sane upstreams can be built directly,
+# others we mirror ('lorry') and add a
+# chunk morphology
+# OBS - duplicates a VCS!
+# cf. Debian - here you can store your
+# packaging in whatever VCS you want,
+# storing just the packaging, or the
+# whole upstream, plus patches, or not
+# the patches, they could go in Quilt
+# instead ... doing work on a large
+# number of patches is a *nightmare*
+# We use a mirror holding git bundles to
+# avoid hammering upstream git servers.
+
+---
+
+# What is Baserock?
+
+The cool stuff we've been
+waiting years for
+
+• Reproducible builds
+# Inputs are hashed - compilation takes
+# place in an isolated chroot. Should be
+# FAST (it isn't yet, but should be)
+# because we're not installing 600
+# packages, we're installing like 3
+# strata, and there's work on the way to
+# make faster still with hardlinks inside
+# the chroot etc. etc. ? ??
+
+• Build result caching
+# Provides speed benefit of packages but
+# the Baserock workflow integrity is
+# maintained
+
+• Continuous integration testing
+# Because it's easy to build an image,
+# we can do it a lot and run smoke
+# tests etc.
+# In Gnome Colin has been working to
+# achieve the same thing and succeeded,
+# we hope to
+#  - provide for other projects too
+#  - for free - build results public
+#  - on a whole-system scale so eg. we
+#    can see if an update to eglibc
+#    breaks gnome-shell
+
+• Branch whole system and build a new image
+
+• Atomic OS update / rollback using btrfs
+#### Mention that?
+### Os itself is read-only
+### "no /etc" - funky FS where config
+### is stored in dconf and generated
+### as a tmpfs at runtime is one idea!
+
+• No cross-compiling
+
+# One good thing about Baserock: after this
+# talk you understand most of the reasons
+# for OSTree!
+
+---
+
+Baserock by numbers
+
+# . graphs!!
+
+
+---
+
+Gnome on Baserock
+
+---
+
+DEMO!!!!
+
+# Basically, this is an entire operating system built from git!
+# Suprisingly stable ;)
+
+---
+
+What can it do?
+
+• Rebuild itself from source
+## include the cached git repos
+
+• Branch and hack on it
+## caveats
+
+• Caveats
+
+---
+
+## May want to skip any of this based on time remaining ...
+
+How it was made
+
+• tony
+# -- script to munge information from jhbuild and even .spec files
+# into stratum morphologies, and do various automated edits - much easier
+# than hand-editing JSON
+
+• A lot of packages build from git cleanly & with standard autotools
+  invocations!
+
+• Many don't!
+
+# libtasn1 - files deleted from source tree as part of configure
+
+---
+
+No cross-compiling
+
+• It's an alternative code path, and often not widely used
+
+# Especially when building everything from git is a goal, lots of
+# upstreams have to be patched to fix cross-compiling for certain
+# targets, Yocto / OpenEmbedded carry patches that upstreams won't
+# take to fix crosscompile in various ways ...	
+
+# autoconf does wildly different stuff when cross-compiling, to the
+# point where you often want to configure on target instead of host,
+# taking extra effort ...
+
+• Some things don't work at all
+  • gobject-introspection being one of them:
+    https://bugzilla.gnome.org/show_bug.cgi?id=592311
+  • Also, binary tools that need to run as part of the build process
+  • Automated tests
+
+• Cross-compiling isn't going to disappear overnight, but we are
+  saving ourselves a lot of pain
+
+• ARM devices are faster than they used to be
+
+*•One of our goals is to have systems which are easy to hack: if the
+  system simply can't compile itself then we may as well give up.
+
+# It's the free software dream!
+
+---
+
+btrfs
+
+• Allows us to implement atomic rollback & upgrade
+
+# If you've been comparing us to OSTree in yr head, here's difference #1:
+# instead of reimplementing git using hard links, we use btrfs subvolumes
+# and snapshots. Only time will tell which is the better approach I guess.
+
+• No point having btrfs as an afterthought - it's not like other filesystems
+
+# eg. When I was looking through Morph logs for the first time, I noticed we
+# copied the whole .git directory to the build root every time. WHAT! But of
+# course we have copy-on-write, so it's OK!
+
+• Not essential for Baserock
+
+# Just nice for rollback
+
+---
+
+Not yet
+
+• x86_32
+
+# just for simplicity; but you need 64bit to test right now.
+# second release in August may include x86_32.
+
+• Setting configure arguments requires branching upstream
+
+# Really should have fixed this before building Gnome with it, in
+# retrospect ...
+#
+# http://codethink.branchable.com/baserock/ideas/parameterising-chunks-from-strata/
+
+• Lots of things need root
+
+# Difficult - building systems needs loopback mount privileges ..
+
+• Staging fillers suck
+# http://codethink.branchable.com/baserock/minutes/planning-20120627/
+#  -> but this idea will make populating the staging area even slower!!!
+# http://codethink.branchable.com/baserock/ideas/fast-chunk-merging/
+#  -> consdering using OSTree for this ;) hardlinks ftw
+
+• Plenty of stuff unfinished
+
+---
+
+Where from here?
+
+• GnomeOS with Baserock?
+# Or, OSTree? Work for both can
+# largely be shared & upstreamed -
+# shared build API
+
+• Baserock on your laptops
+# Lars wants to install on his laptop as soon as possible
+
+• Fixing upstreams to build from git
+
+---
+
+Contribute!
+
+http://www.baserock.org/guadec-2012
+
+baserock-dev@baserock.org
+Freenode #baserock
+
+---
+
+# Prepared answers
+#
+# # VS Ostree!
+#
+# Very similar! Started at same time, some shared goals, different
+# starting points, Lars & Colin decided to move different ways.
+#
+# I'd like to see more collaboration!
+#
+# No VCS in Baserock - we use btrfs + trebuchet for sending diffs.
+#
+# OStree - no concept of stratum etc
+#
+### Why can OSTree's concept of hardlink farm not be used in Baserock?
+#
+# # Have you considered parallel / distributed building?
+#
+# Free Morph supports make -j$N and even distcc
+#
+# # Branching - can I branch a whole system at the latest stable version of each
+# # chunk? What about per-stratum (eg. Gnome 3.6)? Mix and match?
+#
+# Yes, I wrote a script to batch-update morphologies so could eg.
+# set all the refs to to gnome-3-6 branches / whatever
+#
+# # (How) do you plan to monetize Baserock?
+#
+# Be vague
+#
+# # When will baserock / morph be 'production ready' ?
+#
+# # Define: continuous integration, continuous delivery, continuous testing
+#
+# # Why not gentoo / gentoo-embedded?
+#
+#   - 
+#
+# # Why not Yocto / OpenEmbedded?
+#
+#   - It's simpler! No crosscompiling, no packages, no long configuration
+#     before you can get an image, only git for VCS
+#   - Upgrades, downgrades - how?
+#   - Uses packages
+#   - Slooow
+#   - Builds are not isolated or reproducible
+#   - How do you do continuous integration?
+#   - We do distributed, cached building. Yocto uses distcc at best.
+#
+# http://wiki.baserock.org/faq/vs-openembedded-yocto/
+#
+#
+# # Why not Scratchbox?
+#
+# Scratchbox can configure in QEMU and then cross-compile, and run certain
+# commands in QEMU or on target hardware during build. "CPU transparency."
+# Doesn't need QEMU support, can use SBRSH and run stuff on real HW. That's
+# really cool!
+#
+# Scratchbox is just a x-compile env whereas Baserock will build a whole
+# system from git.
+#
+# Why not use the Scratchbox approach instead of compiling on ARM? See
+# slide on cross-compiling:
+#   - if target HW can't recompile any of the code it's running then
+#     we're not really living the free software / Baserock dream.
+#   - ARM isn't so slow any more
+#   - you can distcc builds to x86 workers in the lab if speed's a real issue
+#
+#
+# # Why not Buildroot?
+#
+# Good for what it is, has continuous testing, is clean and well-written, but ..
+#  - main goal is cross-compilation
+#  - "Buildroot is a set of Makefiles and patches"
+#
+#
+# # How do you plan to handle runtime/devel separation - embedded devices
+# # don't want all of the development headers around!
+#
+# -runtime, -devel-, -doc are planned.
+#
+# Automatically! runtime never needs /usr/include, for example. Chunk
+# morphologies can describe exceptions.
+#
+# http://codethink.branchable.com/baserock/ideas/automatic-chunk-split/
+#
+# # What is the smallest devices we are targetting?
+#
+# # Is foundation going to get any smaller? Currently has dbus, glib, libexpat, ...
+#
+# Yes, but it wouldn't be Baserock any more.
+#
+#
+# # You're really going to native compile on a device that small???
+#
+# We don't plan on going lower than a beefy home router.
+#
+# # Isn't btrfs intended for *large* scale storage? And really awkward
+# # in low disk-space conditions?
+# #
+# # What do you plan to do about btrfs' bugs / performance issues? It's
+# # still officially unstable!
+#
+#  - fix them!
+#  - by using only btrfs we can work with it to get best performance
+#  - btrfs supports SSDs explicitly, on flash itself, no support.
+#  - simple to guard against corruption - store hash of each file in system
+#    image, for example
+#  - btrfs has checksums of data, it supports file systems < 1GiB, SSD's are
+#    detected and optimised for.
+#
+#  https://btrfs.wiki.kernel.org/index.php/FAQ
+#
+#
+# # How do you plan to handle system config?
+#
+# Colin says "everything in /etc is a bug" - we agree really. /home, /var
+# are easy to upgrade but /etc is a mess.
+#
+# Stick it all in dconf and have a boot-time script to generate old-style
+# config files in /etc ? Not even on boot-time, but on-config change ..
+#
+# An open issue:
+# http://codethink.branchable.com/baserock/ideas/system-configuration-dconf/
+#
+#
+# # How do you going to handle chunk config - eg. kernel, busybox have
+# # menuconfig helpers - how is that supported?
+#
+### Still open!
+#
+# # Why eglibc over uclibc ?
+#
+# uclibc misses out a lot of stuff and Buildroot ship all sorts of patches
+# to make it work. systemd for example won't work with uclibc. We're not
+# targetting pocket watches here.
+#
+# We're considering musl: http://www.etalabs.net/musl
+#
+# # Why Jenkins?
+#
+# What else? Buildbot - not enough features. Daniel thinks Jenkins is best
+# of a bad bunch (and I agree it's a bad bunch).
